@@ -2,10 +2,23 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/app-header';
+import { Poppins, PT_Sans } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-poppins',
+});
+
+const ptSans = PT_Sans({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-pt-sans',
+});
 
 export const metadata: Metadata = {
-  title: 'Page Turner',
-  description: 'Your one-stop shop for your next favorite book.',
+  title: 'SKDR Publication',
+  description: 'Your Gateway to Academic Excellence & Knowledge Distribution',
 };
 
 export default function RootLayout({
@@ -15,19 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Lato:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-body antialiased">
+      <body className={`${poppins.variable} ${ptSans.variable} font-body antialiased`}>
         <AppHeader />
         <main>{children}</main>
         <Toaster />

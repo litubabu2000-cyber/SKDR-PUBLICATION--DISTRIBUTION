@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PageTurnerLogo } from '@/components/icons';
+import { SkdrLogo } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, ShoppingCart } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -10,8 +10,10 @@ import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/shop', label: 'Shop' },
-  { href: '/about', label: 'About Us' },
+  { href: '/books', label: 'Class Books' },
+  { href: '/pyq', label: 'Previous Year Papers' },
+  { href: '/mock-tests', label: 'Mock Tests' },
+  { href: '/videos', label: 'Video Lectures' },
 ];
 
 export function AppHeader() {
@@ -19,8 +21,8 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
       <Link href="/" className="flex items-center gap-2 font-semibold">
-        <PageTurnerLogo className="h-6 w-6 text-primary" />
-        <span className="text-lg font-headline font-bold">Page Turner</span>
+        <SkdrLogo className="h-8 w-8 text-primary" />
+        <span className="text-lg font-headline font-bold">SKDR Publication</span>
       </Link>
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         {navLinks.map((link) => (
@@ -30,7 +32,7 @@ export function AppHeader() {
             className={cn(
               'transition-colors hover:text-foreground',
               pathname === link.href
-                ? 'text-foreground'
+                ? 'text-foreground font-bold'
                 : 'text-muted-foreground'
             )}
           >
@@ -60,9 +62,9 @@ export function AppHeader() {
                 href="/"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <PageTurnerLogo className="h-6 w-6 text-primary" />
+                <SkdrLogo className="h-8 w-8 text-primary" />
                 <span className="text-lg font-headline font-bold">
-                  Page Turner
+                  SKDR Publication
                 </span>
               </Link>
               {navLinks.map((link) => (
@@ -82,9 +84,6 @@ export function AppHeader() {
             </nav>
           </SheetContent>
         </Sheet>
-        <Button asChild>
-          <Link href="/shop">Get Started</Link>
-        </Button>
       </div>
     </header>
   );

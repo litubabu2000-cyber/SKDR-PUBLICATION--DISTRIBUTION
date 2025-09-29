@@ -1,386 +1,362 @@
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import {
-  ArrowRight,
-  Book,
-  Search,
-  Star,
-  ThumbsUp,
-  Award,
-} from 'lucide-react';
-import { books } from '@/lib/data';
-import Image from 'next/image';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, Lightbulb, PlayCircle, Rocket, ShieldCheck, ShoppingCart, Star, Target, Video } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-const featureCards = [
-  {
-    title: 'Wide Selection',
-    description: 'Thousands of books across all genres.',
-    icon: <Book className="size-8 text-primary" />,
-  },
-  {
-    title: 'Best Prices',
-    description: 'Competitive pricing on all our books.',
-    icon: <ThumbsUp className="size-8 text-primary" />,
-  },
-  {
-    title: 'Award Winners',
-    description: 'Explore critically acclaimed and award-winning titles.',
-    icon: <Award className="size-8 text-primary" />,
-  },
+const stats = [
+  { value: '10,000+', label: 'Books', icon: <BookOpen className="size-8 text-primary" /> },
+  { value: '50,000+', label: 'Students', icon: <GraduationCap className="size-8 text-primary" /> },
+  { value: 'Award Winning', label: 'Publications', icon: <Star className="size-8 text-primary" /> },
+  { value: '10,000+', label: 'PYQ Practice', icon: <FileQuestion className="size-8 text-primary" /> },
+  { value: '1,000+', label: 'Mock Tests', icon: <Target className="size-8 text-primary" /> },
 ];
 
-const testimonials = [
-  {
-    name: 'Sarah J.',
-    avatar: 'https://picsum.photos/seed/sarah/100/100',
-    text: "Page Turner has an incredible selection! I found a rare book I've been looking for for ages. The checkout process was seamless and the book arrived in perfect condition.",
-    rating: 5,
-  },
-  {
-    name: 'Mike D.',
-    avatar: 'https://picsum.photos/seed/mike/100/100',
-    text: 'I love the featured books section. It helps me discover new authors and genres I might not have found otherwise. Highly recommended for all book lovers!',
-    rating: 5,
-  },
-  {
-    name: 'Chen L.',
-    avatar: 'https://picsum.photos/seed/chen/100/100',
-    text: 'A fantastic online bookstore with fair prices and quick shipping. The website is easy to navigate. I will definitely be a returning customer.',
-    rating: 4,
-  },
+const categories = [
+  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: <Rocket className="size-10 text-primary" /> },
+  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: <BookCopy className="size-10 text-primary" /> },
+  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: <FileQuestion className="size-10 text-primary" /> },
 ];
+
+const videoHub = [
+  { title: 'Odisha School Guide', image: 'https://picsum.photos/seed/osg-video/600/400', hint: 'education classroom' },
+  { title: 'Odisha College Books', image: 'https://picsum.photos/seed/ocb-video/600/400', hint: 'college lecture' },
+  { title: 'NEET & JEE Preparation', image: 'https://picsum.photos/seed/neet-jee-video/600/400', hint: 'science lab' },
+  { title: 'Competitive Exam Videos', image: 'https://picsum.photos/seed/cex-video/600/400', hint: 'exam hall' },
+  { title: 'Mathematics Masterclass', image: 'https://picsum.photos/seed/math-video/600/400', hint: 'math blackboard' },
+  { title: 'Science Lab Experiments', image: 'https://picsum.photos/seed/lab-video/600/400', hint: 'chemistry experiment' },
+];
+
+const pyqExams = [
+    { title: 'Railway Exams', description: 'RRB NTPC, JE, Group D, ALP', items: ['RRB NTPC 2019-2023', 'Group D Previous Papers', 'ALP & Technician Papers', 'JE Previous Year Solutions'], price: 299 },
+    { title: 'SSC Exams', description: 'CGL, CHSL, MTS, GD', items: ['SSC CGL 2018-2023', 'CHSL Previous Papers', 'MTS & GD Papers', 'Solved with Explanations'], price: 299 },
+    { title: 'OSSC Exams', description: 'All Odisha State Posts', items: ['OSSC CGL Previous Papers', 'Junior Clerk Papers', 'RI & Other Posts', 'Odia & English Papers'], price: 299 },
+    { title: 'Banking Exams', description: 'IBPS, SBI, RBI', items: ['IBPS PO & Clerk Papers', 'SBI PO Previous Years', 'RBI Grade B Papers', 'Reasoning & Quant Focus'], price: 299 },
+    { title: 'TGT/PGT Exams', description: 'Teaching Posts', items: ['TGT Previous Papers', 'PGT All Subjects', 'Teaching Aptitude Papers', 'Subject-wise Solutions'], price: 299 },
+    { title: 'UPSC/State PSC', description: 'Civil Services', items: ['UPSC Prelims Papers', 'State PSC Papers', 'Mains Previous Years', 'Essay & Optional Papers'], price: 299 },
+]
+
+const mcqSubjects = [
+    { name: 'Aptitude', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Reasoning', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Non Verbal Reasoning', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'English', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'DI (Data Interpretation)', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'GK (General Knowledge)', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Polity', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'History GK', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Geography GK', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Physics GK', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Chemistry GK', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Biology GK', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Odisha GK', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'OTET MCQ', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'CTET MCQ', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'OSSTET MCQ', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'TGT Physics', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'TGT Chemistry', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'TGT Biology', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'TGT Mathematics', icon: <Lightbulb className="size-6 text-primary" /> },
+]
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col min-h-[100dvh] bg-background">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-muted/20">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-primary/5">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
-                  <h1 className="text-4xl font-bold font-headline tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Find Your Next Favorite Book
+                  <h1 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                    THE SKDR PUBLICATION AND DISTRIBUTION
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Explore our vast collection of books, from bestsellers to
-                    hidden gems. Your next reading adventure starts here.
+                    Your Gateway to Academic Excellence & Knowledge Distribution
                   </p>
                 </div>
-                <div className="w-full max-w-sm space-y-2">
-                  <form className="flex space-x-2">
-                    <Input
-                      type="search"
-                      placeholder="Search by title, author, or genre..."
-                      className="max-w-lg flex-1"
-                    />
-                    <Button type="submit">
-                      <Search className="mr-2 h-4 w-4" />
-                      Search
-                    </Button>
-                  </form>
-                </div>
               </div>
-              <Image
-                src="https://images.unsplash.com/photo-1524995767963-a78c9d494294?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxib29rc3RvcmV8ZW58MHx8fHwxNzU5MjU5MzYyfDA&ixlib=rb-4.1.0&q=80&w=1080"
-                width="550"
-                height="550"
-                alt="Hero"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-                data-ai-hint="bookstore interior"
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-24">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-5xl">
-                  Featured Books
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Handpicked selection of our most popular and highly-rated
-                  books.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto max-w-6xl px-4 py-12">
-              <Carousel
-                opts={{
-                  align: 'start',
-                  loop: true,
-                }}
-                className="w-full"
-              >
-                <CarouselContent>
-                  {books.map((book) => (
-                    <CarouselItem
-                      key={book.id}
-                      className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-                    >
-                      <div className="p-1 h-full">
-                        <Card className="h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg">
-                          <Image
-                            src={book.image.imageUrl}
-                            alt={`Cover of ${book.title}`}
-                            width={400}
-                            height={600}
-                            className="w-full object-cover aspect-[2/3]"
-                            data-ai-hint={book.image.imageHint}
-                          />
-                          <CardContent className="p-4 flex-1 flex flex-col">
-                            <h3 className="text-lg font-bold font-headline">
-                              {book.title}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              {book.author}
-                            </p>
-                            <div className="flex-1" />
-                            <div className="flex items-center justify-between mt-4">
-                              <span className="text-lg font-bold">
-                                ${book.price.toFixed(2)}
-                              </span>
-                              <Button size="sm">Add to Cart</Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-            <div className="flex justify-center">
-              <Button asChild>
-                <Link href="/shop">
-                  Explore All Books <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-24 bg-muted/20">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-5xl">
-                  Why Choose Page Turner?
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  We are more than just a bookstore. We are a community of
-                  readers.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3 mt-12">
-              {featureCards.map((feature) => (
-                <Card
-                  key={feature.title}
-                  className="hover:shadow-md transition-shadow text-center"
-                >
-                  <CardContent className="p-6 space-y-4">
-                    <div className="inline-block rounded-lg bg-primary/10 p-3">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-xl font-bold font-headline">
-                      {feature.title}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-24">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-10 lg:grid-cols-2 items-center">
-              <div className="space-y-4">
-                <Badge>About Us</Badge>
-                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">
-                  For the Love of Reading
-                </h2>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Page Turner was founded by a group of passionate readers who
-                  wanted to create a space where book lovers could discover
-                  new stories and connect with fellow enthusiasts. We believe in
-                  the power of books to inspire, educate, and transform lives.
-                </p>
-                 <Button asChild variant="outline">
-                    <Link href="/about">
-                        Learn More <ArrowRight className="ml-2 size-4" />
-                    </Link>
-                 </Button>
-              </div>
-              <div className="flex items-center justify-center">
+              <div className="flex justify-center">
                 <Image
-                  src="https://images.unsplash.com/photo-1532012197267-da84d127e765?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib29rc3xlbnwwfHx8fDE3NTkyNTkzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                  width="550"
-                  height="550"
-                  alt="About Us"
-                  className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                  data-ai-hint="books stack"
+                  src="https://picsum.photos/seed/hero-books/600/400"
+                  width="600"
+                  height="400"
+                  alt="Hero"
+                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
+                  data-ai-hint="library books"
                 />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 bg-muted/20">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-5xl">
-                  What Our Readers Say
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  We are proud to have a community of happy readers. Here's what
-                  they have to say.
-                </p>
-              </div>
+        <section className="w-full py-12 md:py-24">
+            <div className="container px-4 md:px-6">
+                <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                    {stats.map((stat, index) => (
+                        <Card key={index} className="flex flex-col items-center justify-center p-4 text-center">
+                            <CardContent className="p-0 space-y-2">
+                                {stat.icon}
+                                <div className="text-2xl font-bold font-headline">{stat.value}</div>
+                                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3 mt-12">
-              {testimonials.map((testimonial) => (
-                <Card key={testimonial.name} className="flex flex-col">
-                  <CardContent className="p-6 flex-1 flex flex-col">
-                    <div className="flex items-start gap-4">
-                      <Avatar className="w-12 h-12 border">
-                        <AvatarImage
-                          src={testimonial.avatar}
-                          alt={testimonial.name}
-                        />
-                        <AvatarFallback>
-                          {testimonial.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-semibold">
-                          {testimonial.name}
-                        </p>
-                        <div className="flex items-center gap-0.5">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < testimonial.rating
-                                  ? 'text-primary fill-primary'
-                                  : 'text-muted-foreground'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="mt-4 text-muted-foreground flex-1">
-                      "{testimonial.text}"
+        </section>
+        
+        <section className="w-full py-12 md:py-24 bg-primary/5">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Choose Your Category</h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Select from our comprehensive educational categories
                     </p>
+                </div>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {categories.map((category, index) => (
+                        <Card key={index} className="flex items-start p-4 space-x-4">
+                           {category.icon}
+                            <div>
+                                <h3 className="text-lg font-bold font-headline">{category.title} <span className="text-sm text-muted-foreground">({category.description})</span></h3>
+                                <p className="text-muted-foreground">{category.subtext}</p>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        <section className="w-full py-12 md:py-24">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Video Learning Hub</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Interactive video content for enhanced learning experience
+                </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {videoHub.map((video) => (
+                <Card key={video.title} className="overflow-hidden group">
+                  <div className="relative">
+                    <Image
+                      src={video.image}
+                      width={600}
+                      height={400}
+                      alt={video.title}
+                      className="w-full aspect-video object-cover transition-transform group-hover:scale-105"
+                      data-ai-hint={video.hint}
+                    />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <PlayCircle className="size-16 text-white/80" />
+                    </div>
+                     <div className="absolute top-2 left-2 bg-destructive text-destructive-foreground px-2 py-1 text-xs font-bold rounded">LIVE</div>
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-bold font-headline">{video.title}</h3>
+                    <Button variant="link" className="px-0">Watch Now <ArrowRight className="ml-2 size-4" /></Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
         </section>
+        
+        <section className="w-full py-12 md:py-24 bg-primary/5">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Previous Year Question Papers</h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Master your exams with comprehensive previous year question papers from all major competitive exams
+                    </p>
+                </div>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {pyqExams.map((exam, index) => (
+                        <Card key={index} className="flex flex-col">
+                           <CardHeader>
+                               <CardTitle>{exam.title}</CardTitle>
+                               <CardDescription>{exam.description}</CardDescription>
+                           </CardHeader>
+                           <CardContent className="flex-1">
+                               <ul className="space-y-2 text-sm text-muted-foreground">
+                                   {exam.items.map((item, i) => (
+                                       <li key={i} className="flex items-center">
+                                           <ChevronRight className="size-4 mr-2 text-primary" />
+                                           {item}
+                                       </li>
+                                   ))}
+                               </ul>
+                           </CardContent>
+                           <CardFooter>
+                                <Button className="w-full">Access Papers - ₹{exam.price}</Button>
+                           </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </section>
+        
+        <section className="w-full py-12 md:py-24">
+            <div className="container px-4 md:px-6">
+                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Mock Test Series</h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Test your preparation with our comprehensive mock test series covering all major exams
+                    </p>
+                </div>
+
+                <div className="grid lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-1">
+                         <h3 className="text-2xl font-bold font-headline mb-4">Branch-wise Tests</h3>
+                         <Card>
+                            <CardContent className="p-6">
+                                <p className="mb-4 text-muted-foreground">Specialized subject tests</p>
+                                <div className="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <h4 className="font-bold mb-2">Engineering</h4>
+                                        <ul className="space-y-1 text-muted-foreground">
+                                            <li>• Civil Engineering</li>
+                                            <li>• Mechanical Engineering</li>
+                                            <li>• Electrical Engineering</li>
+                                            <li>• Computer Science</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-2">Arts & Commerce</h4>
+                                        <ul className="space-y-1 text-muted-foreground">
+                                            <li>• General Studies</li>
+                                            <li>• Economics</li>
+                                            <li>• Political Science</li>
+                                            <li>• English Literature</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-2">Science</h4>
+                                        <ul className="space-y-1 text-muted-foreground">
+                                            <li>• Physics</li>
+                                            <li>• Chemistry</li>
+                                            <li>• Biology</li>
+                                            <li>• Mathematics</li>
+                                        </ul>
+                                    </div>
+                                     <div>
+                                        <h4 className="font-bold mb-2">Medical</h4>
+                                        <ul className="space-y-1 text-muted-foreground">
+                                            <li>• NEET Practice</li>
+                                            <li>• Medical Entrance</li>
+                                            <li>• Nursing Exams</li>
+                                            <li>• Pharmacy Tests</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="mt-6">
+                                    <p className="text-2xl font-bold">₹499<span className="text-sm font-normal text-muted-foreground"> per branch</span></p>
+                                    <p className="text-xs text-muted-foreground">Includes: 50+ Tests per branch</p>
+                                    <Button className="w-full mt-4">Start Branch Tests</Button>
+                                </div>
+                            </CardContent>
+                         </Card>
+                    </div>
+                     <div className="lg:col-span-2">
+                         <h3 className="text-2xl font-bold font-headline mb-4">Subject-wise MCQ Practice</h3>
+                         <Card>
+                             <CardContent className="p-6">
+                                <p className="mb-4 text-muted-foreground">Topic-specific practice tests</p>
+                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                     {mcqSubjects.map((subject, index) => (
+                                         <div key={index} className="flex items-center space-x-2">
+                                             {subject.icon}
+                                             <span className="text-sm font-medium">{subject.name}</span>
+                                         </div>
+                                     ))}
+                                 </div>
+                                 <Button className="w-full mt-6">Start MCQ Practice</Button>
+                             </CardContent>
+                         </Card>
+                         
+                        <Card className="mt-8 bg-primary/90 text-primary-foreground">
+                            <CardHeader>
+                                <CardTitle>All-Access Mock Test Package</CardTitle>
+                                <CardDescription className="text-primary-foreground/80">Get unlimited access to all branch-wise and division-wise mock tests</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
+                                    <div className="flex items-center gap-2"><ShieldCheck /> All Branches</div>
+                                    <div className="flex items-center gap-2"><ShieldCheck /> All Divisions</div>
+                                    <div className="flex items-center gap-2 col-span-2"><ShieldCheck /> Detailed analysis & performance tracking</div>
+                                </div>
+                                <div>
+                                    <p className="text-3xl font-bold">₹1,999 <span className="text-lg line-through opacity-80">₹2,998</span></p>
+                                    <p className="font-bold text-accent">SAVE 33%</p>
+                                    <p className="text-xs mt-1">One-time payment • Lifetime access • All updates included</p>
+                                    <Button variant="secondary" className="w-full mt-4">Get All-Access Package</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                     </div>
+                </div>
+            </div>
+        </section>
       </main>
 
       <footer className="bg-foreground text-background">
-        <div className="container px-4 md:px-6 py-8 md:py-12">
-          <div className="grid gap-8 md:grid-cols-4">
-            <div className="space-y-2">
-              <h3 className="text-lg font-bold font-headline">Page Turner</h3>
-              <p className="text-sm text-background/70">
-                Your next reading adventure.
-              </p>
+        <div className="container px-4 md:px-6 py-12">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                <div className="space-y-2 col-span-full lg:col-span-1">
+                    <h3 className="text-2xl font-bold font-headline">SKDR Publication</h3>
+                    <p className="text-sm text-background/70">
+                        Your trusted partner for competitive exam preparation. We provide comprehensive study materials and practice tests for various government exams.
+                    </p>
+                </div>
+                 <div className="space-y-2">
+                    <h4 className="font-semibold">Quick Links</h4>
+                    <ul className="space-y-1 text-sm text-background/70">
+                        <li><Link href="#" className="hover:text-background">Home</Link></li>
+                        <li><Link href="#" className="hover:text-background">Class Books</Link></li>
+                        <li><Link href="#" className="hover:text-background">Railway Exams</Link></li>
+                        <li><Link href="#" className="hover:text-background">SSC Exams</Link></li>
+                        <li><Link href="#" className="hover:text-background">OSSC Exams</Link></li>
+                        <li><Link href="#" className="hover:text-background">TGT/PGT Exams</Link></li>
+                    </ul>
+                </div>
+                 <div className="space-y-2">
+                    <h4 className="font-semibold">Study Materials</h4>
+                    <ul className="space-y-1 text-sm text-background/70">
+                        <li><Link href="#" className="hover:text-background">Previous Year Papers</Link></li>
+                        <li><Link href="#" className="hover:text-background">Mock Tests</Link></li>
+                        <li><Link href="#" className="hover:text-background">Video Lectures</Link></li>
+                        <li><Link href="#" className="hover:text-background">Practice Books</Link></li>
+                        <li><Link href="#" className="hover:text-background">Online Courses</Link></li>
+                    </ul>
+                </div>
+                 <div className="space-y-2">
+                    <h4 className="font-semibold">Stay Updated</h4>
+                     <p className="text-sm text-background/70">Subscribe to our newsletter for book recommendations and exclusive offers.</p>
+                     <div className="flex">
+                        <Input type="email" placeholder="Enter your email" className="bg-background/20 border-0 rounded-r-none" />
+                        <Button type="submit" className="rounded-l-none">Subscribe</Button>
+                     </div>
+                </div>
             </div>
-            <div className="space-y-2">
-              <h4 className="font-semibold">Quick Links</h4>
-              <ul className="space-y-1">
-                <li>
-                  <Link
-                    href="/"
-                    className="text-sm text-background/70 hover:text-background"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/shop"
-                    className="text-sm text-background/70 hover:text-background"
-                  >
-                    Shop
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-sm text-background/70 hover:text-background"
-                  >
-                    About Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-semibold">Customer Service</h4>
-              <ul className="space-y-1">
-                <li>
-                  <Link
-                    href="#"
-                    className="text-sm text-background/70 hover:text-background"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-sm text-background/70 hover:text-background"
-                  >
-                    FAQ
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-sm text-background/70 hover:text-background"
-                  >
-                    Shipping & Returns
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-semibold">Follow Us</h4>
-              <div className="flex space-x-4">
-                {/* Social links here */}
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 border-t border-background/20 pt-4 text-center text-sm text-background/70">
-            © {new Date().getFullYear()} Page Turner. All rights reserved.
-          </div>
+             <div className="mt-12 border-t border-background/20 pt-8 text-sm text-background/70">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 text-center sm:text-left">
+                        <span>123 Book Street, Reading City, RC 12345</span>
+                        <span>(555) 123-BOOK</span>
+                        <span>theskdrpublication@gmail.com</span>
+                    </div>
+                    <p className="text-center sm:text-right">© {new Date().getFullYear()} SKDR Publication. All rights reserved.</p>
+                </div>
+             </div>
         </div>
       </footer>
     </div>
