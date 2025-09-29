@@ -66,7 +66,7 @@ const testimonials = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-muted/20">
           <div className="container px-4 md:px-6">
@@ -164,8 +164,8 @@ export default function Home() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2" />
-                <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
+                <CarouselPrevious />
+                <CarouselNext />
               </Carousel>
             </div>
             <div className="flex justify-center">
@@ -216,7 +216,7 @@ export default function Home() {
 
         <section className="w-full py-12 md:py-24">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-10 lg:grid-cols-2">
+            <div className="grid gap-10 lg:grid-cols-2 items-center">
               <div className="space-y-4">
                 <Badge>About Us</Badge>
                 <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">
@@ -228,14 +228,19 @@ export default function Home() {
                   new stories and connect with fellow enthusiasts. We believe in
                   the power of books to inspire, educate, and transform lives.
                 </p>
+                 <Button asChild variant="outline">
+                    <Link href="/about">
+                        Learn More <ArrowRight className="ml-2 size-4" />
+                    </Link>
+                 </Button>
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="https://images.unsplash.com/photo-1532012197267-da84d127e765?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib29rc3xlbnwwfHx8fDE3NTkyNTkzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080"
                   width="550"
-                  height="310"
+                  height="550"
                   alt="About Us"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                  className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-full"
                   data-ai-hint="books stack"
                 />
               </div>
@@ -329,7 +334,7 @@ export default function Home() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/about"
                     className="text-sm text-background/70 hover:text-background"
                   >
                     About Us
