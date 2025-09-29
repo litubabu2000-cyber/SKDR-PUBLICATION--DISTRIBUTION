@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, Lightbulb, PlayCircle, Rocket, ShieldCheck, ShoppingCart, Star, Target, Video } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -63,7 +63,7 @@ const mcqSubjects = [
     { name: 'TGT Physics', color: 'bg-teal-700 hover:bg-teal-800' },
     { name: 'TGT Chemistry', color: 'bg-orange-600 hover:bg-orange-700' },
     { name: 'TGT Biology', color: 'bg-green-700 hover:bg-green-800' },
-    { name: 'TGT Mathematics', color: 'bg-red-700 hover:bg-red-800' }
+    { name: 'TGT Mathematics', color: 'bg-red-700 hover:bg-red-800' },
 ];
 
 export default function Home() {
