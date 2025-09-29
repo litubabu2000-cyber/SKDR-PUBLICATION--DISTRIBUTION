@@ -41,7 +41,7 @@ const pyqExams = [
     { title: 'Banking Exams', description: 'IBPS, SBI, RBI', items: ['IBPS PO & Clerk Papers', 'SBI PO Previous Years', 'RBI Grade B Papers', 'Reasoning & Quant Focus'], price: 299 },
     { title: 'TGT/PGT Exams', description: 'Teaching Posts', items: ['TGT Previous Papers', 'PGT All Subjects', 'Teaching Aptitude Papers', 'Subject-wise Solutions'], price: 299 },
     { title: 'UPSC/State PSC', description: 'Civil Services', items: ['UPSC Prelims Papers', 'State PSC Papers', 'Mains Previous Years', 'Essay & Optional Papers'], price: 299 },
-]
+];
 
 const mcqSubjects = [
     { name: 'Aptitude', color: 'bg-red-500 hover:bg-red-600' },
@@ -64,7 +64,7 @@ const mcqSubjects = [
     { name: 'TGT Chemistry', color: 'bg-orange-600 hover:bg-orange-700' },
     { name: 'TGT Biology', color: 'bg-green-700 hover:bg-green-800' },
     { name: 'TGT Mathematics', color: 'bg-red-700 hover:bg-red-800' }
-]
+];
 
 export default function Home() {
   return (
