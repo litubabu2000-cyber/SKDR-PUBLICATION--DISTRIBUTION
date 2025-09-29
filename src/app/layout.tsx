@@ -28,7 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} ${ptSans.variable} font-body antialiased`}>
+      <body
+        className={`${poppins.variable} ${ptSans.variable} font-body antialiased`}
+        suppressHydrationWarning
+      >
         <AppHeader />
         <main>{children}</main>
         <Toaster />
