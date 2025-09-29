@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -286,7 +286,7 @@ export default function Home() {
                                         </ul>
                                     </div>
                                     <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb_2">Science</h4>
+                                        <h4 className="font-bold mb-2">Science</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
                                             <li>• Physics</li>
                                             <li>• Chemistry</li>
@@ -305,11 +305,35 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="mt-6 text-center">
-                                    <p className="text-xs text-blue-200">Includes: 50+ Tests per branch</p>
+                                    
                                     <Button variant="secondary" className="w-full mt-4">Start Branch Tests</Button>
                                 </div>
                             </CardContent>
                          </Card>
+
+                         <Card className="mt-8 bg-gray-800 text-white relative overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-gray-700 to-gray-900 rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                            <div className="relative">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2"><Users /> Admin Plan</CardTitle>
+                                    <CardDescription className="text-gray-300">For Institutions & Administrators</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <ul className="grid gap-2 mb-6 text-sm">
+                                        <li className="flex items-center gap-2"><ShieldCheck /> Full Access to All Tests</li>
+                                        <li className="flex items-center gap-2"><Users /> User Management</li>
+                                        <li className="flex items-center gap-2"><BarChart /> Performance Analytics</li>
+                                    </ul>
+                                    <div>
+                                        <p className="text-3xl font-bold">Contact Us</p>
+                                        <p className="font-bold text-gray-400">FOR PRICING</p>
+                                        <p className="text-xs mt-1">Custom solutions for your institution's needs.</p>
+                                        <Button variant="secondary" className="w-full mt-4 bg-white text-gray-800 hover:bg-gray-200">Request a Demo</Button>
+                                    </div>
+                                </CardContent>
+                            </div>
+                        </Card>
+
                     </div>
                      <div className="lg:col-span-2">
                          
@@ -415,5 +439,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
