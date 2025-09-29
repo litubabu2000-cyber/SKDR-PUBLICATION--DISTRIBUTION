@@ -1,28 +1,44 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
 
-const stats = [
-  { value: '10,000+', label: 'Books', icon: <BookOpen className="size-8 text-primary" /> },
-  { value: '50,000+', label: 'Students', icon: <GraduationCap className="size-8 text-primary" /> },
-  { value: 'Award Winning', label: 'Publications', icon: <Star className="size-8 text-primary" /> },
-  { value: '10,000+', label: 'PYQ Practice', icon: <FileQuestion className="size-8 text-primary" /> },
-  { value: '1,000+', label: 'Mock Tests', icon: <Target className="size-8 text-primary" /> },
+type Stat = {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+};
+
+const stats: Stat[] = [
+  { value: '10,000+', label: 'Books', icon: BookOpen },
+  { value: '50,000+', label: 'Students', icon: GraduationCap },
+  { value: 'Award Winning', label: 'Publications', icon: Star },
+  { value: '10,000+', label: 'PYQ Practice', icon: FileQuestion },
+  { value: '1,000+', label: 'Mock Tests', icon: Target },
 ];
 
-const categories = [
-  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: <BookCopy className="size-10 text-blue-500" /> },
-  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: <BookCopy className="size-10 text-orange-500" /> },
-  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: <Rocket className="size-10 text-red-500" /> },
-  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: <BookCopy className="size-10 text-green-500" /> },
-  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: <BookCopy className="size-10 text-purple-500" /> },
-  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: <BookCopy className="size-10 text-yellow-500" /> },
-  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: <BookCopy className="size-10 text-pink-500" /> },
-  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: <BookCopy className="size-10 text-indigo-500" /> },
-  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: <FileQuestion className="size-10 text-teal-500" /> },
+type Category = {
+  title: string;
+  description: string;
+  subtext: string;
+  icon: LucideIcon;
+  iconColor: string;
+};
+
+const categories: Category[] = [
+  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: BookCopy, iconColor: 'text-blue-500' },
+  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: BookCopy, iconColor: 'text-orange-500' },
+  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: Rocket, iconColor: 'text-red-500' },
+  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: BookCopy, iconColor: 'text-green-500' },
+  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: BookCopy, iconColor: 'text-purple-500' },
+  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: BookCopy, iconColor: 'text-yellow-500' },
+  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: BookCopy, iconColor: 'text-pink-500' },
+  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: BookCopy, iconColor: 'text-indigo-500' },
+  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: FileQuestion, iconColor: 'text-teal-500' },
 ];
 
 const videoHub = [
@@ -103,7 +119,7 @@ export default function Home() {
                     {stats.map((stat, index) => (
                         <Card key={index} className="flex flex-col items-center justify-center p-4 text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                             <CardContent className="p-0 space-y-2">
-                                {stat.icon}
+                                <stat.icon className="size-8 text-primary" />
                                 <div className="text-2xl font-bold font-headline">{stat.value}</div>
                                 <p className="text-sm text-muted-foreground">{stat.label}</p>
                             </CardContent>
@@ -124,7 +140,7 @@ export default function Home() {
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category, index) => (
                         <Card key={index} className="flex items-start p-4 space-x-4 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
-                           {category.icon}
+                           <category.icon className={`size-10 ${category.iconColor}`} />
                             <div>
                                 <h3 className="text-lg font-bold font-headline">{category.title} <span className="text-sm text-muted-foreground">({category.description})</span></h3>
                                 <p className="text-muted-foreground">{category.subtext}</p>
@@ -294,7 +310,7 @@ export default function Home() {
                             <CardHeader>
                                 <CardTitle>All-Access Mock Test Package</CardTitle>
                                 <CardDescription className="text-primary-foreground/80">Get unlimited access to all branch-wise and division-wise mock tests</CardDescription>
-                            </Header>
+                            </CardHeader>
                             <CardContent>
                                 <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                                     <div className="flex items-center gap-2"><ShieldCheck /> All Branches</div>
