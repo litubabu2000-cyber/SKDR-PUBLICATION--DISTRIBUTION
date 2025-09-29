@@ -61,17 +61,17 @@ export function AppSidebar() {
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} passHref legacyBehavior>
-                <SidebarMenuButton
-                  as="a"
-                  isActive={pathname === item.href}
-                  tooltip={{ children: item.label, side: 'right' }}
-                  onClick={handleLinkClick}
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === item.href}
+                tooltip={{ children: item.label, side: 'right' }}
+                onClick={handleLinkClick}
+              >
+                <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -79,20 +79,26 @@ export function AppSidebar() {
       <SidebarFooter className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-             <Link href="#" passHref legacyBehavior>
-                <SidebarMenuButton tooltip={{ children: 'Support', side: 'right' }}>
-                    <LifeBuoy />
-                    <span>Support</span>
-                </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton
+              asChild
+              tooltip={{ children: 'Support', side: 'right' }}
+            >
+              <Link href="#">
+                <LifeBuoy />
+                <span>Support</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-             <Link href="#" passHref legacyBehavior>
-                <SidebarMenuButton tooltip={{ children: 'Settings', side: 'right' }}>
-                    <Settings />
-                    <span>Settings</span>
-                </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton
+              asChild
+              tooltip={{ children: 'Settings', side: 'right' }}
+            >
+              <Link href="#">
+                <Settings />
+                <span>Settings</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
