@@ -14,15 +14,15 @@ const stats = [
 ];
 
 const categories = [
-  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: <Rocket className="size-10 text-primary" /> },
-  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: <BookCopy className="size-10 text-primary" /> },
-  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: <FileQuestion className="size-10 text-primary" /> },
+  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: <BookCopy className="size-10 text-blue-500" /> },
+  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: <BookCopy className="size-10 text-orange-500" /> },
+  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: <Rocket className="size-10 text-red-500" /> },
+  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: <BookCopy className="size-10 text-green-500" /> },
+  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: <BookCopy className="size-10 text-purple-500" /> },
+  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: <BookCopy className="size-10 text-yellow-500" /> },
+  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: <BookCopy className="size-10 text-pink-500" /> },
+  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: <BookCopy className="size-10 text-indigo-500" /> },
+  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: <FileQuestion className="size-10 text-teal-500" /> },
 ];
 
 const videoHub = [
@@ -44,26 +44,26 @@ const pyqExams = [
 ]
 
 const mcqSubjects = [
-    { name: 'Aptitude', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Reasoning', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Non Verbal Reasoning', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'English', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'DI (Data Interpretation)', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'GK (General Knowledge)', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Polity', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'History GK', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Geography GK', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Physics GK', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Chemistry GK', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Biology GK', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'Odisha GK', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'OTET MCQ', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'CTET MCQ', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'OSSTET MCQ', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'TGT Physics', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'TGT Chemistry', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'TGT Biology', icon: <Lightbulb className="size-6 text-primary" /> },
-    { name: 'TGT Mathematics', icon: <Lightbulb className="size-6 text-primary" /> },
+    { name: 'Aptitude', icon: <Lightbulb className="size-6 text-blue-500" /> },
+    { name: 'Reasoning', icon: <Lightbulb className="size-6 text-orange-500" /> },
+    { name: 'Non Verbal Reasoning', icon: <Lightbulb className="size-6 text-red-500" /> },
+    { name: 'English', icon: <Lightbulb className="size-6 text-green-500" /> },
+    { name: 'DI (Data Interpretation)', icon: <Lightbulb className="size-6 text-purple-500" /> },
+    { name: 'GK (General Knowledge)', icon: <Lightbulb className="size-6 text-yellow-500" /> },
+    { name: 'Polity', icon: <Lightbulb className="size-6 text-pink-500" /> },
+    { name: 'History GK', icon: <Lightbulb className="size-6 text-indigo-500" /> },
+    { name: 'Geography GK', icon: <Lightbulb className="size-6 text-teal-500" /> },
+    { name: 'Physics GK', icon: <Lightbulb className="size-6 text-cyan-500" /> },
+    { name: 'Chemistry GK', icon: <Lightbulb className="size-6 text-lime-500" /> },
+    { name: 'Biology GK', icon: <Lightbulb className="size-6 text-emerald-500" /> },
+    { name: 'Odisha GK', icon: <Lightbulb className="size-6 text-rose-500" /> },
+    { name: 'OTET MCQ', icon: <Lightbulb className="size-6 text-fuchsia-500" /> },
+    { name: 'CTET MCQ', icon: <Lightbulb className="size-6 text-violet-500" /> },
+    { name: 'OSSTET MCQ', icon: <Lightbulb className="size-6 text-sky-500" /> },
+    { name: 'TGT Physics', icon: <Lightbulb className="size-6 text-amber-500" /> },
+    { name: 'TGT Chemistry', icon: <Lightbulb className="size-6 text-red-600" /> },
+    { name: 'TGT Biology', icon: <Lightbulb className="size-6 text-green-600" /> },
+    { name: 'TGT Mathematics', icon: <Lightbulb className="size-6 text-blue-600" /> },
 ]
 
 export default function Home() {
