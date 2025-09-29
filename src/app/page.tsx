@@ -199,9 +199,7 @@ export default function Home() {
                     </p>
                 </div>
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {pyqExams.map((exam, index) => {
-                        const exam_color = exam.color;
-                        return (
+                    {pyqExams.map((exam, index) => (
                         <div key={index} className="rounded-xl shadow-md overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 group">
                             <div className={`
                                 p-6 flex items-center gap-4 text-white
@@ -245,7 +243,7 @@ export default function Home() {
                                 `}>Access Papers - ₹{exam.price}</Button>
                            </div>
                         </div>
-                    )})}
+                    ))}
                 </div>
             </div>
         </section>
