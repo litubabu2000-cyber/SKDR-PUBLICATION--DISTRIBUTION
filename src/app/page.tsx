@@ -44,26 +44,26 @@ const pyqExams = [
 ]
 
 const mcqSubjects = [
-    { name: 'Aptitude', icon: <Lightbulb className="size-6 text-blue-500" /> },
-    { name: 'Reasoning', icon: <Lightbulb className="size-6 text-orange-500" /> },
-    { name: 'Non Verbal Reasoning', icon: <Lightbulb className="size-6 text-red-500" /> },
-    { name: 'English', icon: <Lightbulb className="size-6 text-green-500" /> },
-    { name: 'DI (Data Interpretation)', icon: <Lightbulb className="size-6 text-purple-500" /> },
-    { name: 'GK (General Knowledge)', icon: <Lightbulb className="size-6 text-yellow-500" /> },
-    { name: 'Polity', icon: <Lightbulb className="size-6 text-pink-500" /> },
-    { name: 'History GK', icon: <Lightbulb className="size-6 text-indigo-500" /> },
-    { name: 'Geography GK', icon: <Lightbulb className="size-6 text-teal-500" /> },
-    { name: 'Physics GK', icon: <Lightbulb className="size-6 text-cyan-500" /> },
-    { name: 'Chemistry GK', icon: <Lightbulb className="size-6 text-lime-500" /> },
-    { name: 'Biology GK', icon: <Lightbulb className="size-6 text-emerald-500" /> },
-    { name: 'Odisha GK', icon: <Lightbulb className="size-6 text-rose-500" /> },
-    { name: 'OTET MCQ', icon: <Lightbulb className="size-6 text-fuchsia-500" /> },
-    { name: 'CTET MCQ', icon: <Lightbulb className="size-6 text-violet-500" /> },
-    { name: 'OSSTET MCQ', icon: <Lightbulb className="size-6 text-sky-500" /> },
-    { name: 'TGT Physics', icon: <Lightbulb className="size-6 text-amber-500" /> },
-    { name: 'TGT Chemistry', icon: <Lightbulb className="size-6 text-red-600" /> },
-    { name: 'TGT Biology', icon: <Lightbulb className="size-6 text-green-600" /> },
-    { name: 'TGT Mathematics', icon: <Lightbulb className="size-6 text-blue-600" /> },
+    { name: 'Aptitude', color: 'bg-red-500 hover:bg-red-600' },
+    { name: 'Reasoning', color: 'bg-blue-500 hover:bg-blue-600' },
+    { name: 'Non Verbal Reasoning', color: 'bg-pink-500 hover:bg-pink-600' },
+    { name: 'English', color: 'bg-purple-500 hover:bg-purple-600' },
+    { name: 'DI (Data Interpretation)', color: 'bg-green-500 hover:bg-green-600' },
+    { name: 'GK (General Knowledge)', color: 'bg-orange-500 hover:bg-orange-600' },
+    { name: 'Polity', color: 'bg-purple-600 hover:bg-purple-700' },
+    { name: 'History GK', color: 'bg-blue-600 hover:bg-blue-700' },
+    { name: 'Geography GK', color: 'bg-teal-500 hover:bg-teal-600' },
+    { name: 'Physics GK', color: 'bg-red-600 hover:bg-red-700' },
+    { name: 'Chemistry GK', color: 'bg-pink-600 hover:bg-pink-700' },
+    { name: 'Biology GK', color: 'bg-green-600 hover:bg-green-700' },
+    { name: 'Odisha GK', color: 'bg-yellow-600 hover:bg-yellow-700' },
+    { name: 'OTET MCQ', color: 'bg-indigo-500 hover:bg-indigo-600' },
+    { name: 'CTET MCQ', color: 'bg-purple-700 hover:bg-purple-800' },
+    { name: 'OSSTET MCQ', color: 'bg-teal-600 hover:bg-teal-700' },
+    { name: 'TGT Physics', color: 'bg-teal-700 hover:bg-teal-800' },
+    { name: 'TGT Chemistry', color: 'bg-orange-600 hover:bg-orange-700' },
+    { name: 'TGT Biology', color: 'bg-green-700 hover:bg-green-800' },
+    { name: 'TGT Mathematics', color: 'bg-red-700 hover:bg-red-800' }
 ]
 
 export default function Home() {
@@ -215,41 +215,44 @@ export default function Home() {
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
-                         <h3 className="text-2xl font-bold font-headline mb-4">Branch-wise Tests</h3>
-                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
-                            <CardContent className="p-6">
-                                <p className="mb-4 text-muted-foreground">Specialized subject tests</p>
+                         
+                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2"><Laptop /> Branch-wise Tests</CardTitle>
+                                <CardDescription className="text-blue-200">Specialized subject tests</CardDescription>
+                            </CardHeader>
+                            <CardContent className="p-6 space-y-4">
                                 <div className="grid grid-cols-2 gap-4 text-sm">
-                                    <div>
+                                    <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Engineering</h4>
-                                        <ul className="space-y-1 text-muted-foreground">
+                                        <ul className="space-y-1 text-blue-100 text-xs">
                                             <li>• Civil Engineering</li>
                                             <li>• Mechanical Engineering</li>
                                             <li>• Electrical Engineering</li>
                                             <li>• Computer Science</li>
                                         </ul>
                                     </div>
-                                    <div>
+                                    <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Arts & Commerce</h4>
-                                        <ul className="space-y-1 text-muted-foreground">
+                                        <ul className="space-y-1 text-blue-100 text-xs">
                                             <li>• General Studies</li>
                                             <li>• Economics</li>
                                             <li>• Political Science</li>
                                             <li>• English Literature</li>
                                         </ul>
                                     </div>
-                                    <div>
+                                    <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Science</h4>
-                                        <ul className="space-y-1 text-muted-foreground">
+                                        <ul className="space-y-1 text-blue-100 text-xs">
                                             <li>• Physics</li>
                                             <li>• Chemistry</li>
                                             <li>• Biology</li>
                                             <li>• Mathematics</li>
                                         </ul>
                                     </div>
-                                     <div>
+                                     <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Medical</h4>
-                                        <ul className="space-y-1 text-muted-foreground">
+                                        <ul className="space-y-1 text-blue-100 text-xs">
                                             <li>• NEET Practice</li>
                                             <li>• Medical Entrance</li>
                                             <li>• Nursing Exams</li>
@@ -257,28 +260,31 @@ export default function Home() {
                                         </ul>
                                     </div>
                                 </div>
-                                <div className="mt-6">
-                                    <p className="text-2xl font-bold">₹499<span className="text-sm font-normal text-muted-foreground"> per branch</span></p>
-                                    <p className="text-xs text-muted-foreground">Includes: 50+ Tests per branch</p>
-                                    <Button className="w-full mt-4">Start Branch Tests</Button>
+                                <div className="mt-6 text-center">
+                                    <p className="text-2xl font-bold">₹499<span className="text-sm font-normal"> per branch</span></p>
+                                    <p className="text-xs text-blue-200">Includes: 50+ Tests per branch</p>
+                                    <Button variant="secondary" className="w-full mt-4">Start Branch Tests</Button>
                                 </div>
                             </CardContent>
                          </Card>
                     </div>
                      <div className="lg:col-span-2">
-                         <h3 className="text-2xl font-bold font-headline mb-4">Subject-wise MCQ Practice</h3>
-                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
+                         
+                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-teal-600 text-white">
+                             <CardHeader>
+                                <CardTitle className="flex items-center gap-2"><Target/> Subject-wise MCQ Practice</CardTitle>
+                                <CardDescription className="text-teal-100">Topic-specific practice tests</CardDescription>
+                             </CardHeader>
                              <CardContent className="p-6">
-                                <p className="mb-4 text-muted-foreground">Topic-specific practice tests</p>
-                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                      {mcqSubjects.map((subject, index) => (
-                                         <div key={index} className="flex items-center space-x-2 transition-transform duration-300 ease-in-out hover:scale-110">
-                                             {subject.icon}
-                                             <span className="text-sm font-medium">{subject.name}</span>
-                                         </div>
+                                         <Button key={index} className={`${subject.color} text-white justify-between`}>
+                                             {subject.name}
+                                             <span className="text-xs bg-white/20 px-1.5 py-0.5 rounded-full">MCQ</span>
+                                         </Button>
                                      ))}
-                                 </div>
-                                 <Button className="w-full mt-6">Start MCQ Practice</Button>
+                                </div>
+                                <Button variant="secondary" className="w-full mt-6">Start MCQ Practice</Button>
                              </CardContent>
                          </Card>
                          
@@ -288,7 +294,7 @@ export default function Home() {
                             <CardHeader>
                                 <CardTitle>All-Access Mock Test Package</CardTitle>
                                 <CardDescription className="text-primary-foreground/80">Get unlimited access to all branch-wise and division-wise mock tests</CardDescription>
-                            </CardHeader>
+                            </Header>
                             <CardContent>
                                 <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                                     <div className="flex items-center gap-2"><ShieldCheck /> All Branches</div>
@@ -337,7 +343,7 @@ export default function Home() {
                         <li><Link href="#" className="hover:text-background">Previous Year Papers</Link></li>
                         <li><Link href="#" className="hover:text-background">Mock Tests</Link></li>
                         <li><Link href="#" className="hover:text-background">Video Lectures</Link></li>
-                        <li><Link href="#" className="hover:text-background">Practice Books</Link></li>
+                        <li><Link href="#" className="hovertext-background">Practice Books</Link></li>
                         <li><Link href="#" className="hover:text-background">Online Courses</Link></li>
                     </ul>
                 </div>
