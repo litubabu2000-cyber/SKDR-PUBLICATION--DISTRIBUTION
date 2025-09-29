@@ -199,7 +199,9 @@ export default function Home() {
                     </p>
                 </div>
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {pyqExams.map((exam, index) => (
+                    {pyqExams.map((exam, index) => {
+                        const exam_color = exam.color;
+                        return (
                         <div key={index} className="rounded-xl shadow-md overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 group">
                             <div className={`
                                 p-6 flex items-center gap-4 text-white
@@ -243,7 +245,7 @@ export default function Home() {
                                 `}>Access Papers - ₹{exam.price}</Button>
                            </div>
                         </div>
-                    ))}
+                    )})}
                 </div>
             </div>
         </section>
@@ -305,7 +307,6 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="mt-6 text-center">
-                                    <p className="text-2xl font-bold">₹499<span className="text-sm font-normal"> per branch</span></p>
                                     <p className="text-xs text-blue-200">Includes: 50+ Tests per branch</p>
                                     <Button variant="secondary" className="w-full mt-4">Start Branch Tests</Button>
                                 </div>
@@ -317,6 +318,7 @@ export default function Home() {
                          <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-teal-600 text-white">
                              <CardHeader>
                                 <CardTitle className="flex items-center gap-2"><Target/> Subject-wise MCQ Practice</CardTitle>
+
                                 <CardDescription className="text-teal-100">Topic-specific practice tests</CardDescription>
                              </CardHeader>
                              <CardContent className="p-6">
@@ -415,3 +417,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
