@@ -26,19 +26,19 @@ type Category = {
   description: string;
   subtext: string;
   icon: LucideIcon;
-  iconColor: string;
+  gradient: string;
 };
 
 const categories: Category[] = [
-  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: BookCopy, iconColor: 'text-blue-500' },
-  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: BookCopy, iconColor: 'text-orange-500' },
-  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: Rocket, iconColor: 'text-red-500' },
-  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: BookCopy, iconColor: 'text-green-500' },
-  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: BookCopy, iconColor: 'text-purple-500' },
-  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: BookCopy, iconColor: 'text-yellow-500' },
-  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: BookCopy, iconColor: 'text-pink-500' },
-  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: BookCopy, iconColor: 'text-indigo-500' },
-  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: FileQuestion, iconColor: 'text-teal-500' },
+  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: BookCopy, gradient: 'from-cyan-500 to-blue-500' },
+  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: GraduationCap, gradient: 'from-pink-500 to-purple-500' },
+  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: Rocket, gradient: 'from-green-400 to-teal-500' },
+  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: Train, gradient: 'from-red-500 to-orange-500' },
+  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: Building, gradient: 'from-blue-500 to-indigo-500' },
+  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: PenTool, gradient: 'from-orange-400 to-yellow-500' },
+  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: School, gradient: 'from-teal-400 to-green-500' },
+  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: User, gradient: 'from-purple-500 to-pink-500' },
+  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: FileQuestion, gradient: 'from-indigo-500 to-blue-500' },
 ];
 
 const videoHub = [
@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-primary/5">
+        <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="flex flex-col justify-center space-y-4">
@@ -117,7 +117,7 @@ export default function Home() {
             <div className="container px-4 md:px-6">
                 <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                     {stats.map((stat, index) => (
-                        <Card key={index} className="flex flex-col items-center justify-center p-4 text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
+                        <Card key={index} className="flex flex-col items-center justify-center p-4 text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-card border-border">
                             <CardContent className="p-0 space-y-2">
                                 <stat.icon className="size-8 text-primary" />
                                 <div className="text-2xl font-bold font-headline">{stat.value}</div>
@@ -129,7 +129,7 @@ export default function Home() {
             </div>
         </section>
         
-        <section className="w-full py-12 md:py-24 bg-primary/5">
+        <section className="w-full py-12 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                     <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Choose Your Category</h2>
@@ -139,13 +139,16 @@ export default function Home() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category, index) => (
-                        <Card key={index} className="flex items-start p-4 space-x-4 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
-                           <category.icon className={`size-10 ${category.iconColor}`} />
-                            <div>
-                                <h3 className="text-lg font-bold font-headline">{category.title} <span className="text-sm text-muted-foreground">({category.description})</span></h3>
-                                <p className="text-muted-foreground">{category.subtext}</p>
+                        <div key={index} className={`bg-gradient-to-br ${category.gradient} rounded-xl p-6 flex flex-col justify-between text-white transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2`}>
+                            <div className="flex items-start space-x-4">
+                               <category.icon className="size-10" />
+                                <div>
+                                    <h3 className="text-lg font-bold font-headline">{category.title}</h3>
+                                    <p className="text-sm opacity-80">{category.description}</p>
+                                </div>
                             </div>
-                        </Card>
+                            <p className="text-sm opacity-80 mt-4">{category.subtext}</p>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -186,7 +189,7 @@ export default function Home() {
           </div>
         </section>
         
-        <section className="w-full py-12 md:py-24 bg-primary/5">
+        <section className="w-full py-12 md:py-24 bg-card/5">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                     <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm font-semibold">EXAM PREPARATION</div>
