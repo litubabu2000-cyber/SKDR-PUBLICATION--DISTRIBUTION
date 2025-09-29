@@ -1,64 +1,44 @@
 {
   "placeholderImages": [
     {
-      "id": "book-physics",
-      "description": "Cover for a physics book",
-      "imageUrl": "https://images.unsplash.com/photo-1695017315730-472065087c72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGh5c2ljcyUyMHRleHRib29rfGVufDB8fHx8MTc1OTE3NTA0OHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "physics textbook"
+      "id": "book-midnight-library",
+      "imageUrl": "https://images.unsplash.com/photo-1622030613893-a7578b5a037b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0aGUlMjBtaWRuaWdodCUyMGxpYnJhcnklMjBib29rJTIwY292ZXJ8ZW58MHx8fHwxNzU5MjU5ODc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "midnight library"
     },
     {
-      "id": "book-chemistry",
-      "description": "Cover for a chemistry book",
-      "imageUrl": "https://images.unsplash.com/photo-1662962160191-82e99c70d3d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjaGVtaXN0cnklMjB0ZXh0Ym9va3xlbnwwfHx8fDE3NTkxNzUwNDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "chemistry textbook"
+      "id": "book-silent-patient",
+      "imageUrl": "https://images.unsplash.com/photo-1583523733390-252f1837c447?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0aGUlMjBzaWxlbnQlMjBwYXRpZW50JTIwYm9vayUyMGNvdmVyfGVufDB8fHx8MTc1OTI1OTg3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "silent patient"
     },
     {
-      "id": "book-math",
-      "description": "Cover for a mathematics book",
-      "imageUrl": "https://images.unsplash.com/photo-1711613160734-11caf3ce151d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYXRoJTIwdGV4dGJvb2t8ZW58MHx8fHwxNzU5MDk0Mzg1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "math textbook"
-    },
-    {
-      "id": "book-biology",
-      "description": "Cover for a biology book",
-      "imageUrl": "https://images.unsplash.com/photo-1647708958244-8347e9b9b4ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiaW9sb2d5JTIwdGV4dGJvb2t8ZW58MHx8fHwxNzU5MTc1MDQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "biology textbook"
-    },
-    {
-      "id": "book-polity",
-      "description": "Cover for a polity book",
-      "imageUrl": "https://images.unsplash.com/photo-1618908281046-bc4c90790906?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnb3Zlcm5tZW50JTIwYm9va3xlbnwwfHx8fDE3NTkxNzUwNDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "government book"
-    },
-    {
-      "id": "book-history-time",
-      "description": "Cover for a book about time and history",
-      "imageUrl": "https://images.unsplash.com/photo-1719235671402-d4ae4466d743?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c3BhY2UlMjBib29rfGVufDB8fHx8MTc1OTE3NTA0OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "id": "book-hail-mary",
+      "imageUrl": "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwcm9qZWN0JTIwaGFpbCUyMG1hcnklMjBib29rJTIwY292ZXJ8ZW58MHx8fHwxNzU5MjU5ODc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "space book"
     },
     {
-      "id": "lecture-physics",
-      "description": "Thumbnail for a physics lecture",
-      "imageUrl": "https://images.unsplash.com/photo-1724854674019-9364aa52f557?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhdG9tJTIwcGh5c2ljc3xlbnwwfHx8fDE3NTkxNzUwNDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "atom physics"
+      "id": "book-dune",
+      "imageUrl": "https://images.unsplash.com/photo-1541648845584-28a587a8f654?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkdW5lJTIwYm9vayUyMGNvdmVyfGVufDB8fHx8MTc1OTI1OTg3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "desert planet"
     },
     {
-      "id": "lecture-chemistry",
-      "description": "Thumbnail for a chemistry lecture",
-      "imageUrl": "https://images.unsplash.com/photo-1602052577122-f73b9710adba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaGVtaXN0cnklMjBsYWJ8ZW58MHx8fHwxNzU5MTQ2NzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "chemistry lab"
+      "id": "book-klara-sun",
+      "imageUrl": "https://images.unsplash.com/photo-1633562479051-224b6ce1c4de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxrTGFyYSUyMGFuZCUyMHRoZSUyMHN1biUyMGJvb2slMjBjb3ZlcnxlbnwwfHx8fDE3NTkyNTk4Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "robot sun"
     },
     {
-      "id": "lecture-math",
-      "description": "Thumbnail for a math lecture",
-      "imageUrl": "https://images.unsplash.com/photo-1758685734312-5134968399a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtYXRoJTIwZXF1YXRpb25zfGVufDB8fHx8MTc1OTE0NjcxNXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "math equations"
+      "id": "book-crawdads",
+      "imageUrl": "https://images.unsplash.com/photo-1604184326207-3a915d3a5c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3aGVyZSUyMHRoZSUyMGNyYXdkYWRzJTIwc2luZyUyMGJvb2slMjBjb3ZlcnxlbnwwfHx8fDE3NTkyNTk4Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "marsh landscape"
     },
     {
-      "id": "lecture-biology",
-      "description": "Thumbnail for a biology lecture",
-      "imageUrl": "https://images.unsplash.com/photo-1631557674886-42edec9aacaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkbmElMjBzdHJhbmR8ZW58MHx8fHwxNzU5MTc1MDQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "dna strand"
+      "id": "book-atomic-habits",
+      "imageUrl": "https://images.unsplash.com/photo-1589998059171-988d887df646?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib29rfGVufDB8fHx8MTc1OTI1OTg3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "open book"
+    },
+    {
+      "id": "book-four-winds",
+      "imageUrl": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxib29rfGVufDB8fHx8MTc1OTI1OTg3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "old book"
     }
   ]
 }
