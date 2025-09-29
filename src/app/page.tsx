@@ -101,7 +101,7 @@ export default function Home() {
             <div className="container px-4 md:px-6">
                 <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                     {stats.map((stat, index) => (
-                        <Card key={index} className="flex flex-col items-center justify-center p-4 text-center">
+                        <Card key={index} className="flex flex-col items-center justify-center p-4 text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                             <CardContent className="p-0 space-y-2">
                                 {stat.icon}
                                 <div className="text-2xl font-bold font-headline">{stat.value}</div>
@@ -123,7 +123,7 @@ export default function Home() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category, index) => (
-                        <Card key={index} className="flex items-start p-4 space-x-4">
+                        <Card key={index} className="flex items-start p-4 space-x-4 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                            {category.icon}
                             <div>
                                 <h3 className="text-lg font-bold font-headline">{category.title} <span className="text-sm text-muted-foreground">({category.description})</span></h3>
@@ -145,7 +145,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {videoHub.map((video) => (
-                <Card key={video.title} className="overflow-hidden group">
+                <Card key={video.title} className="overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                   <div className="relative">
                     <Image
                       src={video.image}
@@ -155,7 +155,7 @@ export default function Home() {
                       className="w-full aspect-video object-cover transition-transform group-hover:scale-105"
                       data-ai-hint={video.hint}
                     />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <PlayCircle className="size-16 text-white/80" />
                     </div>
                      <div className="absolute top-2 left-2 bg-destructive text-destructive-foreground px-2 py-1 text-xs font-bold rounded">LIVE</div>
@@ -180,7 +180,7 @@ export default function Home() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {pyqExams.map((exam, index) => (
-                        <Card key={index} className="flex flex-col">
+                        <Card key={index} className="flex flex-col transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                            <CardHeader>
                                <CardTitle>{exam.title}</CardTitle>
                                <CardDescription>{exam.description}</CardDescription>
@@ -216,7 +216,7 @@ export default function Home() {
                 <div className="grid lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
                          <h3 className="text-2xl font-bold font-headline mb-4">Branch-wise Tests</h3>
-                         <Card>
+                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                             <CardContent className="p-6">
                                 <p className="mb-4 text-muted-foreground">Specialized subject tests</p>
                                 <div className="grid grid-cols-2 gap-4 text-sm">
@@ -267,12 +267,12 @@ export default function Home() {
                     </div>
                      <div className="lg:col-span-2">
                          <h3 className="text-2xl font-bold font-headline mb-4">Subject-wise MCQ Practice</h3>
-                         <Card>
+                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                              <CardContent className="p-6">
                                 <p className="mb-4 text-muted-foreground">Topic-specific practice tests</p>
                                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                      {mcqSubjects.map((subject, index) => (
-                                         <div key={index} className="flex items-center space-x-2">
+                                         <div key={index} className="flex items-center space-x-2 transition-transform duration-300 ease-in-out hover:scale-110">
                                              {subject.icon}
                                              <span className="text-sm font-medium">{subject.name}</span>
                                          </div>
@@ -282,7 +282,9 @@ export default function Home() {
                              </CardContent>
                          </Card>
                          
-                        <Card className="mt-8 bg-primary/90 text-primary-foreground">
+                        <Card className="mt-8 bg-primary/90 text-primary-foreground relative overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2">
+                             <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                            <div className="relative">
                             <CardHeader>
                                 <CardTitle>All-Access Mock Test Package</CardTitle>
                                 <CardDescription className="text-primary-foreground/80">Get unlimited access to all branch-wise and division-wise mock tests</CardDescription>
@@ -300,6 +302,7 @@ export default function Home() {
                                     <Button variant="secondary" className="w-full mt-4">Get All-Access Package</Button>
                                 </div>
                             </CardContent>
+                            </div>
                         </Card>
 
                      </div>
