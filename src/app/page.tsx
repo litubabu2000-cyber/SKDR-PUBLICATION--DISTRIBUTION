@@ -68,6 +68,25 @@ const mcqSubjects = [
     { name: 'TGT Mathematics', color: 'bg-red-700 hover:bg-red-800' },
 ];
 
+const divisionTests = [
+  { name: 'Banking (PO, Clerk)', href: '/tests/banking', color: 'bg-blue-500 hover:bg-blue-600' },
+  { name: 'SSC (CGL, CHSL)', href: '/tests/ssc', color: 'bg-blue-500 hover:bg-blue-600' },
+  { name: 'Railways (NTPC, Gr-D)', href: '/tests/railways', color: 'bg-blue-500 hover:bg-blue-600' },
+  { name: 'UPSC & State PSC', href: '/tests/upsc', color: 'bg-blue-500 hover:bg-blue-600' },
+  { name: 'Class 10 (Odisha Board)', href: '/tests/class-10', color: 'bg-green-500 hover:bg-green-600' },
+  { name: 'Class 12 (CHSE)', href: '/tests/class-12', color: 'bg-green-500 hover:bg-green-600' },
+  { name: 'CBSE & ICSE Boards', href: '/tests/cbse-icse', color: 'bg-green-500 hover:bg-green-600' },
+  { name: 'Scholarship Tests', href: '/tests/scholarship', color: 'bg-green-500 hover:bg-green-600' },
+  { name: 'NEET (Medical)', href: '/tests/neet', color: 'bg-red-500 hover:bg-red-600' },
+  { name: 'JEE (Engineering)', href: '/tests/jee', color: 'bg-red-500 hover:bg-red-600' },
+  { name: 'Common PG Entrance', href: '/tests/common-pg', color: 'bg-red-500 hover:bg-red-600' },
+  { name: 'Law (CLAT)', href: '/tests/clat', color: 'bg-red-500 hover:bg-red-600' },
+  { name: 'TGT & PGT', href: '/tests/tgt-pgt', color: 'bg-purple-500 hover:bg-purple-600' },
+  { name: 'CTET & OTET', href: '/tests/ctet-otet', color: 'bg-purple-500 hover:bg-purple-600' },
+  { name: 'OAVS & NVS', href: '/tests/oavs-nvs', color: 'bg-purple-500 hover:bg-purple-600' },
+  { name: 'Lecturer Posts', href: '/tests/lecturer', color: 'bg-purple-500 hover:bg-purple-600' },
+]
+
 const quickLinks = [
   { href: '#categories', label: 'Choose Your Category' },
   { href: '#video-hub', label: 'Video Learning Hub' },
@@ -239,52 +258,20 @@ export default function Home() {
                 <div className="grid lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
                          
-                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                         <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-blue-600 text-white">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2"><Laptop /> Division-wise Tests</CardTitle>
-                                <CardDescription className="text-blue-200">Specialized exam tests</CardDescription>
+                                <CardDescription className="text-blue-100">Specialized exam tests</CardDescription>
                             </CardHeader>
                             <CardContent className="p-6 space-y-4">
-                                <div className="grid grid-cols-2 gap-4 text-sm">
-                                    <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Competitive Exams</h4>
-                                        <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li><Link href="/tests/banking" className="hover:underline">Banking (PO, Clerk)</Link></li>
-                                            <li><Link href="/tests/ssc" className="hover:underline">SSC (CGL, CHSL)</Link></li>
-                                            <li><Link href="/tests/railways" className="hover:underline">Railways (NTPC, Gr-D)</Link></li>
-                                            <li><Link href="/tests/upsc" className="hover:underline">UPSC & State PSC</Link></li>
-                                        </ul>
-                                    </div>
-                                    <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">School & Board Exams</h4>
-                                        <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li><Link href="/tests/class-10" className="hover:underline">Class 10 (Odisha Board)</Link></li>
-                                            <li><Link href="/tests/class-12" className="hover:underline">Class 12 (CHSE)</Link></li>
-                                            <li><Link href="/tests/cbse-icse" className="hover:underline">CBSE & ICSE Boards</Link></li>
-                                            <li><Link href="/tests/scholarship" className="hover:underline">Scholarship Tests</Link></li>
-                                        </ul>
-                                    </div>
-                                    <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Entrance Exams</h4>
-                                        <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li><Link href="/tests/neet" className="hover:underline">NEET (Medical)</Link></li>
-                                            <li><Link href="/tests/jee" className="hover:underline">JEE (Engineering)</Link></li>
-                                            <li><Link href="/tests/common-pg" className="hover:underline">Common PG Entrance</Link></li>
-                                            <li><Link href="/tests/clat" className="hover:underline">Law (CLAT)</Link></li>
-                                        </ul>
-                                    </div>
-                                     <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Teaching Exams</h4>
-                                        <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li><Link href="/tests/tgt-pgt" className="hover:underline">TGT & PGT</Link></li>
-                                            <li><Link href="/tests/ctet-otet" className="hover:underline">CTET & OTET</Link></li>
-                                            <li><Link href="/tests/oavs-nvs" className="hover:underline">OAVS & NVS</Link></li>
-                                            <li><Link href="/tests/lecturer" className="hover:underline">Lecturer Posts</Link></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div className="mt-6 text-center">
-                                    
+                                <div className="grid grid-cols-2 gap-3">
+                                  {divisionTests.map((test, index) => (
+                                    <Link key={index} href={test.href} legacyBehavior>
+                                      <a className={`${test.color} text-white justify-center flex items-center p-2 rounded-md text-sm text-center`}>
+                                        {test.name}
+                                      </a>
+                                    </Link>
+                                  ))}
                                 </div>
                             </CardContent>
                          </Card>
