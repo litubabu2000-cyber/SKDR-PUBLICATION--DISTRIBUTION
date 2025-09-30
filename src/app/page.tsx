@@ -1,12 +1,14 @@
 
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { ExamEnrollmentCard } from '@/components/exam-enrollment-card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Category = {
   title: string;
@@ -315,7 +317,18 @@ export default function Home() {
                         Join our weekly All-India test series for various competitive exams. Enroll now to benchmark your performance against peers nationwide.
                     </p>
                 </div>
-                <ExamEnrollmentCard />
+                <div className="max-w-2xl mx-auto">
+                    <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-6 py-4 text-lg font-semibold">
+                                Take This Week's Test
+                            </AccordionTrigger>
+                            <AccordionContent className="pt-6">
+                                <ExamEnrollmentCard />
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
             </div>
         </section>
 
@@ -327,7 +340,18 @@ export default function Home() {
                         Prepare for state-specific exams with our targeted weekly test series. Enroll to improve your chances of success.
                     </p>
                 </div>
-                <ExamEnrollmentCard />
+                 <div className="max-w-2xl mx-auto">
+                    <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-6 py-4 text-lg font-semibold">
+                                Take This Week's Test
+                            </AccordionTrigger>
+                            <AccordionContent className="pt-6">
+                                <ExamEnrollmentCard />
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
             </div>
         </section>
       </main>
@@ -386,3 +410,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
