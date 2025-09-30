@@ -8,7 +8,6 @@ import Link from 'next/link';
 import React from 'react';
 import { ExamEnrollmentCard } from '@/components/exam-enrollment-card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { AppHeader } from '@/components/layout/app-header';
 
 type Category = {
   title: string;
