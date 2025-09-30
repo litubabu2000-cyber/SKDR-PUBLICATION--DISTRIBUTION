@@ -285,7 +285,6 @@ export default function Home() {
                                 </div>
                                 <div className="mt-6 text-center">
                                     
-                                    <Button variant="secondary" className="w-full mt-4">Start Division Tests</Button>
                                 </div>
                             </CardContent>
                          </Card>
