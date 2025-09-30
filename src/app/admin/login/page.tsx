@@ -50,7 +50,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md animate-in fade-in-0 slide-in-from-top-4 duration-500">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Admin Panel</CardTitle>
           <CardDescription>Login to manage your website</CardDescription>
@@ -89,4 +89,3 @@ export default function LoginPage() {
     </div>
   );
 }
-    

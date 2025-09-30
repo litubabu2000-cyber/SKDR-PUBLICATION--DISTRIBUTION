@@ -7,7 +7,7 @@ export default function DashboardPage() {
         <div className="container mx-auto p-4 md:p-6">
             <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <Card>
+                <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
                             Total Books
@@ -21,7 +21,7 @@ export default function DashboardPage() {
                         </p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
                             Registered Users
@@ -35,7 +35,7 @@ export default function DashboardPage() {
                         </p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Test Enrollments</CardTitle>
                         <BarChart2 className="h-4 w-4 text-muted-foreground" />
@@ -61,5 +61,3 @@ export default function DashboardPage() {
         </div>
     );
 }
-
-    
