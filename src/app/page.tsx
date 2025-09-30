@@ -271,51 +271,51 @@ export default function Home() {
                          
                          <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2"><Laptop /> Branch-wise Tests</CardTitle>
-                                <CardDescription className="text-blue-200">Specialized subject tests</CardDescription>
+                                <CardTitle className="flex items-center gap-2"><Laptop /> Division-wise Tests</CardTitle>
+                                <CardDescription className="text-blue-200">Specialized exam tests</CardDescription>
                             </CardHeader>
                             <CardContent className="p-6 space-y-4">
                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Engineering</h4>
+                                        <h4 className="font-bold mb-2">Competitive Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• Civil Engineering</li>
-                                            <li>• Mechanical Engineering</li>
-                                            <li>• Electrical Engineering</li>
-                                            <li>• Computer Science</li>
+                                            <li>• Banking (PO, Clerk)</li>
+                                            <li>• SSC (CGL, CHSL)</li>
+                                            <li>• Railways (NTPC, Gr-D)</li>
+                                            <li>• UPSC & State PSC</li>
                                         </ul>
                                     </div>
                                     <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Arts & Commerce</h4>
+                                        <h4 className="font-bold mb-2">School & Board Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• General Studies</li>
-                                            <li>• Economics</li>
-                                            <li>• Political Science</li>
-                                            <li>• English Literature</li>
+                                            <li>• Class 10 (Odisha Board)</li>
+                                            <li>• Class 12 (CHSE)</li>
+                                            <li>• CBSE & ICSE Boards</li>
+                                            <li>• Scholarship Tests</li>
                                         </ul>
                                     </div>
                                     <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Science</h4>
+                                        <h4 className="font-bold mb-2">Entrance Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• Physics</li>
-                                            <li>• Chemistry</li>
-                                            <li>• Biology</li>
-                                            <li>• Mathematics</li>
+                                            <li>• NEET (Medical)</li>
+                                            <li>• JEE (Engineering)</li>
+                                            <li>• Common PG Entrance</li>
+                                            <li>• Law (CLAT)</li>
                                         </ul>
                                     </div>
                                      <div className="bg-white/10 p-3 rounded-lg">
-                                        <h4 className="font-bold mb-2">Medical</h4>
+                                        <h4 className="font-bold mb-2">Teaching Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• NEET Practice</li>
-                                            <li>• Medical Entrance</li>
-                                            <li>• Nursing Exams</li>
-                                            <li>• Pharmacy Tests</li>
+                                            <li>• TGT & PGT</li>
+                                            <li>• CTET & OTET</li>
+                                            <li>• OAVS & NVS</li>
+                                            <li>• Lecturer Posts</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div className="mt-6 text-center">
                                     
-                                    <Button variant="secondary" className="w-full mt-4">Start Branch Tests</Button>
+                                    <Button variant="secondary" className="w-full mt-4">Start Division Tests</Button>
                                 </div>
                             </CardContent>
                          </Card>
@@ -448,5 +448,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
