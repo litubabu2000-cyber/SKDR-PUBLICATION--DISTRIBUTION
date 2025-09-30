@@ -55,6 +55,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline;
@@ -62,18 +64,15 @@
 }
 
 @layer utilities {
-  @keyframes tilt {
-    0%, 50%, 100% {
-      transform: rotate(0deg);
+  @keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
     }
-    25% {
-      transform: rotate(0.5deg);
+    50% {
+      background-position: 100% 50%;
     }
-    75% {
-      transform: rotate(-0.5deg);
+    100% {
+      background-position: 0% 50%;
     }
-  }
-  .animate-tilt {
-    animation: tilt 10s infinite linear;
   }
 }

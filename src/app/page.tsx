@@ -122,7 +122,7 @@ export default function Home() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="bg-card p-4 rounded-lg text-center font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="bg-card p-4 rounded-lg text-center font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105"
                   >
                     {link.label}
                   </Link>
@@ -142,9 +142,9 @@ export default function Home() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category, index) => (
-                        <div key={index} className={`bg-gradient-to-br ${category.gradient} rounded-xl p-6 flex flex-col justify-between text-white transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2`}>
+                        <div key={index} className={`bg-gradient-to-br ${category.gradient} rounded-xl p-6 flex flex-col justify-between text-white transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 group`}>
                             <div className="flex items-start space-x-4">
-                               <category.icon className="size-10" />
+                               <category.icon className="size-10 transition-transform duration-300 group-hover:scale-110" />
                                 <div>
                                     <h3 className="text-lg font-bold font-headline">{category.title}</h3>
                                     <p className="text-sm opacity-80">{category.description}</p>
@@ -167,7 +167,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {videoHub.map((video) => (
-                <Card key={video.title} className="overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2">
+                <Card key={video.title} className="overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2">
                   <div className="relative">
                     <Image
                       src={video.image}
@@ -177,8 +177,8 @@ export default function Home() {
                       className="w-full aspect-video object-cover transition-transform group-hover:scale-105"
                       data-ai-hint={video.hint}
                     />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <PlayCircle className="size-16 text-white/80" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <PlayCircle className="size-16 text-white/80 transform transition-transform duration-300 group-hover:scale-110" />
                     </div>
                      <div className="absolute top-2 left-2 bg-destructive text-destructive-foreground px-2 py-1 text-xs font-bold rounded">LIVE</div>
                   </div>
@@ -274,7 +274,7 @@ export default function Home() {
                                     <Link
                                       key={index}
                                       href={test.href}
-                                      className={`${test.color} text-white justify-center flex items-center p-2 rounded-md text-sm text-center`}
+                                      className={`${test.color} text-white justify-center flex items-center p-2 rounded-md text-sm text-center transition-transform duration-300 transform hover:scale-105`}
                                     >
                                       {test.name}
                                     </Link>
@@ -295,7 +295,7 @@ export default function Home() {
                              <CardContent className="p-6">
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                      {mcqSubjects.map((subject, index) => (
-                                         <Button key={index} className={`${subject.color} text-white justify-between`}>
+                                         <Button key={index} className={`${subject.color} text-white justify-between transition-transform duration-300 transform hover:scale-105`}>
                                              {subject.name}
                                              <span className="text-xs bg-white/20 px-1.5 py-0.5 rounded-full">MCQ</span>
                                          </Button>
@@ -412,3 +412,4 @@ export default function Home() {
 }
 
     
+
