@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 import { ExamEnrollmentCard } from '@/components/exam-enrollment-card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { AppHeader } from '@/components/layout/app-header';
 
 type Category = {
   title: string;
@@ -103,6 +104,7 @@ const quickLinks = [
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
+      <AppHeader />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
@@ -413,5 +415,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

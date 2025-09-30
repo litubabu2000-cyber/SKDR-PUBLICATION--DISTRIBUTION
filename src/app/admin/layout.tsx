@@ -68,7 +68,9 @@ function AdminLayout({
         </Sidebar>
         <SidebarInset>
             <AppHeader />
-            {children}
+            <main>
+             {children}
+            </main>
         </SidebarInset>
     </SidebarProvider>
   );
