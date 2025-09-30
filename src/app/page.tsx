@@ -325,20 +325,20 @@ export default function Home() {
                              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
                             <div className="relative">
                             <CardHeader>
-                                <CardTitle>All-Access Mock Test Package</CardTitle>
-                                <CardDescription className="text-primary-foreground/80">Get unlimited access to all branch-wise and division-wise mock tests</CardDescription>
+                                <CardTitle>All India & State Level Test Series</CardTitle>
+                                <CardDescription className="text-primary-foreground/80">Get unlimited access to All India and All State Level mock tests simultaneously.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
-                                    <div className="flex items-center gap-2"><ShieldCheck /> All Branches</div>
-                                    <div className="flex items-center gap-2"><ShieldCheck /> All Divisions</div>
+                                    <div className="flex items-center gap-2"><ShieldCheck /> All India Level Tests</div>
+                                    <div className="flex items-center gap-2"><ShieldCheck /> All State Level Tests</div>
                                     <div className="flex items-center gap-2 col-span-2"><ShieldCheck /> Detailed analysis & performance tracking</div>
                                 </div>
                                 <div>
                                     <p className="text-3xl font-bold">₹1,999 <span className="text-lg line-through opacity-80">₹2,998</span></p>
                                     <p className="font-bold text-accent">SAVE 33%</p>
                                     <p className="text-xs mt-1">One-time payment • Lifetime access • All updates included</p>
-                                    <Button variant="secondary" className="w-full mt-4">Get All-Access Package</Button>
+                                    <Button variant="secondary" className="w-full mt-4">Get National Access</Button>
                                 </div>
                             </CardContent>
                             </div>
