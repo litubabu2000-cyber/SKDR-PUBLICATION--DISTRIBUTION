@@ -35,6 +35,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${ptSans.variable} font-body antialiased`}
         suppressHydrationWarning
       >
+        <AppHeader />
         <PageTransition>
             {children}
         </PageTransition>
