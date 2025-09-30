@@ -40,12 +40,12 @@ const videoHub = [
 ];
 
 const pyqExams = [
-    { title: 'Railway Exams', description: 'RRB NTPC, JE, Group D, ALP', items: ['RRB NTPC 2019-2023', 'Group D Previous Papers', 'ALP & Technician Papers', 'JE Previous Year Solutions'], price: 299, color: 'green', icon: Train },
-    { title: 'SSC Exams', description: 'CGL, CHSL, MTS, GD', items: ['SSC CGL 2018-2023', 'CHSL Previous Papers', 'MTS & GD Papers', 'Solved with Explanations'], price: 299, color: 'blue', icon: Building },
-    { title: 'OSSC Exams', description: 'All Odisha State Posts', items: ['OSSC CGL Previous Papers', 'Junior Clerk Papers', 'RI & Other Posts', 'Odia & English Papers'], price: 299, color: 'magenta', icon: PenTool },
-    { title: 'Banking Exams', description: 'IBPS, SBI, RBI', items: ['IBPS PO & Clerk Papers', 'SBI PO Previous Years', 'RBI Grade B Papers', 'Reasoning & Quant Focus'], price: 299, color: 'orange', icon: Banknote },
-    { title: 'TGT/PGT Exams', description: 'Teaching Posts', items: ['TGT Previous Papers', 'PGT All Subjects', 'Teaching Aptitude Papers', 'Subject-wise Solutions'], price: 299, color: 'teal', icon: School },
-    { title: 'UPSC/State PSC', description: 'Civil Services', items: ['UPSC Prelims Papers', 'State PSC Papers', 'Mains Previous Years', 'Essay & Optional Papers'], price: 299, color: 'rose', icon: User },
+    { title: 'Railway Exams', description: 'RRB NTPC, JE, Group D, ALP', items: ['RRB NTPC 2019-2023', 'Group D Previous Papers', 'ALP & Technician Papers', 'JE Previous Year Solutions'], color: 'green', icon: Train },
+    { title: 'SSC Exams', description: 'CGL, CHSL, MTS, GD', items: ['SSC CGL 2018-2023', 'CHSL Previous Papers', 'MTS & GD Papers', 'Solved with Explanations'], color: 'blue', icon: Building },
+    { title: 'OSSC Exams', description: 'All Odisha State Posts', items: ['OSSC CGL Previous Papers', 'Junior Clerk Papers', 'RI & Other Posts', 'Odia & English Papers'], color: 'magenta', icon: PenTool },
+    { title: 'Banking Exams', description: 'IBPS, SBI, RBI', items: ['IBPS PO & Clerk Papers', 'SBI PO Previous Years', 'RBI Grade B Papers', 'Reasoning & Quant Focus'], color: 'orange', icon: Banknote },
+    { title: 'TGT/PGT Exams', description: 'Teaching Posts', items: ['TGT Previous Papers', 'PGT All Subjects', 'Teaching Aptitude Papers', 'Subject-wise Solutions'], color: 'teal', icon: School },
+    { title: 'UPSC/State PSC', description: 'Civil Services', items: ['UPSC Prelims Papers', 'State PSC Papers', 'Mains Previous Years', 'Essay & Optional Papers'], color: 'rose', icon: User },
 ];
 
 const mcqSubjects = [
@@ -243,7 +243,7 @@ export default function Home() {
                                     ${exam.color === 'orange' && 'bg-orange-500 hover:bg-orange-600'}
                                     ${exam.color === 'teal' && 'bg-teal-500 hover:bg-teal-600'}
                                     ${exam.color === 'rose' && 'bg-rose-500 hover:bg-rose-600'}
-                                `}>Access Papers - ₹{exam.price}</Button>
+                                `}>Access Papers</Button>
                            </div>
                         </div>
                     ))}
