@@ -279,37 +279,37 @@ export default function Home() {
                                     <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Competitive Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• Banking (PO, Clerk)</li>
-                                            <li>• SSC (CGL, CHSL)</li>
-                                            <li>• Railways (NTPC, Gr-D)</li>
-                                            <li>• UPSC & State PSC</li>
+                                            <li><Link href="/tests/banking" className="hover:underline">Banking (PO, Clerk)</Link></li>
+                                            <li><Link href="/tests/ssc" className="hover:underline">SSC (CGL, CHSL)</Link></li>
+                                            <li><Link href="/tests/railways" className="hover:underline">Railways (NTPC, Gr-D)</Link></li>
+                                            <li><Link href="/tests/upsc" className="hover:underline">UPSC & State PSC</Link></li>
                                         </ul>
                                     </div>
                                     <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">School & Board Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• Class 10 (Odisha Board)</li>
-                                            <li>• Class 12 (CHSE)</li>
-                                            <li>• CBSE & ICSE Boards</li>
-                                            <li>• Scholarship Tests</li>
+                                            <li><Link href="/tests/class-10" className="hover:underline">Class 10 (Odisha Board)</Link></li>
+                                            <li><Link href="/tests/class-12" className="hover:underline">Class 12 (CHSE)</Link></li>
+                                            <li><Link href="/tests/cbse-icse" className="hover:underline">CBSE & ICSE Boards</Link></li>
+                                            <li><Link href="/tests/scholarship" className="hover:underline">Scholarship Tests</Link></li>
                                         </ul>
                                     </div>
                                     <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Entrance Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• NEET (Medical)</li>
-                                            <li>• JEE (Engineering)</li>
-                                            <li>• Common PG Entrance</li>
-                                            <li>• Law (CLAT)</li>
+                                            <li><Link href="/tests/neet" className="hover:underline">NEET (Medical)</Link></li>
+                                            <li><Link href="/tests/jee" className="hover:underline">JEE (Engineering)</Link></li>
+                                            <li><Link href="/tests/common-pg" className="hover:underline">Common PG Entrance</Link></li>
+                                            <li><Link href="/tests/clat" className="hover:underline">Law (CLAT)</Link></li>
                                         </ul>
                                     </div>
                                      <div className="bg-white/10 p-3 rounded-lg">
                                         <h4 className="font-bold mb-2">Teaching Exams</h4>
                                         <ul className="space-y-1 text-blue-100 text-xs">
-                                            <li>• TGT & PGT</li>
-                                            <li>• CTET & OTET</li>
-                                            <li>• OAVS & NVS</li>
-                                            <li>• Lecturer Posts</li>
+                                            <li><Link href="/tests/tgt-pgt" className="hover:underline">TGT & PGT</Link></li>
+                                            <li><Link href="/tests/ctet-otet" className="hover:underline">CTET & OTET</Link></li>
+                                            <li><Link href="/tests/oavs-nvs" className="hover:underline">OAVS & NVS</Link></li>
+                                            <li><Link href="/tests/lecturer" className="hover:underline">Lecturer Posts</Link></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -448,7 +448,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
