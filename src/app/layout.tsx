@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/app-header';
 import { Poppins, PT_Sans } from 'next/font/google';
+import { PageTransition } from '@/components/page-transition';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -34,7 +35,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <AppHeader />
-        <main>{children}</main>
+        <main><PageTransition>{children}</PageTransition></main>
         <Toaster />
       </body>
     </html>
