@@ -21,7 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { Progress } from './ui/progress';
 import { CheckCircle, Award, BarChart2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -63,6 +63,27 @@ export function ExamEnrollmentCard() {
     },
   });
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (examState === 'in-progress') {
+      interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 90) {
+            clearInterval(interval);
+            startTransition(() => {
+              setScore(Math.floor(Math.random() * 41) + 60);
+              setExamState('completed');
+              setProgress(100);
+            });
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 300);
+    }
+    return () => clearInterval(interval);
+  }, [examState, startTransition]);
+
   function handleExamSelect() {
       if(selectedExam) {
           setExamState('idle');
@@ -77,19 +98,6 @@ export function ExamEnrollmentCard() {
   function startExam() {
     setExamState('in-progress');
     setProgress(0);
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          startTransition(() => {
-            setScore(Math.floor(Math.random() * 41) + 60); // Random score between 60 and 100
-            setExamState('completed');
-          });
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 300);
   }
 
   function resetExam() {
