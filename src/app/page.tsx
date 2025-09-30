@@ -266,10 +266,12 @@ export default function Home() {
                             <CardContent className="p-6 space-y-4">
                                 <div className="grid grid-cols-2 gap-3">
                                   {divisionTests.map((test, index) => (
-                                    <Link key={index} href={test.href} legacyBehavior>
-                                      <a className={`${test.color} text-white justify-center flex items-center p-2 rounded-md text-sm text-center`}>
-                                        {test.name}
-                                      </a>
+                                    <Link
+                                      key={index}
+                                      href={test.href}
+                                      className={`${test.color} text-white justify-center flex items-center p-2 rounded-md text-sm text-center`}
+                                    >
+                                      {test.name}
                                     </Link>
                                   ))}
                                 </div>
@@ -404,5 +406,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
