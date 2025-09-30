@@ -6,6 +6,7 @@ import { ArrowRight, BookCopy, BookOpen, ChevronRight, FileQuestion, GraduationC
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { ExamEnrollmentCard } from '@/components/exam-enrollment-card';
 
 type Category = {
   title: string;
@@ -93,6 +94,8 @@ const quickLinks = [
   { href: '#pyq', label: 'Previous Year Question Papers' },
   { href: '#mock-tests', label: 'Mock Test Series' },
   { href: '#mcq-practice', label: 'Subject-wise MCQ Practice' },
+  { href: '#all-india-tests', label: 'All India Tests' },
+  { href: '#state-level-tests', label: 'State Level Tests' },
 ];
 
 export default function Home() {
@@ -299,32 +302,32 @@ export default function Home() {
                                 <Button variant="secondary" className="w-full mt-6">Start MCQ Practice</Button>
                              </CardContent>
                          </Card>
-                         
-                        <Card className="mt-8 bg-primary/90 text-primary-foreground relative overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2">
-                             <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-                            <div className="relative">
-                            <CardHeader>
-                                <CardTitle>All India & State Level Test Series</CardTitle>
-                                <CardDescription className="text-primary-foreground/80">Get unlimited access to All India and All State Level mock tests simultaneously.</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
-                                    <div className="flex items-center gap-2"><ShieldCheck /> All India Level Tests</div>
-                                    <div className="flex items-center gap-2"><ShieldCheck /> All State Level Tests</div>
-                                    <div className="flex items-center gap-2 col-span-2"><ShieldCheck /> Detailed analysis & performance tracking</div>
-                                </div>
-                                <div>
-                                    
-                                    <p className="font-bold text-accent">SAVE 33%</p>
-                                    <p className="text-xs mt-1">One-time payment • Lifetime access • All updates included</p>
-                                    <Button variant="secondary" className="w-full mt-4">Get National Access</Button>
-                                </div>
-                            </CardContent>
-                            </div>
-                        </Card>
-
                      </div>
                 </div>
+            </div>
+        </section>
+
+        <section id="all-india-tests" className="w-full py-12 md:py-24 bg-card/5">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">All India Level Test Series</h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Join our weekly All-India test series for various competitive exams. Enroll now to benchmark your performance against peers nationwide.
+                    </p>
+                </div>
+                <ExamEnrollmentCard />
+            </div>
+        </section>
+
+        <section id="state-level-tests" className="w-full py-12 md:py-24">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">State Level Test Series</h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Prepare for state-specific exams with our targeted weekly test series. Enroll to improve your chances of success.
+                    </p>
+                </div>
+                <ExamEnrollmentCard />
             </div>
         </section>
       </main>
@@ -383,9 +386,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
-
-    
