@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/app-header';
 import { Poppins, PT_Sans } from 'next/font/google';
 import { PageTransition } from '@/components/page-transition';
+import { BottomNavbar } from '@/components/layout/bottom-navbar';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -38,6 +39,8 @@ export default function RootLayout({
             {children}
         </PageTransition>
         <Toaster />
+        <BottomNavbar />
+        <div className="h-16 md:hidden"></div> {/* Spacer for bottom nav */}
       </body>
     </html>
   );

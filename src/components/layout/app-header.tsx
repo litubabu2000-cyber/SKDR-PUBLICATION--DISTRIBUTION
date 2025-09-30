@@ -17,10 +17,10 @@ import {
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/books', label: 'Class Books' },
-  { href: '/pyq', label: 'Previous Year Papers' },
-  { href: '/mock-tests', label: 'Mock Tests' },
-  { href: '/videos', label: 'Video Lectures' },
+  { href: '/#categories', label: 'Class Books' },
+  { href: '/#pyq', label: 'Previous Year Papers' },
+  { href: '/#mock-tests', label: 'Mock Tests' },
+  { href: '/#video-hub', label: 'Video Lectures' },
 ];
 
 const categoryLinks = [
@@ -31,7 +31,7 @@ const categoryLinks = [
     { href: '/categories/ssc-books', label: 'SSC Books' },
     { href: '/categories/ossc-books', label: 'OSSC Books' },
     { href: '/categories/tgt-books', label: 'TGT Books' },
-    { href: '/categories/pgt-books', label: 'PGT Books' },
+    { href: '/categories/pgt-books', 'label': 'PGT Books' },
     { href: '/categories/pyq', label: 'Previous Year Questions' },
 ];
 
@@ -45,8 +45,19 @@ const schoolGuideLinks = [
 
 export function AppHeader() {
   const pathname = usePathname();
+
+  const isNavLinkActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href) && href !== '/';
+  }
+
+  // Hide header on admin pages, as admin layout has its own
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
-    <header className="sticky top-0 z-50 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-50 flex h-16 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
       <Link href="/" className="flex items-center gap-2 font-semibold">
         <SkdrLogo className="h-8 w-8 text-primary" />
         <span className="text-lg font-headline font-bold">SKDR Publication</span>
@@ -58,7 +69,7 @@ export function AppHeader() {
             href={link.href}
             className={cn(
               'transition-colors hover:text-foreground',
-              pathname === link.href
+              isNavLinkActive(link.href)
                 ? 'text-foreground font-bold'
                 : 'text-muted-foreground'
             )}
@@ -67,7 +78,10 @@ export function AppHeader() {
           </Link>
         ))}
          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
+            <DropdownMenuTrigger className={cn(
+              "flex items-center gap-1 transition-colors hover:text-foreground",
+              pathname.startsWith('/categories') ? 'text-foreground font-bold' : 'text-muted-foreground'
+            )}>
                 Categories <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -112,7 +126,7 @@ export function AppHeader() {
                   href={link.href}
                   className={cn(
                     'transition-colors hover:text-foreground',
-                    pathname === link.href
+                    isNavLinkActive(link.href)
                       ? 'text-foreground'
                       : 'text-muted-foreground'
                   )}
@@ -121,7 +135,10 @@ export function AppHeader() {
                 </Link>
               ))}
                <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
+                    <DropdownMenuTrigger className={cn(
+                        "flex items-center gap-1 transition-colors hover:text-foreground",
+                        pathname.startsWith('/categories') ? 'text-foreground' : 'text-muted-foreground'
+                      )}>
                         Categories <ChevronDown className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
