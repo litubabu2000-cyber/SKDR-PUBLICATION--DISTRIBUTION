@@ -1,16 +1,33 @@
 
+'use client';
+
 import { AppHeader } from "@/components/layout/app-header";
-import { SidebarProvider, Sidebar, SidebarTrigger, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarContent, SidebarInset, SidebarHeader } from "@/components/ui/sidebar";
+import { SidebarProvider, Sidebar, SidebarTrigger, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarContent, SidebarInset, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar";
 import { SkdrLogo } from "@/components/icons";
 import Link from "next/link";
-import { Book, Home, Users } from "lucide-react";
+import { Book, Home, Users, LogOut } from "lucide-react";
+import withAuth from "@/components/auth/with-auth";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 
-export default function AdminLayout({
+function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.push('/admin/login');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
+
   return (
     <SidebarProvider>
         <Sidebar>
@@ -39,6 +56,15 @@ export default function AdminLayout({
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarContent>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton onClick={handleSignOut}>
+                            <LogOut />Sign Out
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
         </Sidebar>
         <SidebarInset>
             <AppHeader />
@@ -48,4 +74,5 @@ export default function AdminLayout({
   );
 }
 
+export default withAuth(AdminLayout);
     
