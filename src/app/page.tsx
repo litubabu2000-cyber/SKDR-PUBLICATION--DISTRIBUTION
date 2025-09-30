@@ -82,6 +82,15 @@ const mcqSubjects = [
     { name: 'TGT Mathematics', color: 'bg-red-700 hover:bg-red-800' },
 ];
 
+const quickLinks = [
+  { href: '#', label: 'Home' },
+  { href: '#', label: 'Class Books' },
+  { href: '#', label: 'Railway Exams' },
+  { href: '#', label: 'SSC Exams' },
+  { href: '#', label: 'OSSC Exams' },
+  { href: '#', label: 'TGT/PGT Exams' },
+];
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
@@ -99,15 +108,16 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div className="flex justify-center">
-                <Image
-                  src="https://picsum.photos/seed/hero-books/600/400"
-                  width="600"
-                  height="400"
-                  alt="Hero"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
-                  data-ai-hint="library books"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                {quickLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="bg-card p-4 rounded-lg text-center font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
