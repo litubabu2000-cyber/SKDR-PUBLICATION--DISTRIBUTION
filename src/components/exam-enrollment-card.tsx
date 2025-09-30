@@ -24,6 +24,7 @@ import {
 import { useState, useTransition } from 'react';
 import { Progress } from './ui/progress';
 import { CheckCircle, Award, BarChart2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,10 +35,22 @@ const formSchema = z.object({
   }),
 });
 
-type ExamState = 'idle' | 'enrolled' | 'in-progress' | 'completed';
+type ExamState = 'selecting-exam' | 'idle' | 'enrolled' | 'in-progress' | 'completed';
+
+const availableExams = [
+    'Banking (PO, Clerk)',
+    'SSC (CGL, CHSL)',
+    'Railways (NTPC, Gr-D)',
+    'UPSC & State PSC',
+    'Class 10 (Odisha Board)',
+    'Class 12 (CHSE)',
+    'NEET (Medical)',
+    'JEE (Engineering)',
+];
 
 export function ExamEnrollmentCard() {
-  const [examState, setExamState] = useState<ExamState>('idle');
+  const [examState, setExamState] = useState<ExamState>('selecting-exam');
+  const [selectedExam, setSelectedExam] = useState<string>('');
   const [isPending, startTransition] = useTransition();
   const [progress, setProgress] = useState(0);
   const [score, setScore] = useState(0);
@@ -49,6 +62,12 @@ export function ExamEnrollmentCard() {
       email: '',
     },
   });
+
+  function handleExamSelect() {
+      if(selectedExam) {
+          setExamState('idle');
+      }
+  }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -74,7 +93,8 @@ export function ExamEnrollmentCard() {
   }
 
   function resetExam() {
-    setExamState('idle');
+    setExamState('selecting-exam');
+    setSelectedExam('');
     setProgress(0);
     setScore(0);
     form.reset();
@@ -82,10 +102,38 @@ export function ExamEnrollmentCard() {
 
   return (
     <Card className="max-w-2xl mx-auto">
+      {examState === 'selecting-exam' && (
+        <>
+            <CardHeader>
+                <CardTitle>Select Your Exam</CardTitle>
+                <CardDescription>
+                Choose the exam you want to take this week.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <Select onValueChange={setSelectedExam} value={selectedExam}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select an exam..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {availableExams.map((exam) => (
+                            <SelectItem key={exam} value={exam}>
+                                {exam}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <Button onClick={handleExamSelect} className="w-full" disabled={!selectedExam}>
+                    Select Exam
+                </Button>
+            </CardContent>
+        </>
+      )}
+
       {examState === 'idle' && (
         <>
           <CardHeader>
-            <CardTitle>Enroll for the Test</CardTitle>
+            <CardTitle>Enroll for {selectedExam}</CardTitle>
             <CardDescription>
               Enter your details below to begin your exam.
             </CardDescription>
@@ -126,9 +174,12 @@ export function ExamEnrollmentCard() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
-                  Enroll Now
-                </Button>
+                 <div className="flex gap-2">
+                    <Button onClick={() => setExamState('selecting-exam')} variant="outline" className="w-1/3">Back</Button>
+                    <Button type="submit" className="w-2/3">
+                    Enroll Now
+                    </Button>
+                </div>
               </form>
             </Form>
           </CardContent>
@@ -140,7 +191,7 @@ export function ExamEnrollmentCard() {
           <CheckCircle className="mx-auto size-12 text-green-500 mb-4" />
           <h3 className="text-2xl font-bold">You are Enrolled!</h3>
           <p className="text-muted-foreground mb-6">
-            You are ready to start the exam. Good luck!
+            You are ready to start the {selectedExam} exam. Good luck!
           </p>
           <Button onClick={startExam} className="w-full">
             Start Exam
@@ -152,7 +203,7 @@ export function ExamEnrollmentCard() {
         <CardContent className="p-6 text-center">
           <h3 className="text-2xl font-bold mb-4">Exam in Progress...</h3>
           <p className="text-muted-foreground mb-6">
-            Please wait while we calculate your results.
+            Please wait while we calculate your results for the {selectedExam} exam.
           </p>
           <Progress value={progress} className="w-full" />
           <p className="text-sm text-muted-foreground mt-2">{progress}%</p>
@@ -164,7 +215,7 @@ export function ExamEnrollmentCard() {
           <CardHeader className="text-center p-0 mb-6">
             <Award className="mx-auto size-12 text-primary mb-4" />
             <CardTitle>Exam Completed!</CardTitle>
-            <CardDescription>Here is your result.</CardDescription>
+            <CardDescription>Here is your result for the {selectedExam} exam.</CardDescription>
           </CardHeader>
           <div className="bg-primary/10 rounded-lg p-6 text-center mb-6">
             <p className="text-sm text-primary font-semibold">YOUR SCORE</p>
