@@ -314,7 +314,7 @@ export default function Home() {
                                     <div className="flex items-center gap-2 col-span-2"><ShieldCheck /> Detailed analysis & performance tracking</div>
                                 </div>
                                 <div>
-                                    <p className="text-3xl font-bold">₹1,999 <span className="text-lg line-through opacity-80">₹2,998</span></p>
+                                    
                                     <p className="font-bold text-accent">SAVE 33%</p>
                                     <p className="text-xs mt-1">One-time payment • Lifetime access • All updates included</p>
                                     <Button variant="secondary" className="w-full mt-4">Get National Access</Button>
