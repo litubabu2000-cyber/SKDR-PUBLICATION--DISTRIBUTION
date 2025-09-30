@@ -7,20 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-type Stat = {
-  value: string;
-  label: string;
-  icon: LucideIcon;
-};
-
-const stats: Stat[] = [
-  { value: '10,000+', label: 'Books', icon: BookOpen },
-  { value: '50,000+', label: 'Students', icon: GraduationCap },
-  { value: 'Award Winning', label: 'Publications', icon: Star },
-  { value: '10,000+', label: 'PYQ Practice', icon: FileQuestion },
-  { value: '1,000+', label: 'Mock Tests', icon: Target },
-];
-
 type Category = {
   title: string;
   description: string;
@@ -122,22 +108,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24">
-            <div className="container px-4 md:px-6">
-                <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                    {stats.map((stat, index) => (
-                        <Card key={index} className="flex flex-col items-center justify-center p-4 text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-card border-border">
-                            <CardContent className="p-0 space-y-2">
-                                <stat.icon className="size-8 text-primary" />
-                                <div className="text-2xl font-bold font-headline">{stat.value}</div>
-                                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </div>
-        </section>
-        
         <section id="categories" className="w-full py-12 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
