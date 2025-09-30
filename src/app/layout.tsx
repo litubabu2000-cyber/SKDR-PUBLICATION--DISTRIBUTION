@@ -6,6 +6,7 @@ import { AppHeader } from '@/components/layout/app-header';
 import { Poppins, PT_Sans } from 'next/font/google';
 import { PageTransition } from '@/components/page-transition';
 import { BottomNavbar } from '@/components/layout/bottom-navbar';
+import { BackButton } from '@/components/layout/back-button';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -36,6 +37,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <AppHeader />
+        <BackButton />
         <PageTransition>
             {children}
         </PageTransition>
