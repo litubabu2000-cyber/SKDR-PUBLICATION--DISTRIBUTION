@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/services/auth";
 import { useToast } from "@/hooks/use-toast";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function LoginPage() {
   const [loginEmail, setLoginEmail] = useState('');
@@ -24,14 +25,24 @@ export default function LoginPage() {
     }
 
     try {
-      await signIn(loginEmail, loginPassword);
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       router.push("/admin/dashboard");
     } catch (error: any) {
-      // This might catch errors if the user exists but the password is wrong in Firebase,
-      // or if there's a network issue.
-      let errorMessage = error.message;
-      if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-          errorMessage = "Invalid credentials. Please try again.";
+      let errorMessage = "An unknown error occurred.";
+       if (error.code) {
+        switch (error.code) {
+          case 'auth/wrong-password':
+          case 'auth/user-not-found':
+          case 'auth/invalid-credential':
+            errorMessage = "Invalid credentials. Please try again.";
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = "Network error. Please check your connection.";
+            break;
+          default:
+            errorMessage = `An error occurred: ${error.message}`;
+            break;
+        }
       }
       toast({ title: "Error", description: errorMessage, variant: "destructive" });
     }
