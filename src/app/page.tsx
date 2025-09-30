@@ -376,6 +376,7 @@ export default function Home() {
                         <li><Link href="#" className="hover:text-background">SSC Exams</Link></li>
                         <li><Link href="#" className="hover:text-background">OSSC Exams</Link></li>
                         <li><Link href="#" className="hover:text-background">TGT/PGT Exams</Link></li>
+                        <li><Link href="/admin/login" className="hover:text-background">Admin Login</Link></li>
                     </ul>
                 </div>
                  <div className="space-y-2">
@@ -412,3 +413,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
