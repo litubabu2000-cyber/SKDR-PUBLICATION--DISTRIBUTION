@@ -83,12 +83,11 @@ const mcqSubjects = [
 ];
 
 const quickLinks = [
-  { href: '#', label: 'Home' },
-  { href: '#', label: 'Class Books' },
-  { href: '#', label: 'Railway Exams' },
-  { href: '#', label: 'SSC Exams' },
-  { href: '#', label: 'OSSC Exams' },
-  { href: '#', label: 'TGT/PGT Exams' },
+  { href: '#categories', label: 'Choose Your Category' },
+  { href: '#video-hub', label: 'Video Learning Hub' },
+  { href: '#pyq', label: 'Previous Year Question Papers' },
+  { href: '#mock-tests', label: 'Mock Test Series' },
+  { href: '#mcq-practice', label: 'Subject-wise MCQ Practice' },
 ];
 
 export default function Home() {
@@ -139,7 +138,7 @@ export default function Home() {
             </div>
         </section>
         
-        <section className="w-full py-12 md:py-24">
+        <section id="categories" className="w-full py-12 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                     <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Choose Your Category</h2>
@@ -164,7 +163,7 @@ export default function Home() {
             </div>
         </section>
 
-        <section className="w-full py-12 md:py-24">
+        <section id="video-hub" className="w-full py-12 md:py-24">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Video Learning Hub</h2>
@@ -199,7 +198,7 @@ export default function Home() {
           </div>
         </section>
         
-        <section className="w-full py-12 md:py-24 bg-card/5">
+        <section id="pyq" className="w-full py-12 md:py-24 bg-card/5">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                     <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm font-semibold">EXAM PREPARATION</div>
@@ -258,7 +257,7 @@ export default function Home() {
             </div>
         </section>
         
-        <section className="w-full py-12 md:py-24">
+        <section id="mock-tests" className="w-full py-12 md:py-24">
             <div className="container px-4 md:px-6">
                  <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                     <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Mock Test Series</h2>
@@ -345,7 +344,7 @@ export default function Home() {
                         </Card>
 
                     </div>
-                     <div className="lg:col-span-2">
+                     <div id="mcq-practice" className="lg:col-span-2">
                          
                          <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2 bg-teal-600 text-white">
                              <CardHeader>
@@ -449,3 +448,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
