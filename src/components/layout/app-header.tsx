@@ -35,6 +35,14 @@ const categoryLinks = [
     { href: '/categories/pyq', label: 'Previous Year Questions' },
 ];
 
+const schoolGuideLinks = [
+  { href: '/categories/odisha-school-guide/class-6', label: 'Class 6' },
+  { href: '/categories/odisha-school-guide/class-7', label: 'Class 7' },
+  { href: '/categories/odisha-school-guide/class-8', label: 'Class 8' },
+  { href: '/categories/odisha-school-guide/class-9', label: 'Class 9' },
+  { href: '/categories/odisha-school-guide/class-10', label: 'Class 10' },
+];
+
 export function AppHeader() {
   const pathname = usePathname();
   return (
