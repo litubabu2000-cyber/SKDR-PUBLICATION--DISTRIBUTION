@@ -1,12 +1,19 @@
+
 'use client';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { SkdrLogo } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, ShoppingCart } from 'lucide-react';
+import { Menu, ShoppingCart, ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,6 +21,18 @@ const navLinks = [
   { href: '/pyq', label: 'Previous Year Papers' },
   { href: '/mock-tests', label: 'Mock Tests' },
   { href: '/videos', label: 'Video Lectures' },
+];
+
+const categoryLinks = [
+    { href: '/categories/odisha-school-guide', label: 'Odisha School Guide' },
+    { href: '/categories/odisha-college-books', label: 'Odisha College Books' },
+    { href: '/categories/neet-jee-guide', label: 'NEET & JEE Guide' },
+    { href: '/categories/railway-books', label: 'Railway Books' },
+    { href: '/categories/ssc-books', label: 'SSC Books' },
+    { href: '/categories/ossc-books', label: 'OSSC Books' },
+    { href: '/categories/tgt-books', label: 'TGT Books' },
+    { href: '/categories/pgt-books', label: 'PGT Books' },
+    { href: '/categories/pyq', label: 'Previous Year Questions' },
 ];
 
 export function AppHeader() {
@@ -39,6 +58,18 @@ export function AppHeader() {
             {link.label}
           </Link>
         ))}
+         <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
+                Categories <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                {categoryLinks.map(link => (
+                    <DropdownMenuItem key={link.href} asChild>
+                        <Link href={link.href}>{link.label}</Link>
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
       </nav>
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon">
@@ -81,6 +112,18 @@ export function AppHeader() {
                   {link.label}
                 </Link>
               ))}
+               <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
+                        Categories <ChevronDown className="h-4 w-4" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {categoryLinks.map(link => (
+                            <DropdownMenuItem key={link.href} asChild>
+                                <Link href={link.href}>{link.label}</Link>
+                            </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </nav>
           </SheetContent>
         </Sheet>

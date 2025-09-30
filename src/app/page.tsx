@@ -1,5 +1,4 @@
 
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,18 +15,19 @@ type Category = {
   subtext: string;
   icon: LucideIcon;
   gradient: string;
+  href: string;
 };
 
 const categories: Category[] = [
-  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: BookCopy, gradient: 'from-cyan-500 to-blue-500' },
-  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: GraduationCap, gradient: 'from-pink-500 to-purple-500' },
-  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: Rocket, gradient: 'from-green-400 to-teal-500' },
-  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: Train, gradient: 'from-red-500 to-orange-500' },
-  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: Building, gradient: 'from-blue-500 to-indigo-500' },
-  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: PenTool, gradient: 'from-orange-400 to-yellow-500' },
-  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: School, gradient: 'from-teal-400 to-green-500' },
-  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: User, gradient: 'from-purple-500 to-pink-500' },
-  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: FileQuestion, gradient: 'from-indigo-500 to-blue-500' },
+  { title: 'ODISHA SCHOOL GUIDE', description: 'Classes 6-10', subtext: 'Complete study materials for Odisha Board', icon: BookCopy, gradient: 'from-cyan-500 to-blue-500', href: '/categories/odisha-school-guide' },
+  { title: 'ODISHA COLLEGE BOOKS', description: 'Classes 11-12', subtext: 'Higher secondary education materials', icon: GraduationCap, gradient: 'from-pink-500 to-purple-500', href: '/categories/odisha-college-books' },
+  { title: 'NEET & JEE Guide', description: 'Entrance Exams', subtext: 'Medical & Engineering preparation', icon: Rocket, gradient: 'from-green-400 to-teal-500', href: '/categories/neet-jee-guide' },
+  { title: 'Railway Books', description: 'RRB Exams', subtext: 'Complete railway exam preparation', icon: Train, gradient: 'from-red-500 to-orange-500', href: '/categories/railway-books' },
+  { title: 'SSC Books', description: 'Staff Selection', subtext: 'SSC exam preparation materials', icon: Building, gradient: 'from-blue-500 to-indigo-500', href: '/categories/ssc-books' },
+  { title: 'OSSC Books', description: 'Odisha SSC', subtext: 'Odisha state service exams', icon: PenTool, gradient: 'from-orange-400 to-yellow-500', href: '/categories/ossc-books' },
+  { title: 'TGT Books', description: 'Trained Graduate Teacher', subtext: 'TGT exam preparation guide', icon: School, gradient: 'from-teal-400 to-green-500', href: '/categories/tgt-books' },
+  { title: 'PGT Books', description: 'Post Graduate Teacher', subtext: 'PGT exam preparation materials', icon: User, gradient: 'from-purple-500 to-pink-500', href: '/categories/pgt-books' },
+  { title: 'Previous Year Questions', description: 'Solved Papers', subtext: 'PYQ collections for major exams', icon: FileQuestion, gradient: 'from-indigo-500 to-blue-500', href: '/categories/pyq' },
 ];
 
 const videoHub = [
@@ -142,16 +142,18 @@ export default function Home() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category, index) => (
-                        <div key={index} className={`bg-gradient-to-br ${category.gradient} rounded-xl p-6 flex flex-col justify-between text-white transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 group`}>
-                            <div className="flex items-start space-x-4">
-                               <category.icon className="size-10 transition-transform duration-300 group-hover:scale-110" />
-                                <div>
-                                    <h3 className="text-lg font-bold font-headline">{category.title}</h3>
-                                    <p className="text-sm opacity-80">{category.description}</p>
-                                </div>
-                            </div>
-                            <p className="text-sm opacity-80 mt-4">{category.subtext}</p>
-                        </div>
+                        <Link key={index} href={category.href} className="group">
+                          <div className={`bg-gradient-to-br ${category.gradient} rounded-xl p-6 flex flex-col justify-between text-white transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-2 h-full`}>
+                              <div className="flex items-start space-x-4">
+                                 <category.icon className="size-10 transition-transform duration-300 group-hover:scale-110" />
+                                 <div>
+                                      <h3 className="text-lg font-bold font-headline">{category.title}</h3>
+                                      <p className="text-sm opacity-80">{category.description}</p>
+                                  </div>
+                              </div>
+                              <p className="text-sm opacity-80 mt-4">{category.subtext}</p>
+                          </div>
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -410,6 +412,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
