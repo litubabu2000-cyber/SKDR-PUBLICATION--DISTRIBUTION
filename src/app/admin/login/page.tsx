@@ -11,22 +11,24 @@ import { signUp, signIn } from "@/services/auth";
 import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
   const { toast } = useToast();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    if (signUpPassword !== confirmPassword) {
       toast({ title: "Error", description: "Passwords do not match", variant: "destructive" });
       return;
     }
     try {
-      await signUp(email, password);
+      await signUp(signUpEmail, signUpPassword);
       toast({ title: "Success", description: "Account created successfully! Please log in." });
-      router.push("/admin/dashboard");
+      // Don't redirect, let them log in from the login tab.
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
@@ -35,7 +37,7 @@ export default function LoginPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signIn(email, password);
+      await signIn(loginEmail, loginPassword);
       router.push("/admin/dashboard");
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -65,13 +67,13 @@ export default function LoginPage() {
                       type="email"
                       placeholder="m@example.com"
                       required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
                     />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="password-login">Password</Label>
-                    <Input id="password-login" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <Input id="password-login" type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full">
                     Login
@@ -89,13 +91,13 @@ export default function LoginPage() {
                       type="email"
                       placeholder="m@example.com"
                       required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={signUpEmail}
+                      onChange={(e) => setSignUpEmail(e.target.value)}
                     />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="password-signup">Password</Label>
-                    <Input id="password-signup" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <Input id="password-signup" type="password" required value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="confirm-password-signup">Confirm Password</Label>
