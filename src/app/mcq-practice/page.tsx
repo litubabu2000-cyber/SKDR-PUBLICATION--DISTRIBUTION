@@ -40,14 +40,12 @@ export default function McqPracticePage() {
                 <CardContent className="p-6">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                         {mcqSubjects.map((subject, index) => (
-                           <Link key={index} href={subject.href} passHref>
-                             <Button asChild className={`${subject.color} text-white justify-between w-full transition-transform duration-300 transform hover:scale-105`}>
-                               <a>
+                           <Button key={index} asChild className={`${subject.color} text-white justify-between w-full transition-transform duration-300 transform hover:scale-105`}>
+                             <Link href={subject.href}>
                                  {subject.name}
                                  <span className="text-xs bg-white/20 px-1.5 py-0.5 rounded-full">MCQ</span>
-                                </a>
-                             </Button>
-                           </Link>
+                             </Link>
+                           </Button>
                         ))}
                 </div>
                 <Button variant="secondary" className="w-full mt-6">Start MCQ Practice</Button>
