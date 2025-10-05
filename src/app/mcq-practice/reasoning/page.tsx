@@ -27,7 +27,6 @@ const reasoningTopics = [
   "Paper Cutting, Folding & Punching",
   "Completion of Figural Pattern",
   "Embedded Figure",
-  "Deviation of Figure",
 ];
 
 export default function ReasoningPage() {
@@ -46,11 +45,13 @@ export default function ReasoningPage() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3 list-disc pl-5">
+                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                          {reasoningTopics.map((topic) => (
-                            <li key={topic} className="text-muted-foreground">{topic}</li>
+                            <div key={topic} className="p-4 bg-card border rounded-lg text-center text-muted-foreground transition-all duration-300 ease-in-out hover:shadow-md hover:border-primary">
+                                {topic}
+                            </div>
                          ))}
-                       </ul>
+                       </div>
                     </CardContent>
                 </Card>
             </div>
