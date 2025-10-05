@@ -17,10 +17,10 @@ import {
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/#categories', label: 'Class Books' },
-  { href: '/#pyq', label: 'Previous Year Papers' },
-  { href: '/#mock-tests', label: 'Mock Tests' },
-  { href: '/#video-hub', label: 'Video Lectures' },
+  { href: '/categories', label: 'Class Books' },
+  { href: '/pyq', label: 'Previous Year Papers' },
+  { href: '/mock-tests', label: 'Mock Tests' },
+  { href: '/video-hub', label: 'Video Lectures' },
 ];
 
 const categoryLinks = [
@@ -32,7 +32,7 @@ const categoryLinks = [
     { href: '/categories/ossc-books', label: 'OSSC Books' },
     { href: '/categories/tgt-books', label: 'TGT Books' },
     { href: '/categories/pgt-books', 'label': 'PGT Books' },
-    { href: '/categories/pyq', label: 'Previous Year Questions' },
+    { href: '/pyq', label: 'Previous Year Questions' },
 ];
 
 const schoolGuideLinks = [
@@ -48,6 +48,10 @@ export function AppHeader() {
 
   const isNavLinkActive = (href: string) => {
     if (href === '/') return pathname === '/';
+    // For category links, we want to be more specific
+    if (href.startsWith('/categories')) {
+        return pathname === href;
+    }
     return pathname.startsWith(href) && href !== '/';
   }
 
@@ -69,7 +73,7 @@ export function AppHeader() {
             href={link.href}
             className={cn(
               'transition-colors hover:text-foreground',
-              isNavLinkActive(link.href)
+              pathname === link.href
                 ? 'text-foreground font-bold'
                 : 'text-muted-foreground'
             )}
@@ -126,7 +130,7 @@ export function AppHeader() {
                   href={link.href}
                   className={cn(
                     'transition-colors hover:text-foreground',
-                    isNavLinkActive(link.href)
+                    pathname === link.href
                       ? 'text-foreground'
                       : 'text-muted-foreground'
                   )}
