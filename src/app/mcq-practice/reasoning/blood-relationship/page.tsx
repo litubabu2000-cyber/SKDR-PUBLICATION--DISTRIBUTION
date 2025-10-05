@@ -6,7 +6,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const mcqData = [
     {
@@ -431,7 +432,7 @@ const mcqData = [
         question: "Six members of a family namely A, B, C, D, E and F are travelling together. ‘B’ is the son of C but C is not the mother of B. A and C are married couple. E is the brother of C. D is the daughter of A. F is the brother of B. How many male members are there in the family?",
         options: ["3", "2", "4", "1"],
         source: "SSC CGL Tier-I Exam, 16.08.2015 (IInd Sitting) TF No. 2176783)",
-        answer: "3"
+        answer: "4"
     },
     {
         type: "TYPE–I",
@@ -601,108 +602,10 @@ const mcqData = [
         source: "SSC CGL Tier-I (CBE) Exam. 04.09.2016) (IInd Sitting)",
         answer: "Sister"
     }
-];
-
-export default function BloodRelationshipPage() {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState<string[]>(Array(mcqData.length).fill(''));
-    const [showScore, setShowScore] = useState(false);
-
-    const currentQuestion = mcqData[currentQuestionIndex];
-
-    const handleNext = () => {
-        if (currentQuestionIndex < mcqData.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-            setShowScore(true);
-        }
-    };
-
-    const handlePrevious = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
-        }
-    };
-    
-    const handleAnswerSelect = (answer: string) => {
-        const newAnswers = [...selectedAnswers];
-        newAnswers[currentQuestionIndex] = answer;
-        setSelectedAnswers(newAnswers);
-    };
-
-    const calculateScore = () => {
-        return selectedAnswers.reduce((score, selectedAnswer, index) => {
-            if (selectedAnswer === mcqData[index].answer) {
-                return score + 1;
-            }
-            return score;
-        }, 0);
-    };
-
-    const restartQuiz = () => {
-        setCurrentQuestionIndex(0);
-        setSelectedAnswers(Array(mcqData.length).fill(''));
-        setShowScore(false);
-    };
-
-    return (
-        <div className="container mx-auto py-12 px-4 md:px-6">
-            <div className="space-y-4 text-center mb-12">
-                <h1 className="text-3xl md:text-4xl font-bold font-headline">Blood Relationship MCQs</h1>
-                <p className="text-muted-foreground md:text-xl">Practice questions for competitive exams.</p>
-            </div>
-            
-            <div className="max-w-2xl mx-auto">
-                {showScore ? (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-center text-2xl">Quiz Completed!</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center">
-                            <CheckCircle className="mx-auto size-16 text-green-500 mb-4" />
-                            <p className="text-4xl font-bold">
-                                Your score: {calculateScore()} / {mcqData.length}
-                            </p>
-                        </CardContent>
-                        <CardFooter>
-                            <Button onClick={restartQuiz} className="w-full">
-                                Try Again
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ) : (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Question {currentQuestion.questionNumber}</CardTitle>
-                            <CardDescription>{currentQuestion.source}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="font-semibold mb-4 text-lg">{currentQuestion.question}</p>
-                            <RadioGroup 
-                                value={selectedAnswers[currentQuestionIndex]}
-                                onValueChange={handleAnswerSelect}
-                            >
-                                {currentQuestion.options.map((option, index) => (
-                                    <div key={index} className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted/50 transition-colors">
-                                        <RadioGroupItem value={option} id={`q${currentQuestion.questionNumber}-op${index}`} />
-                                        <Label htmlFor={`q${currentQuestion.questionNumber}-op${index}`} className="flex-1 cursor-pointer">{option}</Label>
-                                    </div>
-                                ))}
-                            </RadioGroup>
-                        </CardContent>
-                        <CardFooter className="flex justify-between">
-                            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
-                                <ChevronLeft className="mr-2 h-4 w-4" /> Previous
-                            </Button>
-                            <p className="text-sm text-muted-foreground">{currentQuestionIndex + 1} / {mcqData.length}</p>
-                            <Button onClick={handleNext}>
-                                {currentQuestionIndex === mcqData.length - 1 ? 'Finish' : 'Next'}
-                                <ChevronRight className="ml-2 h-4 w-4" />
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                )}
-            </div>
-        </div>
-    );
-}
+] and a answere ko correct karo
+in ssc cgl tier 1 exam 16.08.2015 2176783
+How many male members are
+there in the family?
+(1) 3 (2) 2
+(3) 4 (4) 1
+iska answere 4 ha ma 3 kardia tha
