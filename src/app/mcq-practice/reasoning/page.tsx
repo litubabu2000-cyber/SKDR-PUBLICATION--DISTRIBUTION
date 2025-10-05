@@ -1,32 +1,33 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ListChecks } from "lucide-react";
+import Link from "next/link";
 
 const reasoningTopics = [
-  "Analogy or Similarity",
-  "Blood Relationship",
-  "Symbols & Notations",
-  "Classification",
-  "Direction & Distance Test",
-  "Scheduled Day/Date/Time",
-  "Series",
-  "Coding-Decoding",
-  "Word Formation",
-  "Syllogism, Statement & Conclusions",
-  "Ranking/Arrangement",
-  "Finding the Missing Number",
-  "Arithmetical Problems",
-  "Arrangement of Words in a Logical Order",
-  "Cubes and Dices",
-  "Logical Venn-Diagram",
-  "Miscellaneous",
-  "Verbal Series",
-  "Verbal Analogy",
-  "Verbal Classification",
-  "Mirror Image and Water Image",
-  "Paper Cutting, Folding & Punching",
-  "Completion of Figural Pattern",
-  "Embedded Figure",
+  { name: "Analogy or Similarity", href: "#" },
+  { name: "Blood Relationship", href: "/mcq-practice/reasoning/blood-relationship" },
+  { name: "Symbols & Notations", href: "#" },
+  { name: "Classification", href: "#" },
+  { name: "Direction & Distance Test", href: "#" },
+  { name: "Scheduled Day/Date/Time", href: "#" },
+  { name: "Series", href: "#" },
+  { name: "Coding-Decoding", href: "#" },
+  { name: "Word Formation", href: "#" },
+  { name: "Syllogism, Statement & Conclusions", href: "#" },
+  { name: "Ranking/Arrangement", href: "#" },
+  { name: "Finding the Missing Number", href: "#" },
+  { name: "Arithmetical Problems", href: "#" },
+  { name: "Arrangement of Words in a Logical Order", href: "#" },
+  { name: "Cubes and Dices", href: "#" },
+  { name: "Logical Venn-Diagram", href: "#" },
+  { name: "Miscellaneous", href: "#" },
+  { name: "Verbal Series", href: "#" },
+  { name: "Verbal Analogy", href: "#" },
+  { name: "Verbal Classification", href: "#" },
+  { name: "Mirror Image and Water Image", href: "#" },
+  { name: "Paper Cutting, Folding & Punching", href: "#" },
+  { name: "Completion of Figural Pattern", href: "#" },
+  { name: "Embedded Figure", href: "#" },
 ];
 
 export default function ReasoningPage() {
@@ -47,9 +48,11 @@ export default function ReasoningPage() {
                     <CardContent>
                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                          {reasoningTopics.map((topic) => (
-                            <div key={topic} className="p-4 bg-card border rounded-lg text-center text-muted-foreground transition-all duration-300 ease-in-out hover:shadow-md hover:border-primary">
-                                {topic}
+                           <Link key={topic.name} href={topic.href}>
+                            <div className="p-4 bg-card border rounded-lg text-center text-muted-foreground transition-all duration-300 ease-in-out hover:shadow-md hover:border-primary h-full flex items-center justify-center">
+                                {topic.name}
                             </div>
+                           </Link>
                          ))}
                        </div>
                     </CardContent>
