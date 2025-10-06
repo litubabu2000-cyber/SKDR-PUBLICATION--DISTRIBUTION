@@ -271,7 +271,7 @@ const mcqData = [
         questionNumber: 33,
         question: "A is B’s brother, C is A’s mother, D is C’s father, E is B’s son. How is E related to A?",
         options: ["Cousin", "Nephew", "Uncle", "Grandson"],
-        source: "SSC Combined Matric Level (Pre) Exam. 12.05.2002 (IInd Sitting)",
+        source: "SSC Combined Matric Level (Pre) Exam. 12.05.2022 (IInd Sitting)",
         answer: "Nephew"
     },
     {
@@ -602,4 +602,128 @@ const mcqData = [
         source: "SSC CGL Tier-I (CBE) Exam. 04.09.2016) (IInd Sitting)",
         answer: "Sister"
     }
-] and show anser in greeen box and wrong is red box when i press answer button
+]
+
+export default function BloodRelationshipPage() {
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+    const [showScore, setShowScore] = useState(false);
+    const [showAnswer, setShowAnswer] = useState(false);
+
+    const handleNext = () => {
+        setShowAnswer(false); // Hide answer when moving to next question
+        if (currentQuestionIndex < mcqData.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        } else {
+            setShowScore(true);
+        }
+    };
+
+    const handlePrevious = () => {
+        setShowAnswer(false); // Hide answer when moving to previous question
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+        }
+    };
+
+    const handleAnswerSelect = (questionIndex: number, answer: string) => {
+        setSelectedAnswers({
+            ...selectedAnswers,
+            [questionIndex]: answer,
+        });
+    };
+
+    const calculateScore = () => {
+        let score = 0;
+        mcqData.forEach((question, index) => {
+            if (selectedAnswers[index] === question.answer) {
+                score++;
+            }
+        });
+        return score;
+    };
+
+    const currentQuestion = mcqData[currentQuestionIndex];
+    const score = calculateScore();
+
+    if (showScore) {
+        return (
+            <div className="container mx-auto p-4 md:p-6 flex flex-col items-center justify-center min-h-[60vh]">
+                <Card className="w-full max-w-xl text-center">
+                    <CardHeader>
+                        <CardTitle>Quiz Completed!</CardTitle>
+                        <CardDescription>You have completed the Blood Relationship quiz.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-4xl font-bold mb-4">Your Score: {score} / {mcqData.length}</p>
+                        <Button onClick={() => {
+                            setShowScore(false);
+                            setCurrentQuestionIndex(0);
+                            setSelectedAnswers({});
+                        }}>
+                            Restart Quiz
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
+    return (
+        <div className="container mx-auto p-4 md:p-6">
+            <Card className="w-full max-w-2xl mx-auto">
+                <CardHeader>
+                    <CardDescription>{currentQuestion.source}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="mb-4 font-semibold">{currentQuestion.question}</p>
+                    <RadioGroup
+                        value={selectedAnswers[currentQuestionIndex] || ''}
+                        onValueChange={(value) => handleAnswerSelect(currentQuestionIndex, value)}
+                    >
+                        {currentQuestion.options.map((option, index) => {
+                            const isCorrect = option === currentQuestion.answer;
+                            const isSelected = selectedAnswers[currentQuestionIndex] === option;
+                            const optionId = `q${currentQuestionIndex}-op${index}`;
+                            
+                            return (
+                                <div
+                                    key={index}
+                                    className={cn(
+                                        "flex items-center space-x-2 p-2 rounded-md border",
+                                        showAnswer && isCorrect && "bg-green-100 border-green-400 text-green-800",
+                                        showAnswer && isSelected && !isCorrect && "bg-red-100 border-red-400 text-red-800"
+                                    )}
+                                >
+                                    <RadioGroupItem value={option} id={optionId} />
+                                    <Label htmlFor={optionId} className="flex-1 cursor-pointer">{option}</Label>
+                                    {showAnswer && isCorrect && <CheckCircle className="h-5 w-5 text-green-600" />}
+                                    {showAnswer && isSelected && !isCorrect && <XCircle className="h-5 w-5 text-red-600" />}
+                                </div>
+                            )
+                        })}
+                    </RadioGroup>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center">
+                    <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
+                        <ChevronLeft className="mr-2 h-4 w-4" /> Previous
+                    </Button>
+                    <div className="flex gap-2">
+                        <Button variant="outline" onClick={() => setShowAnswer(!showAnswer)}>
+                            <Lightbulb className="mr-2 h-4 w-4" /> {showAnswer ? "Hide" : "Show"} Answer
+                        </Button>
+                        <Button variant="destructive" onClick={() => setShowScore(true)}>End</Button>
+                    </div>
+                    <Button onClick={handleNext}>
+                        {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
+                        {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
+                    </Button>
+                </CardFooter>
+            </Card>
+            <div className="text-center mt-4 text-sm text-muted-foreground">
+                Question {currentQuestionIndex + 1} of {mcqData.length}
+            </div>
+        </div>
+    );
+}
+
