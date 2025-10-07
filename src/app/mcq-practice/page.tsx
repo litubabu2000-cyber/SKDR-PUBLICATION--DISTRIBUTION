@@ -43,10 +43,10 @@ export default function McqPracticePage() {
                            <Link
                             key={index}
                             href={subject.href}
-                            className="group flex flex-col justify-between rounded-lg border bg-background p-4 text-center transition-all duration-300 hover:bg-primary/10 hover:shadow-md hover:-translate-y-1"
+                            className="group flex flex-col justify-between rounded-lg bg-primary p-4 text-center text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:-translate-y-1"
                            >
-                                <span className="font-semibold text-foreground group-hover:text-primary">{subject.name}</span>
-                                 <span className="text-xs mt-2 bg-primary/20 text-primary px-2 py-1 rounded-full">MCQ</span>
+                                <span className="font-semibold">{subject.name}</span>
+                                 <span className="text-xs mt-2 bg-primary-foreground/20 text-primary-foreground px-2 py-1 rounded-full">MCQ</span>
                            </Link>
                         ))}
                 </div>
