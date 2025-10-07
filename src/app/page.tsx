@@ -8,13 +8,13 @@ import Link from 'next/link';
 import React from 'react';
 
 const quickLinks = [
-  { href: '/categories', label: 'Choose Your Category' },
-  { href: '/video-hub', label: 'Video Learning Hub' },
-  { href: '/pyq', label: 'Previous Year Question Papers' },
-  { href: '/mock-tests', label: 'Mock Test Series' },
-  { href: '/mcq-practice', label: 'Subject-wise MCQ Practice' },
-  { href: '/all-india-tests', label: 'All India Tests' },
-  { href: '/state-level-tests', label: 'State Level Tests' },
+  { href: '/categories', label: 'CHOOSE YOUR CATEGORY' },
+  { href: '/video-hub', label: 'VIDEO LEARNING HUB' },
+  { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS' },
+  { href: '/mock-tests', label: 'MOCK TEST SERIES' },
+  { href: '/mcq-practice', label: 'SUBJECT-WISE MCQ PRACTICE' },
+  { href: '/all-india-tests', label: 'ALL INDIA TESTS' },
+  { href: '/state-level-tests', label: 'STATE LEVEL TESTS' },
 ];
 
 export default function Home() {
