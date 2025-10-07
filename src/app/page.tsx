@@ -2,19 +2,19 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 const quickLinks = [
-  { href: '/categories', label: 'CHOOSE YOUR CATEGORY' },
-  { href: '/video-hub', label: 'VIDEO LEARNING HUB' },
-  { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS' },
-  { href: '/mock-tests', label: 'MOCK TEST SERIES' },
-  { href: '/mcq-practice', label: 'SUBJECT-WISE MCQ PRACTICE' },
-  { href: '/all-india-tests', label: 'ALL INDIA TESTS' },
-  { href: '/state-level-tests', label: 'STATE LEVEL TESTS' },
+  { href: '/categories', label: 'CHOOSE YOUR CATEGORY', icon: LayoutGrid },
+  { href: '/video-hub', label: 'VIDEO LEARNING HUB', icon: PlayCircle },
+  { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS', icon: FileQuestion },
+  { href: '/mock-tests', label: 'MOCK TEST SERIES', icon: Laptop },
+  { href: '/mcq-practice', label: 'SUBJECT-WISE MCQ PRACTICE', icon: Target },
+  { href: '/all-india-tests', label: 'ALL INDIA TESTS', icon: Globe },
+  { href: '/state-level-tests', label: 'STATE LEVEL TESTS', icon: Landmark },
 ];
 
 export default function Home() {
@@ -34,13 +34,14 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {quickLinks.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="bg-card p-4 rounded-lg text-center font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105"
+                    className="bg-card p-4 rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center text-center"
                   >
+                    <link.icon className="size-8 mb-2" />
                     {link.label}
                   </Link>
                 ))}
