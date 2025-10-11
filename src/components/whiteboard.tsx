@@ -25,7 +25,7 @@ const Whiteboard = () => {
     
     context.scale(dpr, dpr);
     context.lineCap = 'round';
-    context.strokeStyle = 'hsl(var(--foreground))';
+    context.strokeStyle = '#000000';
     context.lineWidth = 2;
     contextRef.current = context;
 
@@ -44,7 +44,7 @@ const Whiteboard = () => {
         
         context.scale(dpr, dpr);
         context.lineCap = 'round';
-        context.strokeStyle = 'hsl(var(--foreground))';
+        context.strokeStyle = '#000000';
         context.lineWidth = 2;
         contextRef.current = context;
         if(savedDrawing) {
@@ -134,7 +134,7 @@ const Whiteboard = () => {
               onTouchEnd={finishDrawing}
               onTouchMove={draw}
               onMouseLeave={finishDrawing}
-              className="w-full h-64 bg-card border border-border rounded-md cursor-crosshair touch-none"
+              className="w-full h-64 bg-white border border-border rounded-md cursor-crosshair touch-none"
             />
         </CardContent>
     </Card>
