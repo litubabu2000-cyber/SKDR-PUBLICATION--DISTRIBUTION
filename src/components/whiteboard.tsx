@@ -134,7 +134,7 @@ const Whiteboard = () => {
               onTouchEnd={finishDrawing}
               onTouchMove={draw}
               onMouseLeave={finishDrawing}
-              className="w-full h-64 bg-white border border-border rounded-md cursor-crosshair touch-none"
+              className="w-full h-96 bg-white border border-border rounded-md cursor-crosshair touch-none"
             />
         </CardContent>
     </Card>
