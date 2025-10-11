@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -704,27 +703,27 @@ export default function BloodRelationshipPage() {
                         })}
                     </RadioGroup>
                 </CardContent>
-                <CardFooter className="flex flex-wrap justify-between items-center gap-2">
-                    <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
-                        <ChevronLeft className="mr-2 h-4 w-4" /> Previous
-                    </Button>
+                <CardFooter className="flex flex-col gap-4">
+                    <div className="flex justify-between items-center w-full">
+                        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
+                            <ChevronLeft className="mr-2 h-4 w-4" /> Previous
+                        </Button>
+                        <div className="text-sm text-muted-foreground">
+                            Question {currentQuestionIndex + 1} of {mcqData.length}
+                        </div>
+                        <Button onClick={handleNext}>
+                            {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
+                            {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
+                        </Button>
+                    </div>
                     <div className="flex gap-2">
                         <Button variant="outline" onClick={() => setShowAnswer(!showAnswer)}>
                             <Lightbulb className="mr-2 h-4 w-4" /> {showAnswer ? "Hide" : "Show"} Answer
                         </Button>
                         <Button variant="destructive" onClick={() => setShowScore(true)}>End</Button>
                     </div>
-                    <Button onClick={handleNext}>
-                        {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
-                        {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
-                    </Button>
                 </CardFooter>
             </Card>
-            <div className="text-center mt-4 text-sm text-muted-foreground">
-                Question {currentQuestionIndex + 1} of {mcqData.length}
-            </div>
         </div>
     );
 }
-
-    
