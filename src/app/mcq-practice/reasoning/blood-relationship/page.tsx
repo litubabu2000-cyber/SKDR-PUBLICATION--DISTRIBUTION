@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Whiteboard } from "@/components/whiteboard";
 
 const mcqData = [
     {
@@ -697,6 +698,7 @@ export default function BloodRelationshipPage() {
                     <RadioGroup
                         value={selectedAnswers[currentQuestionIndex] || ''}
                         onValueChange={(value) => handleAnswerSelect(currentQuestionIndex, value)}
+                        className="space-y-2"
                     >
                         {currentQuestion.options.map((option, index) => {
                             const isCorrect = option === currentQuestion.answer;
@@ -761,6 +763,7 @@ export default function BloodRelationshipPage() {
                     </div>
                 </CardFooter>
             </Card>
+            <Whiteboard />
         </div>
     );
 }
