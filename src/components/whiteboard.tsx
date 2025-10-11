@@ -16,31 +16,40 @@ const Whiteboard = () => {
     
     // Adjust for device pixel ratio for sharper drawing
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = canvas.offsetWidth * dpr;
-    canvas.height = canvas.offsetHeight * dpr;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
 
     const context = canvas.getContext('2d');
     if (!context) return;
     
     context.scale(dpr, dpr);
     context.lineCap = 'round';
-    context.strokeStyle = 'black';
+    context.strokeStyle = 'hsl(var(--foreground))';
     context.lineWidth = 2;
     contextRef.current = context;
 
     const handleResize = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
+        const savedDrawing = contextRef.current?.getImageData(0, 0, canvas.width, canvas.height);
+        
         const dpr = window.devicePixelRatio || 1;
-        canvas.width = canvas.offsetWidth * dpr;
-        canvas.height = canvas.offsetHeight * dpr;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        
         const context = canvas.getContext('2d');
         if (!context) return;
+        
         context.scale(dpr, dpr);
         context.lineCap = 'round';
-        context.strokeStyle = 'black';
+        context.strokeStyle = 'hsl(var(--foreground))';
         context.lineWidth = 2;
         contextRef.current = context;
+        if(savedDrawing) {
+            context.putImageData(savedDrawing, 0, 0);
+        }
     }
 
     window.addEventListener('resize', handleResize);
@@ -66,6 +75,9 @@ const Whiteboard = () => {
   };
 
   const startDrawing = (event: React.MouseEvent | React.TouchEvent) => {
+    if ('touches' in event.nativeEvent) {
+      event.preventDefault();
+    }
     const coords = getEventCoordinates(event);
     if (!coords || !contextRef.current) return;
     
@@ -74,13 +86,19 @@ const Whiteboard = () => {
     setIsDrawing(true);
   };
 
-  const finishDrawing = () => {
+  const finishDrawing = (event: React.MouseEvent | React.TouchEvent) => {
+    if ('touches' in event.nativeEvent) {
+        event.preventDefault();
+    }
     if (!contextRef.current) return;
     contextRef.current.closePath();
     setIsDrawing(false);
   };
 
   const draw = (event: React.MouseEvent | React.TouchEvent) => {
+    if ('touches' in event.nativeEvent) {
+        event.preventDefault();
+    }
     if (!isDrawing) return;
     const coords = getEventCoordinates(event);
     if (!coords || !contextRef.current) return;
@@ -93,7 +111,7 @@ const Whiteboard = () => {
     const canvas = canvasRef.current;
     const context = contextRef.current;
     if (canvas && context) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.clearRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
     }
   };
 
@@ -115,7 +133,8 @@ const Whiteboard = () => {
               onTouchStart={startDrawing}
               onTouchEnd={finishDrawing}
               onTouchMove={draw}
-              className="w-full h-64 bg-white border border-border rounded-md cursor-crosshair"
+              onMouseLeave={finishDrawing}
+              className="w-full h-64 bg-card border border-border rounded-md cursor-crosshair touch-none"
             />
         </CardContent>
     </Card>
