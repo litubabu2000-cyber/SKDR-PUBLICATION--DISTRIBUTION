@@ -1,11 +1,12 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardFooter } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 const mcqData = [
@@ -608,6 +609,18 @@ export default function BloodRelationshipPage() {
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
     const [showScore, setShowScore] = useState(false);
     const [showAnswer, setShowAnswer] = useState(false);
+    const activeQuestionRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        if (activeQuestionRef.current) {
+            activeQuestionRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+    }, [currentQuestionIndex]);
+
 
     const handleNext = () => {
         setShowAnswer(false); // Hide answer when moving to next question
@@ -631,6 +644,11 @@ export default function BloodRelationshipPage() {
             [questionIndex]: answer,
         });
     };
+
+    const handleQuestionSelect = (index: number) => {
+        setShowAnswer(false);
+        setCurrentQuestionIndex(index);
+    }
 
     const calculateScore = () => {
         let score = 0;
@@ -704,13 +722,26 @@ export default function BloodRelationshipPage() {
                     </RadioGroup>
                 </CardContent>
                 <CardFooter className="flex flex-col items-center gap-4">
-                    <div className="flex justify-between items-center w-full">
+                     <div className="flex justify-between items-center w-full">
                         <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
                             <ChevronLeft className="mr-2 h-4 w-4" /> Previous
                         </Button>
-                        <div className="text-sm text-muted-foreground">
-                            Question {currentQuestionIndex + 1} of {mcqData.length}
-                        </div>
+                        <ScrollArea className="w-48 whitespace-nowrap rounded-md border">
+                            <div className="flex w-max space-x-2 p-2">
+                                {mcqData.map((question, index) => (
+                                    <Button
+                                        key={question.questionNumber}
+                                        ref={index === currentQuestionIndex ? activeQuestionRef : null}
+                                        variant={index === currentQuestionIndex ? 'default' : 'outline'}
+                                        size="icon"
+                                        onClick={() => handleQuestionSelect(index)}
+                                    >
+                                        {index + 1}
+                                    </Button>
+                                ))}
+                            </div>
+                            <ScrollBar orientation="horizontal" />
+                        </ScrollArea>
                         <Button onClick={handleNext}>
                             {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
                             {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
