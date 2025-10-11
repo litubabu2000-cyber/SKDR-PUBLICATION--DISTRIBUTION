@@ -109,7 +109,7 @@ const mcqData = [
     {
         type: "TYPE–I",
         questionNumber: 13,
-        question: "Az is B’s brother. C is A’s father. D is C’s sister and E is D’s mother. How is B related to E ?",
+        question: "A is B’s brother. C is A’s father. D is C’s sister and E is D’s mother. How is B related to E ?",
         options: ["Granddaughter", "Great-granddaughter", "Grandaunt", "Daughter"],
         source: "SSC CPO Sub-Inspector Exam.16.12.2007)",
         answer: "Granddaughter"
@@ -676,7 +676,7 @@ export default function BloodRelationshipPage() {
                     <CardDescription>{currentQuestion.source}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="mb-4 font-semibold">{currentQuestion.question}</p>
+                    <p className="mb-4 font-semibold">{currentQuestion.questionNumber}. {currentQuestion.question}</p>
                     <RadioGroup
                         value={selectedAnswers[currentQuestionIndex] || ''}
                         onValueChange={(value) => handleAnswerSelect(currentQuestionIndex, value)}
@@ -704,7 +704,7 @@ export default function BloodRelationshipPage() {
                         })}
                     </RadioGroup>
                 </CardContent>
-                <CardFooter className="flex justify-between items-center">
+                <CardFooter className="flex flex-wrap justify-between items-center gap-2">
                     <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
                         <ChevronLeft className="mr-2 h-4 w-4" /> Previous
                     </Button>
@@ -727,3 +727,4 @@ export default function BloodRelationshipPage() {
     );
 }
 
+    
