@@ -723,7 +723,10 @@ export default function BloodRelationshipPage() {
                 </CardContent>
                 <CardFooter className="flex flex-col items-center gap-4">
                      <div className="flex justify-between items-center w-full">
-                        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
+                        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} size="icon" className="md:hidden">
+                            <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="hidden md:inline-flex">
                             <ChevronLeft className="mr-2 h-4 w-4" /> Previous
                         </Button>
                         <ScrollArea className="w-48 whitespace-nowrap rounded-md border">
@@ -742,7 +745,10 @@ export default function BloodRelationshipPage() {
                             </div>
                             <ScrollBar orientation="horizontal" />
                         </ScrollArea>
-                        <Button onClick={handleNext}>
+                        <Button onClick={handleNext} size="icon" className="md:hidden">
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button onClick={handleNext} className="hidden md:inline-flex">
                             {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
                             {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
                         </Button>
