@@ -703,7 +703,7 @@ export default function BloodRelationshipPage() {
                         })}
                     </RadioGroup>
                 </CardContent>
-                <CardFooter className="flex flex-col gap-4">
+                <CardFooter className="flex flex-col items-center gap-4">
                     <div className="flex justify-between items-center w-full">
                         <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
                             <ChevronLeft className="mr-2 h-4 w-4" /> Previous
