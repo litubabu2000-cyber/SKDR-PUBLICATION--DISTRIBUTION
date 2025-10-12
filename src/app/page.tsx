@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const quickLinks = [
-  { href: '/categories', label: 'CHOOSE YOUR CATEGORY', icon: LayoutGrid },
+  { href: '/categories', label: 'CHOOSE YOUR BOOK CATEGORY', icon: LayoutGrid },
   { href: '/video-hub', label: 'VIDEO LEARNING HUB', icon: PlayCircle },
   { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS', icon: FileQuestion },
   { href: '/mock-tests', label: 'MOCK TEST SERIES', icon: Laptop },
