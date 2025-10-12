@@ -397,14 +397,6 @@ const mcqData = [
     },
     {
         type: "TYPE–I",
-        questionNumber: 51,
-        question: "A is B’s sister. C is B’s mother. D is C’s father. E is D’s mother. Then how is A related to D ?",
-        options: ["Grandmother", "Grandfather", "Daughter", "Granddaughter"],
-        source: "Bihar SSC CGL Main Exam–27.01.2013)",
-        answer: "Granddaughter"
-    },
-    {
-        type: "TYPE–I",
         questionNumber: 49,
         question: "A is B’s wife’s husband’s brother. C and D are sisters of B. How is A related to C ?",
         options: ["Brother", "Sister-in-law", "Wife", "Sister"],
@@ -1292,14 +1284,6 @@ const mcqData = [
         type: "Type-4"
     },
     {
-        questionNumber: 73,
-        question: "Pointing at a picture, Yuvika said that the boy in the picture is the son of her father’s mother’s daughter. How is that boy related to Yuvika?",
-        options: ["Mother’s brother’s son", "Father’s brother", "Father’s sister’s son", "Brother"],
-        source: "RRB NTPC (Stage-II) – 17/06/2022 (Shift-II)",
-        answer: "Father’s sister’s son",
-        type: "Type-2"
-    },
-    {
         questionNumber: 152,
         question: "‘P + Q’ = P is daughter of Q, ‘P × Q’ = P is son of Q, ‘P – Q’ = P is wife of Q. What does A + B – C × D imply?",
         options: ["C is wife of D", "B is son of D", "B is daughter of D", "A is daughter of D's son"],
@@ -1405,7 +1389,7 @@ export default function BloodRelationshipPage() {
                     <Card>
                         <CardHeader>
                             <CardDescription>{currentQuestion.source}</CardDescription>
-                            <CardTitle>
+                            <CardTitle className="font-body text-xl leading-relaxed">
                                 {currentQuestion.questionNumber}. {currentQuestion.question}
                             </CardTitle>
                         </CardHeader>
