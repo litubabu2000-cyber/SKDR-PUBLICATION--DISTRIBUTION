@@ -689,81 +689,85 @@ export default function BloodRelationshipPage() {
 
     return (
         <div className="container mx-auto p-4 md:p-6">
-            <Card className="w-full max-w-2xl mx-auto">
-                <CardHeader>
-                    <CardDescription>{currentQuestion.source}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p className="mb-4 font-semibold">{currentQuestion.questionNumber}. {currentQuestion.question}</p>
-                    <RadioGroup
-                        value={selectedAnswers[currentQuestionIndex] || ''}
-                        onValueChange={(value) => handleAnswerSelect(currentQuestionIndex, value)}
-                        className="space-y-2"
-                    >
-                        {currentQuestion.options.map((option, index) => {
-                            const isCorrect = option === currentQuestion.answer;
-                            const isSelected = selectedAnswers[currentQuestionIndex] === option;
-                            const optionId = `q${currentQuestionIndex}-op${index}`;
-                            
-                            return (
-                                <div
-                                    key={index}
-                                    className={cn(
-                                        "flex items-center space-x-2 p-2 rounded-md border",
-                                        showAnswer && isCorrect && "bg-green-100 border-green-400 text-green-800",
-                                        showAnswer && isSelected && !isCorrect && "bg-red-100 border-red-400 text-red-800"
-                                    )}
-                                >
-                                    <RadioGroupItem value={option} id={optionId} />
-                                    <Label htmlFor={optionId} className="flex-1 cursor-pointer">{option}</Label>
-                                    {showAnswer && isCorrect && <CheckCircle className="h-5 w-5 text-green-600" />}
-                                    {showAnswer && isSelected && !isCorrect && <XCircle className="h-5 w-5 text-red-600" />}
-                                </div>
-                            )
-                        })}
-                    </RadioGroup>
-                </CardContent>
-                <CardFooter className="flex flex-col items-center gap-4">
-                     <div className="flex justify-between items-center w-full">
-                        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} size="icon" className="md:hidden">
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="hidden md:inline-flex">
-                            <ChevronLeft className="mr-2 h-4 w-4" /> Previous
-                        </Button>
-                        <ScrollArea className="w-48 whitespace-nowrap rounded-md border">
-                            <div className="flex w-max space-x-2 p-2">
-                                {mcqData.map((question, index) => (
-                                    <Button
-                                        key={question.questionNumber}
-                                        ref={index === currentQuestionIndex ? activeQuestionRef : null}
-                                        variant={index === currentQuestionIndex ? 'default' : 'outline'}
-                                        size="icon"
-                                        onClick={() => handleQuestionSelect(index)}
+            <div className="flex flex-col lg:flex-row gap-6">
+                <Card className="w-full lg:w-1/2">
+                    <CardHeader>
+                        <CardDescription>{currentQuestion.source}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="mb-4 font-semibold">{currentQuestion.questionNumber}. {currentQuestion.question}</p>
+                        <RadioGroup
+                            value={selectedAnswers[currentQuestionIndex] || ''}
+                            onValueChange={(value) => handleAnswerSelect(currentQuestionIndex, value)}
+                            className="space-y-2"
+                        >
+                            {currentQuestion.options.map((option, index) => {
+                                const isCorrect = option === currentQuestion.answer;
+                                const isSelected = selectedAnswers[currentQuestionIndex] === option;
+                                const optionId = `q${currentQuestionIndex}-op${index}`;
+                                
+                                return (
+                                    <div
+                                        key={index}
+                                        className={cn(
+                                            "flex items-center space-x-2 p-2 rounded-md border",
+                                            showAnswer && isCorrect && "bg-green-100 border-green-400 text-green-800",
+                                            showAnswer && isSelected && !isCorrect && "bg-red-100 border-red-400 text-red-800"
+                                        )}
                                     >
-                                        {index + 1}
-                                    </Button>
-                                ))}
-                            </div>
-                            <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                        <Button onClick={handleNext} size="icon" className="md:hidden">
-                            <ChevronRight className="h-4 w-4" />
-                        </Button>
-                        <Button onClick={handleNext} className="hidden md:inline-flex">
-                            {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
-                            {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
-                        </Button>
-                    </div>
-                    <div className="flex gap-2">
-                        <Button variant="outline" onClick={() => setShowAnswer(!showAnswer)}>
-                            <Lightbulb className="mr-2 h-4 w-4" /> {showAnswer ? "Hide" : "Show"} Answer
-                        </Button>
-                        <Button variant="destructive" onClick={() => setShowScore(true)}>End</Button>
-                    </div>
-                </CardFooter>
-            </Card>
-            <Whiteboard />
+                                        <RadioGroupItem value={option} id={optionId} />
+                                        <Label htmlFor={optionId} className="flex-1 cursor-pointer">{option}</Label>
+                                        {showAnswer && isCorrect && <CheckCircle className="h-5 w-5 text-green-600" />}
+                                        {showAnswer && isSelected && !isCorrect && <XCircle className="h-5 w-5 text-red-600" />}
+                                    </div>
+                                )
+                            })}
+                        </RadioGroup>
+                    </CardContent>
+                    <CardFooter className="flex flex-col items-center gap-4">
+                        <div className="flex justify-between items-center w-full">
+                            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} size="icon" className="md:hidden">
+                                <ChevronLeft className="h-4 w-4" />
+                            </Button>
+                            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="hidden md:inline-flex">
+                                <ChevronLeft className="mr-2 h-4 w-4" /> Previous
+                            </Button>
+                            <ScrollArea className="w-48 whitespace-nowrap rounded-md border">
+                                <div className="flex w-max space-x-2 p-2">
+                                    {mcqData.map((question, index) => (
+                                        <Button
+                                            key={question.questionNumber}
+                                            ref={index === currentQuestionIndex ? activeQuestionRef : null}
+                                            variant={index === currentQuestionIndex ? 'default' : 'outline'}
+                                            size="icon"
+                                            onClick={() => handleQuestionSelect(index)}
+                                        >
+                                            {index + 1}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <ScrollBar orientation="horizontal" />
+                            </ScrollArea>
+                            <Button onClick={handleNext} size="icon" className="md:hidden">
+                                <ChevronRight className="h-4 w-4" />
+                            </Button>
+                            <Button onClick={handleNext} className="hidden md:inline-flex">
+                                {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
+                                {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
+                            </Button>
+                        </div>
+                        <div className="flex gap-2">
+                            <Button variant="outline" onClick={() => setShowAnswer(!showAnswer)}>
+                                <Lightbulb className="mr-2 h-4 w-4" /> {showAnswer ? "Hide" : "Show"} Answer
+                            </Button>
+                            <Button variant="destructive" onClick={() => setShowScore(true)}>End</Button>
+                        </div>
+                    </CardFooter>
+                </Card>
+                <div className="w-full lg:w-1/2">
+                    <Whiteboard />
+                </div>
+            </div>
         </div>
     );
 }
