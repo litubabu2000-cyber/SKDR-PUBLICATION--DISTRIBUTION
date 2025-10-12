@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -15,6 +15,7 @@ const quickLinks = [
   { href: '/mcq-practice', label: 'SUBJECT-WISE MCQ PRACTICE', icon: Target },
   { href: '/all-india-tests', label: 'ALL INDIA TESTS', icon: Globe },
   { href: '/state-level-tests', label: 'STATE LEVEL TESTS', icon: Landmark },
+  { href: '/translator', label: 'TRANSLATOR', icon: Languages },
 ];
 
 export default function Home() {
