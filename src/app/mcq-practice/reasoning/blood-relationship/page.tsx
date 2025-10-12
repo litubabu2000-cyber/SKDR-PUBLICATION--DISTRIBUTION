@@ -325,19 +325,19 @@ const mcqData = [
     },
     {
         type: "TYPE–I",
-        questionNumber: 20,
-        question: "A is the father of B, C is the daughter of B, D is the brother of B, E is the son of A. What is the relationship between C and E ?",
-        options: ["Brother and sister", "Cousins", "Niece and uncle", "Uncle and aunt"],
-        source: "SSC CPO Sub-Inspector Exam. 12.12.2010 (Paper-I)",
-        answer: "Niece and uncle"
-    },
-    {
-        type: "TYPE–I",
         questionNumber: 42,
         question: "If A is the mother of D, B is not the son of C, C is the father of D, D is the sister of B, then how is A related to B ?",
         options: ["Mother", "Brother", "Step son", "Sister"],
         source: "SSC Stenographer Grade 'C' & 'D' Exam. 09.01.2011)",
         answer: "Mother"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 20,
+        question: "A is the father of B, C is the daughter of B, D is the brother of B, E is the son of A. What is the relationship between C and E ?",
+        options: ["Brother and sister", "Cousins", "Niece and uncle", "Uncle and aunt"],
+        source: "SSC CPO Sub-Inspector Exam. 12.12.2010 (Paper-I)",
+        answer: "Niece and uncle"
     },
     {
         type: "TYPE–I",
@@ -450,6 +450,14 @@ const mcqData = [
         options: ["Niece", "Uncle", "Daughter", "Father"],
         source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.01.2016 TF No. 3513283)",
         answer: "Niece"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 55,
+        question: "A and B are a married couple. C and D are brothers. C is the brother of A. How is D related to B ?",
+        options: ["Brother", "Son–in–law", "Cousin", "Brother–in–law"],
+        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.07.2016)",
+        answer: "Brother–in–law"
     },
     {
         questionNumber: 56,
@@ -660,6 +668,158 @@ const mcqData = [
         type: "TYPE–I"
     },
     {
+        type: "TYPE–I",
+        questionNumber: 56,
+        question: "A and B are married couple. X and Y are brothers. X is the brother of A. How is Y related to B ?",
+        options: ["Brother-in-law", "Brother", "Son-in-law", "Cousin"],
+        source: "SSC CGL Tier-I (CBE) Exam.11.09.2016) (Ist Sitting)",
+        answer: "Brother-in-law"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 57,
+        question: "A man ‘P’ goes to a party hosted by his brother ‘Q’ who has a daughter M. M is dancing with her brother ‘N’. How is ‘P’ related to ‘N’ ?",
+        options: ["Nephew", "Father", "Uncle", "Cousin"],
+        source: "SSC CPO Exam. 06.06.2016)(Ist Sitting)",
+        answer: "Uncle"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 58,
+        question: "There is a family of six persons P, Q, R, S, T and U. They are Lawyer, Doctor, Teacher, Salesman, Engineer and Manager. There are two married couples in the family. S, the Salesman is married to the Lady Teacher. The Doctor is married to the Lawyer. U, the Manager, is the son of Q and brother of T. R, the Lawyer, is the daughter- in-law of P. T is the unmarried Engineer. P is the grandmother of U. Which of the following is one of the married couples ?",
+        options: ["T and R", "P and S", "S and Q", "T and P"],
+        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
+        answer: "P and S"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 59,
+        question: "There is a family of six persons P, Q, R, S, T and U. They are Lawyer, Doctor, Teacher, Salesman, Engineer and Manager. There are two married couples in the family. S, the Salesman is married to the Lady Teacher. The Doctor is married to the Lawyer. U, the Manager, is the son of Q and brother of T. R, the Lawyer, is the daughter- in-law of P. T is the unmarried Engineer. P is the grandmother of U. What is the profession of P ?",
+        options: ["Lawyer", "Engineer", "Doctor", "Teacher"],
+        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
+        answer: "Teacher"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 60,
+        question: "A family consists of six members A, B, C, D, E and F. There are two married couples. B is a doctor and the father of E. F is the grandfather of C and is a contractor, D is grandmother of E and is a housewife. There is one doctor, one contractor, one nurse, one housewife and two students in the family. What is the profession of A ?",
+        options: ["Doctor", "Contractor", "Nurse", "Housewife"],
+        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
+        answer: "Nurse"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 61,
+        question: "A family consists of six members A, B, C, D, E and F. There are two married couples. B is a doctor and the father of E. F is the grandfather of C and is a contractor, D is grandmother of E and is a housewife. There is one doctor, one contractor, one nurse, one housewife and two students in the family. Who is the husband of A ?",
+        options: ["C", "B", "F", "D"],
+        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
+        answer: "B"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 62,
+        question: "If A is the mother of B and K, D is the husband of A. E is the son of D’s brother, what is the relation of A with E ?",
+        options: ["Mother – in – law", "Sister – in – law", "Aunt", "Sister"],
+        source: "SSC CHSL (10+2) Tier-I (CBE) Exam. 08.09.2016) (Ist Sitting)",
+        answer: "Aunt"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 63,
+        question: "A is D’s brother. D is B’s father. B and C are sisters. How is C related to A?",
+        options: ["Cousin", "Niece", "Aunt", "Nephew"],
+        source: "SSC CGL Tier-I (CBE) Exam. 09.09.2016) (Ist Sitting)",
+        answer: "Niece"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 64,
+        question: "X and Y are brothers. R is the father of Y. T is the sister of S who is maternal uncle of X. How is T related to R ?",
+        options: ["Mother", "Wife", "Sister", "Brother"],
+        source: "SSC CGL Tier-I (CBE) Exam. 27.08.2016) (Ist Sitting)",
+        answer: "Wife"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 65,
+        question: "P and Q are sisters. R and S are brothers. P’s daughter is R’s sister. What is Q’s relation to S ?",
+        options: ["Mother", "Grandmother", "Sister", "Aunt"],
+        source: "SSC CGL Tier-I (CBE) Exam. 28.08.2016) (IInd Sitting)",
+        answer: "Aunt"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 66,
+        question: "X is the husband of Y. W is the daughter of X. Z is the husband of W. N is the daughter of Z. What is the relationship of N to Y ?",
+        options: ["Cousin", "Niece", "Daughter", "Granddaughter"],
+        source: "SSC CGL Tier-I (CBE) Exam. 30.08.2016) (Ist Sitting)",
+        answer: "Granddaughter"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 67,
+        question: "‘A’ is the sister of ‘B’. ‘B’ is married to ‘D’. ‘B’ and ‘D’ have a daughter ‘G’. How is ‘G’ related to ‘A’ ?",
+        options: ["Sister", "Daughter", "Niece", "Cousin"],
+        source: "SSC CGL Tier-I (CBE) Exam. 01.09.2016) (Ist Sitting)",
+        answer: "Niece"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 68,
+        question: "F is the brother of A. C is the daughter of A. K is the sister of F, G is the brother of C. Who is the uncle of G?",
+        options: ["A", "C", "K", "F"],
+        source: "SSC CGL Tier-I (CBE) Exam. 03.09.2016) (IInd Sitting)",
+        answer: "F"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 69,
+        question: "If M is the sister of Z , Z is the wife of P and P is the son of A, how is Z related to A?",
+        options: ["Daughter-in-law", "Daughter", "Wife", "Mother"],
+        source: "SSC CGL Tier-I (CBE) Exam. 07.09.2016) (Ist Sitting)",
+        answer: "Daughter-in-law"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 70,
+        question: "M is son of P, Q is the granddaughter of O, who is the husband of P. How is M related to O ?",
+        options: ["Son", "Daughter", "Mother", "Father"],
+        source: "SSC CGL Tier-I (CBE) Exam. 01.09.2016) (IInd Sitting)",
+        answer: "Son"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 71,
+        question: "A is mother of B , C is son of A, D is brother of E, E is daughter of B. Who is the grandmother of E?",
+        options: ["A", "B", "C", "D"],
+        source: "SSC CGL Tier-I (CBE) Exam. 06.09.2016) (IIIrd Sitting)",
+        answer: "A"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 72,
+        question: "A is B’s brother, C is A’s mother, D is C’s father, F is A’s son. How is A related to F’s child?",
+        options: ["Aunt", "Cousin", "Nephew", "Grandfather"],
+        source: "SSC CGL Tier-I (CBE) Exam. 08.09.2016) (IIIrd Sitting)",
+        answer: "Grandfather"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 73,
+        question: "‘A’ and ‘B’ are brothers. ‘C’ and ‘D’ are sisters. A’s son is D’s brother. How is B related to C?",
+        options: ["Father", "Brother", "Grandfather", "Uncle"],
+        source: "SSC CGL Tier-I (CBE) Exam. 03.09.2016) (IInd Sitting)",
+        answer: "Uncle"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 74,
+        question: "M is brother of N. B is brother of N. M is brother of D. But N is not brother of D. How is N related to D ?",
+        options: ["Nephew", "Cousin", "Sister", "Brother"],
+        source: "SSC CGL Tier-I (CBE) Exam. 04.09.2016) (IInd Sitting)",
+        answer: "Sister"
+    },
+    {
         questionNumber: 70,
         question: "Ranjeet is the son of Amit's father's sister. Sunil is the son of Divya who is mother of Gautam and grandmother of Amit. Arora is father of Dhanya and grandfather of Ranjeet. Divya is the wife of Arora. How is Sunil related to Dhanya?",
         options: ["Son", "Brother", "Nephew", "Uncle"],
@@ -804,166 +964,6 @@ const mcqData = [
         type: "Type-2"
     },
     {
-        type: "TYPE–I",
-        questionNumber: 55,
-        question: "A and B are a married couple. C and D are brothers. C is the brother of A. How is D related to B ?",
-        options: ["Brother", "Son–in–law", "Cousin", "Brother–in–law"],
-        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.07.2016)",
-        answer: "Brother–in–law"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 64,
-        question: "X and Y are brothers. R is the father of Y. T is the sister of S who is maternal uncle of X. How is T related to R ?",
-        options: ["Mother", "Wife", "Sister", "Brother"],
-        source: "SSC CGL Tier-I (CBE) Exam. 27.08.2016) (Ist Sitting)",
-        answer: "Wife"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 65,
-        question: "P and Q are sisters. R and S are brothers. P’s daughter is R’s sister. What is Q’s relation to S ?",
-        options: ["Mother", "Grandmother", "Sister", "Aunt"],
-        source: "SSC CGL Tier-I (CBE) Exam. 28.08.2016) (IInd Sitting)",
-        answer: "Aunt"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 66,
-        question: "X is the husband of Y. W is the daughter of X. Z is the husband of W. N is the daughter of Z. What is the relationship of N to Y ?",
-        options: ["Cousin", "Niece", "Daughter", "Granddaughter"],
-        source: "SSC CGL Tier-I (CBE) Exam. 30.08.2016) (Ist Sitting)",
-        answer: "Granddaughter"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 67,
-        question: "‘A’ is the sister of ‘B’. ‘B’ is married to ‘D’. ‘B’ and ‘D’ have a daughter ‘G’. How is ‘G’ related to ‘A’ ?",
-        options: ["Sister", "Daughter", "Niece", "Cousin"],
-        source: "SSC CGL Tier-I (CBE) Exam. 01.09.2016) (Ist Sitting)",
-        answer: "Niece"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 70,
-        question: "M is son of P, Q is the granddaughter of O, who is the husband of P. How is M related to O ?",
-        options: ["Son", "Daughter", "Mother", "Father"],
-        source: "SSC CGL Tier-I (CBE) Exam. 01.09.2016) (IInd Sitting)",
-        answer: "Son"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 68,
-        question: "F is the brother of A. C is the daughter of A. K is the sister of F, G is the brother of C. Who is the uncle of G?",
-        options: ["A", "C", "K", "F"],
-        source: "SSC CGL Tier-I (CBE) Exam. 03.09.2016) (IInd Sitting)",
-        answer: "F"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 73,
-        question: "‘A’ and ‘B’ are brothers. ‘C’ and ‘D’ are sisters. A’s son is D’s brother. How is B related to C?",
-        options: ["Father", "Brother", "Grandfather", "Uncle"],
-        source: "SSC CGL Tier-I (CBE) Exam. 03.09.2016) (IInd Sitting)",
-        answer: "Uncle"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 74,
-        question: "M is brother of N. B is brother of N. M is brother of D. But N is not brother of D. How is N related to D ?",
-        options: ["Nephew", "Cousin", "Sister", "Brother"],
-        source: "SSC CGL Tier-I (CBE) Exam. 04.09.2016) (IInd Sitting)",
-        answer: "Sister"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 71,
-        question: "A is mother of B , C is son of A, D is brother of E, E is daughter of B. Who is the grandmother of E?",
-        options: ["A", "B", "C", "D"],
-        source: "SSC CGL Tier-I (CBE) Exam. 06.09.2016) (IIIrd Sitting)",
-        answer: "A"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 69,
-        question: "If M is the sister of Z , Z is the wife of P and P is the son of A, how is Z related to A?",
-        options: ["Daughter-in-law", "Daughter", "Wife", "Mother"],
-        source: "SSC CGL Tier-I (CBE) Exam. 07.09.2016) (Ist Sitting)",
-        answer: "Daughter-in-law"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 62,
-        question: "If A is the mother of B and K, D is the husband of A. E is the son of D’s brother, what is the relation of A with E ?",
-        options: ["Mother – in – law", "Sister – in – law", "Aunt", "Sister"],
-        source: "SSC CHSL (10+2) Tier-I (CBE) Exam. 08.09.2016) (Ist Sitting)",
-        answer: "Aunt"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 72,
-        question: "A is B’s brother, C is A’s mother, D is C’s father, F is A’s son. How is A related to F’s child?",
-        options: ["Aunt", "Cousin", "Nephew", "Grandfather"],
-        source: "SSC CGL Tier-I (CBE) Exam. 08.09.2016) (IIIrd Sitting)",
-        answer: "Grandfather"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 63,
-        question: "A is D’s brother. D is B’s father. B and C are sisters. How is C related to A?",
-        options: ["Cousin", "Niece", "Aunt", "Nephew"],
-        source: "SSC CGL Tier-I (CBE) Exam. 09.09.2016) (Ist Sitting)",
-        answer: "Niece"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 56,
-        question: "A and B are married couple. X and Y are brothers. X is the brother of A. How is Y related to B ?",
-        options: ["Brother-in-law", "Brother", "Son-in-law", "Cousin"],
-        source: "SSC CGL Tier-I (CBE) Exam.11.09.2016) (Ist Sitting)",
-        answer: "Brother-in-law"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 57,
-        question: "A man ‘P’ goes to a party hosted by his brother ‘Q’ who has a daughter M. M is dancing with her brother ‘N’. How is ‘P’ related to ‘N’ ?",
-        options: ["Nephew", "Father", "Uncle", "Cousin"],
-        source: "SSC CPO Exam. 06.06.2016)(Ist Sitting)",
-        answer: "Uncle"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 58,
-        question: "There is a family of six persons P, Q, R, S, T and U. They are Lawyer, Doctor, Teacher, Salesman, Engineer and Manager. There are two married couples in the family. S, the Salesman is married to the Lady Teacher. The Doctor is married to the Lawyer. U, the Manager, is the son of Q and brother of T. R, the Lawyer, is the daughter- in-law of P. T is the unmarried Engineer. P is the grandmother of U. Which of the following is one of the married couples ?",
-        options: ["T and R", "P and S", "S and Q", "T and P"],
-        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
-        answer: "P and S"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 59,
-        question: "There is a family of six persons P, Q, R, S, T and U. They are Lawyer, Doctor, Teacher, Salesman, Engineer and Manager. There are two married couples in the family. S, the Salesman is married to the Lady Teacher. The Doctor is married to the Lawyer. U, the Manager, is the son of Q and brother of T. R, the Lawyer, is the daughter- in-law of P. T is the unmarried Engineer. P is the grandmother of U. What is the profession of P ?",
-        options: ["Lawyer", "Engineer", "Doctor", "Teacher"],
-        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
-        answer: "Teacher"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 60,
-        question: "A family consists of six members A, B, C, D, E and F. There are two married couples. B is a doctor and the father of E. F is the grandfather of C and is a contractor, D is grandmother of E and is a housewife. There is one doctor, one contractor, one nurse, one housewife and two students in the family. What is the profession of A ?",
-        options: ["Doctor", "Contractor", "Nurse", "Housewife"],
-        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
-        answer: "Nurse"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 61,
-        question: "A family consists of six members A, B, C, D, E and F. There are two married couples. B is a doctor and the father of E. F is the grandfather of C and is a contractor, D is grandmother of E and is a housewife. There is one doctor, one contractor, one nurse, one housewife and two students in the family. Who is the husband of A ?",
-        options: ["C", "B", "F", "D"],
-        source: "SSC CPO Exam. 06.06.2016) (Ist Sitting)",
-        answer: "B"
-    },
-    {
         questionNumber: 65,
         question: "Dharun has a brother Anand. Dharun is the son of Kumar. Krishnan is Kumar's father. How is Anand related to Krishnan?",
         options: ["Grandfather", "Father", "Grandson", "Son"],
@@ -1036,14 +1036,6 @@ const mcqData = [
         type: "Type-2"
     },
     {
-        questionNumber: 97,
-        question: "Pointing to a boy, Suresh said, \"His mother's brother is the only son of my mother's father.\" How is the boy's mother related to Suresh?",
-        options: ["Maternal Aunt", "Sister", "Grandmother", "Mother"],
-        source: "RRB NTPC – 10.02.2021",
-        answer: "Maternal Aunt",
-        type: "Type-2"
-    },
-    {
         questionNumber: 77,
         question: "Pointing to a lady, Ajay said, \"She is the only daughter of my mother's father. She has two children. Her only son's wife is Reeta.\" Ajay is the lady's _________.",
         options: ["Son", "Brother", "Nephew", "Husband"],
@@ -1105,6 +1097,14 @@ const mcqData = [
         options: ["Wife's father's sister", "Father's sister", "Wife's mother", "Wife's brother's wife"],
         source: "RRB NTPC – 04.02.2021 (Shift-I) Stage-I",
         answer: "Wife's father's sister",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 97,
+        question: "Pointing to a boy, Suresh said, \"His mother's brother is the only son of my mother's father.\" How is the boy's mother related to Suresh?",
+        options: ["Maternal Aunt", "Sister", "Grandmother", "Mother"],
+        source: "RRB NTPC – 10.02.2021",
+        answer: "Maternal Aunt",
         type: "Type-2"
     },
     {
@@ -1309,169 +1309,5 @@ const mcqData = [
     }
 ]
 
-export default function BloodRelationshipPage() {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
-    const [showScore, setShowScore] = useState(false);
-    const [showAnswer, setShowAnswer] = useState(false);
-    const activeQuestionRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        if (activeQuestionRef.current) {
-            activeQuestionRef.current.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'center'
-            });
-        }
-    }, [currentQuestionIndex]);
 
 
-    const handleNext = () => {
-        setShowAnswer(false); // Hide answer when moving to next question
-        if (currentQuestionIndex < mcqData.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-            setShowScore(true);
-        }
-    };
-
-    const handlePrevious = () => {
-        setShowAnswer(false); // Hide answer when moving to previous question
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
-        }
-    };
-
-    const handleAnswerSelect = (questionIndex: number, answer: string) => {
-        setSelectedAnswers({
-            ...selectedAnswers,
-            [questionIndex]: answer,
-        });
-    };
-
-    const handleQuestionSelect = (index: number) => {
-        setShowAnswer(false);
-        setCurrentQuestionIndex(index);
-    }
-
-    const calculateScore = () => {
-        let score = 0;
-        mcqData.forEach((question, index) => {
-            if (selectedAnswers[index] === question.answer) {
-                score++;
-            }
-        });
-        return score;
-    };
-
-    const currentQuestion = mcqData[currentQuestionIndex];
-    const score = calculateScore();
-
-    if (showScore) {
-        return (
-            <div className="container mx-auto p-4 md:p-6 flex flex-col items-center justify-center min-h-[60vh]">
-                <Card className="w-full max-w-xl text-center">
-                    <CardHeader>
-                        <CardTitle>Quiz Completed!</CardTitle>
-                        <CardDescription>You have completed the Blood Relationship quiz.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-4xl font-bold mb-4">Your Score: {score} / {mcqData.length}</p>
-                        <Button onClick={() => {
-                            setShowScore(false);
-                            setCurrentQuestionIndex(0);
-                            setSelectedAnswers({});
-                        }}>
-                            Restart Quiz
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-        );
-    }
-
-    return (
-        <div className="container mx-auto p-4 md:p-6">
-            <div className="flex flex-col lg:flex-row gap-6">
-                <Card className="w-full lg:w-1/2">
-                    <CardHeader>
-                        <CardDescription>{currentQuestion.source}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="mb-4 font-semibold">{currentQuestionIndex + 1}. {currentQuestion.question}</p>
-                        <RadioGroup
-                            value={selectedAnswers[currentQuestionIndex] || ''}
-                            onValueChange={(value) => handleAnswerSelect(currentQuestionIndex, value)}
-                            className="space-y-2"
-                        >
-                            {currentQuestion.options.map((option, index) => {
-                                const isCorrect = option === currentQuestion.answer;
-                                const isSelected = selectedAnswers[currentQuestionIndex] === option;
-                                const optionId = `q${currentQuestionIndex}-op${index}`;
-                                
-                                return (
-                                    <div
-                                        key={index}
-                                        className={cn(
-                                            "flex items-center space-x-2 p-2 rounded-md border",
-                                            showAnswer && isCorrect && "bg-green-100 border-green-400 text-green-800",
-                                            showAnswer && isSelected && !isCorrect && "bg-red-100 border-red-400 text-red-800"
-                                        )}
-                                    >
-                                        <RadioGroupItem value={option} id={optionId} />
-                                        <Label htmlFor={optionId} className="flex-1 cursor-pointer">{option}</Label>
-                                        {showAnswer && isCorrect && <CheckCircle className="h-5 w-5 text-green-600" />}
-                                        {showAnswer && isSelected && !isCorrect && <XCircle className="h-5 w-5 text-red-600" />}
-                                    </div>
-                                )
-                            })}
-                        </RadioGroup>
-                    </CardContent>
-                    <CardFooter className="flex flex-col items-center gap-4">
-                        <div className="flex justify-between items-center w-full">
-                            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} size="icon" className="md:hidden">
-                                <ChevronLeft className="h-4 w-4" />
-                            </Button>
-                            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="hidden md:inline-flex">
-                                <ChevronLeft className="mr-2 h-4 w-4" /> Previous
-                            </Button>
-                            <ScrollArea className="w-48 whitespace-nowrap rounded-md border">
-                                <div className="flex w-max space-x-2 p-2">
-                                    {mcqData.map((question, index) => (
-                                        <Button
-                                            key={question.questionNumber}
-                                            ref={index === currentQuestionIndex ? activeQuestionRef : null}
-                                            variant={index === currentQuestionIndex ? 'default' : 'outline'}
-                                            size="icon"
-                                            onClick={() => handleQuestionSelect(index)}
-                                        >
-                                            {index + 1}
-                                        </Button>
-                                    ))}
-                                </div>
-                                <ScrollBar orientation="horizontal" />
-                            </ScrollArea>
-                            <Button onClick={handleNext} size="icon" className="md:hidden">
-                                <ChevronRight className="h-4 w-4" />
-                            </Button>
-                            <Button onClick={handleNext} className="hidden md:inline-flex">
-                                {currentQuestionIndex === mcqData.length - 1 ? "Finish" : "Next"}
-                                {currentQuestionIndex < mcqData.length - 1 && <ChevronRight className="ml-2 h-4 w-4" />}
-                            </Button>
-                        </div>
-                        <div className="flex gap-2">
-                            <Button variant="outline" onClick={() => setShowAnswer(!showAnswer)}>
-                                <Lightbulb className="mr-2 h-4 w-4" /> {showAnswer ? "Hide" : "Show"} Answer
-                            </Button>
-                            <Button variant="destructive" onClick={() => setShowScore(true)}>End</Button>
-                        </div>
-                    </CardFooter>
-                </Card>
-                <div className="w-full lg:w-1/2">
-                    <Whiteboard />
-                </div>
-            </div>
-        </div>
-    );
-}
