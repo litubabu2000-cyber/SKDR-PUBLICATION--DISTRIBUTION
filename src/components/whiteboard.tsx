@@ -2,15 +2,13 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Eraser, Pen, ArrowLeft } from 'lucide-react';
+import { Eraser, Pen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { useRouter } from 'next/navigation';
 
 const Whiteboard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -121,16 +119,10 @@ const Whiteboard = () => {
     <Card className="w-full h-full flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2"><Pen className="size-5" /> Whiteboard</CardTitle>
-            <div className="flex gap-2">
-                 <Button variant="outline" size="icon" onClick={() => router.back()}>
-                    <ArrowLeft className="size-5" />
-                    <span className="sr-only">Go Back</span>
-                </Button>
-                <Button variant="outline" size="icon" onClick={clearCanvas}>
-                    <Eraser className="size-5" />
-                    <span className="sr-only">Clear Whiteboard</span>
-                </Button>
-            </div>
+            <Button variant="outline" size="icon" onClick={clearCanvas}>
+                <Eraser className="size-5" />
+                <span className="sr-only">Clear Whiteboard</span>
+            </Button>
         </CardHeader>
         <CardContent className="flex-grow">
             <canvas

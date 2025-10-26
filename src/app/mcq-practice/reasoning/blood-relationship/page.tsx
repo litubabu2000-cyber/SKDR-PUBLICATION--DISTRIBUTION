@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, ChevronsLeftRight, Maximize, Minimize } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Whiteboard } from "@/components/whiteboard";
@@ -444,6 +444,14 @@ const mcqData = [
         answer: "Niece"
     },
     {
+        questionNumber: 36,
+        question: "Rishi's mother is the only daughter of Maria's father. What is the relation between Maria's husband and Rishi?",
+        options: ["Uncle", "Father", "Grandfather", "Brother"],
+        source: "RRB NTPC – 30.04.2016 Shift-I",
+        answer: "Father",
+        type: "TYPE–I"
+    },
+    {
         questionNumber: 56,
         question: "Joshi said to Chitra, \"Your daughter's father is the son of my brother.\" How is Joshi's brother related to Chitra's daughter?",
         options: ["Son", "Uncle", "Grandfather", "Grandson"],
@@ -609,6 +617,102 @@ const mcqData = [
         options: ["Niece", "Granddaughter", "Daughter", "Sister"],
         source: "RRB NTPC – 12.04.2016 Shift-II",
         answer: "Granddaughter",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 82,
+        question: "Pointing to a person, Nayan says, \"His only brother is the father of my daughter's father.\" How is the person related to Nayan?",
+        options: ["Father", "Grandfather", "Uncle", "Brother-in-law"],
+        source: "RRB NTPC – 29.04.2016 Shift-III",
+        answer: "Uncle",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 83,
+        question: "Pointing to a picture, Amisha says, \"He is the son of my grandfather's only son.\" How is the person in the picture related to Amisha?",
+        options: ["Brother", "Uncle", "Son", "Father"],
+        source: "RRB NTPC – 29.04.2016 Shift-III",
+        answer: "Brother",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 84,
+        question: "Pointing to a person, Nitish says, \"His only brother is the father of my daughter's father.\" How is the person related to Nitish?",
+        options: ["Father", "Grandfather", "Uncle", "Brother-in-law"],
+        source: "RRB NTPC – 30.04.2016 Shift-III",
+        answer: "Uncle",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 85,
+        question: "Pointing to an old man, Kamal said, \"His son is my son's uncle.\" How is that old man related to Kamal?",
+        options: ["Brother", "Uncle", "Father", "Grandfather"],
+        source: "RRB NTPC – 30.04.2016 Shift-I",
+        answer: "Father",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 86,
+        question: "Pointing to the lady in the metro, Twinkle said, \"She is the sister of the father of my mother's son.\" How is that lady related to Twinkle?",
+        options: ["Mother", "Sister", "Aunt", "Niece"],
+        source: "RRB NTPC – 29.04.2016 Shift-II",
+        answer: "Aunt",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 37,
+        question: "Hemant said to Naitik, \"That boy who is playing football is the younger of the two brothers of the daughter of my father's wife.\" How is the boy who is playing football related to Hemant?",
+        options: ["Son", "Brother", "Cousin", "Nephew"],
+        source: "RRB NTPC – 29.04.2016 Shift-II",
+        answer: "Brother",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 87,
+        question: "Pointing towards a picture of a person, Ritu says, \"He is the grandfather of the only nephew of only unmarried brother of my son's wife.\" How is the person related to Ritu?",
+        options: ["Husband", "Father", "Father-in-law", "Grandfather"],
+        source: "RRB NTPC – 28.04.2016 Shift-III",
+        answer: "Husband",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 38,
+        question: "Ajay says, \"That woman is the grandmother of the son of my mother's only sister-in-law.\" If Ajay's father has only one brother and Ajay's mother has no brother, then how is the woman related to Ajay?",
+        options: ["Grandmother", "Wife", "Maternal Grandmother", "Mother"],
+        source: "RRB NTPC – 28.04.2016 Shift-III",
+        answer: "Grandmother",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 39,
+        question: "Divya says, \"That lady is the grandmother of the son of only brother of my husband's sister.\" How is that lady related to Divya?",
+        options: ["Mother", "Mother-in-law", "Maternal Aunt", "Maternal Grandmother"],
+        source: "RRB NTPC – 28.04.2016 Shift-II",
+        answer: "Mother-in-law",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 40,
+        question: "Hiten introduced Mita as mother-in-law of the only sister of the only son of his son's maternal grandfather. How is Mita related to Hiten?",
+        options: ["Mother", "Mother-in-law", "Wife", "Maternal Aunt"],
+        source: "RRB NTPC – 28.04.2016 Shift-II",
+        answer: "Mother",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 41,
+        question: "Mark says, \"Linda is the wife of my mother's grandson.\" How is Mark related to Linda?",
+        options: ["Father", "Grandfather", "Father-in-law", "Husband"],
+        source: "RRB NTPC – 26.04.2016 Shift-III",
+        answer: "Father-in-law",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 42,
+        question: "Vijay says, \"This person is the son-in-law of the maternal grandmother of my sister's son.\" If Vijay has only one brother or sister, then how is that person related to Vijay?",
+        options: ["Brother", "Brother-in-law", "Maternal Uncle", "Cousin Brother"],
+        source: "RRB NTPC – 22.04.2016 Shift-III",
+        answer: "Brother-in-law",
         type: "TYPE–I"
     },
     {
@@ -810,6 +914,22 @@ const mcqData = [
         options: ["Nephew", "Cousin", "Sister", "Brother"],
         source: "SSC CGL Tier-I (CBE) Exam. 04.09.2016) (IInd Sitting)",
         answer: "Sister"
+    },
+    {
+        questionNumber: 54,
+        question: "Pointing to a woman, I said that her brother's only son is my wife's brother. How is the woman related to me?",
+        options: ["Sister of Father-in-law", "Mother-in-law", "Sister-in-law", "Sister"],
+        source: "RRB NTPC – 19.04.2016 Shift-II",
+        answer: "Sister of Father-in-law",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 93,
+        question: "Pointing to a man, a woman said, \"He is the brother of the daughter of my husband's wife.\" How is the woman related to that man?",
+        options: ["Son", "Mother", "Father", "Sister"],
+        source: "RRB NTPC – 19.04.2016 Shift-I",
+        answer: "Mother",
+        type: "Type-2"
     },
     {
         questionNumber: 65,
@@ -1044,6 +1164,14 @@ const mcqData = [
         type: "TYPE–I"
     },
     {
+        questionNumber: 66,
+        question: "Sujal is the only son of X’s mother-in-law’s husband Veer. Kashish is the wife of Sujal. Sujal has only one sister named Wimra. How is X related to Wimra?",
+        options: ["Husband", "Wife", "Maternal Uncle", "Paternal Uncle"],
+        source: "RRB NTPC – 31.07.2021 (Shift-II) Stage-I",
+        answer: "Husband",
+        type: "TYPE–I"
+    },
+    {
         questionNumber: 67,
         question: "A man said to a woman, \"Your husband's daughter is the daughter of my brother.\" How is the man related to the woman's daughter?",
         options: ["Brother", "Father's Brother", "Father", "Mother's brother"],
@@ -1089,14 +1217,6 @@ const mcqData = [
         options: ["Brother's daughter", "Brother's wife's sister", "Sister's daughter", "Daughter"],
         source: "RRB NTPC – 31.07.2021 (Shift-I) Stage-I",
         answer: "Sister's daughter",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 66,
-        question: "Sujal is the only son of X’s mother-in-law’s husband Veer. Kashish is the wife of Sujal. Sujal has only one sister named Wimra. How is X related to Wimra?",
-        options: ["Husband", "Wife", "Maternal Uncle", "Paternal Uncle"],
-        source: "RRB NTPC – 31.07.2021 (Shift-II) Stage-I",
-        answer: "Husband",
         type: "TYPE–I"
     },
     {
@@ -1170,6 +1290,14 @@ const mcqData = [
         source: "RRB NTPC (Stage-II) – 17/06/2022 (Shift-III)",
         answer: "A is daughter of D's son",
         type: "Type-4"
+    },
+    {
+        questionNumber: 73,
+        question: "Pointing at a picture, Yuvika said that the boy in the picture is the son of her father’s mother’s daughter. How is that boy related to Yuvika?",
+        options: ["Mother’s brother’s son", "Father’s brother", "Father’s sister’s son", "Brother"],
+        source: "RRB NTPC (Stage-II) – 17/06/2022 (Shift-II)",
+        answer: "Father’s sister’s son",
+        type: "Type-2"
     }
 ].sort((a, b) => {
     const getYear = (source: string) => {
@@ -1181,14 +1309,11 @@ const mcqData = [
     return yearA - yearB;
 });
 
-type ViewMode = 'split' | 'question' | 'whiteboard';
-
 export default function BloodRelationshipPage() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [showAnswer, setShowAnswer] = useState(false);
     const [quizEnded, setQuizEnded] = useState(false);
-    const [viewMode, setViewMode] = useState<ViewMode>('split');
 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -1273,32 +1398,10 @@ export default function BloodRelationshipPage() {
         );
     }
 
-    const ResizerControls = () => (
-         <div className="hidden md:flex flex-col items-center justify-center gap-2 p-2 bg-background border-y">
-            <Button variant="ghost" size="icon" onClick={() => setViewMode('question')} disabled={viewMode === 'question'}>
-                <Maximize />
-                <span className="sr-only">Maximize Question</span>
-            </Button>
-             <Button variant="ghost" size="icon" onClick={() => setViewMode('split')} disabled={viewMode === 'split'}>
-                <ChevronsLeftRight />
-                <span className="sr-only">Split View</span>
-            </Button>
-             <Button variant="ghost" size="icon" onClick={() => setViewMode('whiteboard')} disabled={viewMode === 'whiteboard'}>
-                <Maximize />
-                <span className="sr-only">Maximize Whiteboard</span>
-            </Button>
-        </div>
-    );
-
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
             <div className="flex flex-col md:flex-row md:gap-8 justify-center">
-                <div className={cn(
-                    "transition-all duration-300",
-                    viewMode === 'split' && 'md:w-1/2',
-                    viewMode === 'question' && 'md:w-full',
-                    viewMode === 'whiteboard' && 'md:w-0 md:hidden'
-                )}>
+                <div className="md:w-1/2">
                     <Card>
                         <CardHeader>
                             <CardDescription>{currentQuestion.source}</CardDescription>
@@ -1379,14 +1482,7 @@ export default function BloodRelationshipPage() {
                     </Card>
                 </div>
 
-                <ResizerControls />
-
-                <div className={cn(
-                    "md:w-1/2 mt-8 md:mt-0 transition-all duration-300",
-                    viewMode === 'split' && 'md:w-1/2',
-                    viewMode === 'whiteboard' && 'md:w-full',
-                    viewMode === 'question' && 'md:w-0 md:hidden'
-                )}>
+                <div className="md:w-1/2 mt-8 md:mt-0">
                     <Whiteboard />
                 </div>
             </div>
