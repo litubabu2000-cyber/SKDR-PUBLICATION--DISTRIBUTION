@@ -2,13 +2,15 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Eraser, Pen } from 'lucide-react';
+import { Eraser, Pen, ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { useRouter } from 'next/navigation';
 
 const Whiteboard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -116,15 +118,21 @@ const Whiteboard = () => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto mt-6">
+    <Card className="w-full h-full flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2"><Pen className="size-5" /> Whiteboard</CardTitle>
-            <Button variant="outline" size="icon" onClick={clearCanvas}>
-                <Eraser className="size-5" />
-                <span className="sr-only">Clear Whiteboard</span>
-            </Button>
+            <div className="flex gap-2">
+                 <Button variant="outline" size="icon" onClick={() => router.back()}>
+                    <ArrowLeft className="size-5" />
+                    <span className="sr-only">Go Back</span>
+                </Button>
+                <Button variant="outline" size="icon" onClick={clearCanvas}>
+                    <Eraser className="size-5" />
+                    <span className="sr-only">Clear Whiteboard</span>
+                </Button>
+            </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow">
             <canvas
               ref={canvasRef}
               onMouseDown={startDrawing}
@@ -134,7 +142,7 @@ const Whiteboard = () => {
               onTouchEnd={finishDrawing}
               onTouchMove={draw}
               onMouseLeave={finishDrawing}
-              className="w-full h-96 bg-white border border-border rounded-md cursor-crosshair touch-none"
+              className="w-full h-full bg-white border border-border rounded-md cursor-crosshair touch-none"
             />
         </CardContent>
     </Card>

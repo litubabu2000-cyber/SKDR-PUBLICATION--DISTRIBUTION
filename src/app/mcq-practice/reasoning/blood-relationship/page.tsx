@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, ChevronsLeftRight, Maximize, Minimize } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Whiteboard } from "@/components/whiteboard";
@@ -237,6 +237,22 @@ const mcqData = [
     },
     {
         type: "TYPE–I",
+        questionNumber: 37,
+        question: "A is B’s brother, C is A’s mother, D is C’s father, B is D’s granddaughter. How is B related to F who is A’s son ?",
+        options: ["Aunt", "Cousin", "Niece", "Grandaunt"],
+        source: "SSC Combined Matric Level (Pre) Exam. 30.03.2008 (Ist Sitting)",
+        answer: "Aunt"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 38,
+        question: "A is the son of B, while B and C are sisters to one another. E is the mother of C. If D is the son of E, which of the following statements is correct?",
+        options: ["D is the maternal uncle of A", "E is the brother of B", "D is the cousin of A", "B and D are brothers"],
+        source: "(SSC DEO Exam. 31.08.2008)",
+        answer: "D is the maternal uncle of A"
+    },
+    {
+        type: "TYPE–I",
         questionNumber: 14,
         question: "A is father of C and D is son of B. E is brother of A. If C is sister of D how is B related to E ?",
         options: ["Sister – in – law", "Sister", "Brother", "Brother – in – law"],
@@ -253,19 +269,27 @@ const mcqData = [
     },
     {
         type: "TYPE–I",
-        questionNumber: 37,
-        question: "A is B’s brother, C is A’s mother, D is C’s father, B is D’s granddaughter. How is B related to F who is A’s son ?",
-        options: ["Aunt", "Cousin", "Niece", "Grandaunt"],
-        source: "SSC Combined Matric Level (Pre) Exam. 30.03.2008 (Ist Sitting)",
-        answer: "Aunt"
+        questionNumber: 39,
+        question: "P is the father of T. T is the daughter of M. M is the daughter of K. What is P to K ?",
+        options: ["Father", "Father-in-law", "Brother", "Son-in-law"],
+        source: "SSC Stenographer (Grade'C & D') Exam. 26.09.2010",
+        answer: "Son-in-law"
     },
     {
         type: "TYPE–I",
-        questionNumber: 38,
-        question: "A is the son of B, while B and C are sisters to one another. E is the mother of C. If D is the son of E, which of the following statements is correct?",
-        options: ["D is the maternal uncle of A", "E is the brother of B", "D is the cousin of A", "B and D are brothers"],
-        source: "(SSC DEO Exam. 31.08.2008)",
-        answer: "D is the maternal uncle of A"
+        questionNumber: 40,
+        question: "A and B are brothers. E is the daugther of F. F is the wife of B. What is the relation of E to A ?",
+        options: ["sister", "daugther", "niece", "sister-in-law"],
+        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (Ist sitting)",
+        answer: "niece"
+    },
+    {
+        type: "TYPE–I",
+        questionNumber: 41,
+        question: "M and F are a married couple. A and B are sisters. A is the sister of F. Who is B to M ?",
+        options: ["Sister", "Sister-in-law", "Niece", "Daughter"],
+        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (IInd sitting)",
+        answer: "Sister-in-law"
     },
     {
         type: "TYPE–I",
@@ -301,27 +325,11 @@ const mcqData = [
     },
     {
         type: "TYPE–I",
-        questionNumber: 39,
-        question: "P is the father of T. T is the daughter of M. M is the daughter of K. What is P to K ?",
-        options: ["Father", "Father-in-law", "Brother", "Son-in-law"],
-        source: "SSC Stenographer (Grade'C & D') Exam. 26.09.2010",
-        answer: "Son-in-law"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 40,
-        question: "A and B are brothers. E is the daugther of F. F is the wife of B. What is the relation of E to A ?",
-        options: ["sister", "daugther", "niece", "sister-in-law"],
-        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (Ist sitting)",
-        answer: "niece"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 41,
-        question: "M and F are a married couple. A and B are sisters. A is the sister of F. Who is B to M ?",
-        options: ["Sister", "Sister-in-law", "Niece", "Daughter"],
-        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (IInd sitting)",
-        answer: "Sister-in-law"
+        questionNumber: 20,
+        question: "A is the father of B, C is the daughter of B, D is the brother of B, E is the son of A. What is the relationship between C and E ?",
+        options: ["Brother and sister", "Cousins", "Niece and uncle", "Uncle and aunt"],
+        source: "SSC CPO Sub-Inspector Exam. 12.12.2010 (Paper-I)",
+        answer: "Niece and uncle"
     },
     {
         type: "TYPE–I",
@@ -330,14 +338,6 @@ const mcqData = [
         options: ["Mother", "Brother", "Step son", "Sister"],
         source: "SSC Stenographer Grade 'C' & 'D' Exam. 09.01.2011)",
         answer: "Mother"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 20,
-        question: "A is the father of B, C is the daughter of B, D is the brother of B, E is the son of A. What is the relationship between C and E ?",
-        options: ["Brother and sister", "Cousins", "Niece and uncle", "Uncle and aunt"],
-        source: "SSC CPO Sub-Inspector Exam. 12.12.2010 (Paper-I)",
-        answer: "Niece and uncle"
     },
     {
         type: "TYPE–I",
@@ -442,14 +442,6 @@ const mcqData = [
         options: ["Niece", "Uncle", "Daughter", "Father"],
         source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.01.2016 TF No. 3513283)",
         answer: "Niece"
-    },
-    {
-        type: "TYPE–I",
-        questionNumber: 55,
-        question: "A and B are a married couple. C and D are brothers. C is the brother of A. How is D related to B ?",
-        options: ["Brother", "Son–in–law", "Cousin", "Brother–in–law"],
-        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.07.2016)",
-        answer: "Brother–in–law"
     },
     {
         questionNumber: 56,
@@ -661,6 +653,14 @@ const mcqData = [
     },
     {
         type: "TYPE–I",
+        questionNumber: 55,
+        question: "A and B are a married couple. C and D are brothers. C is the brother of A. How is D related to B ?",
+        options: ["Brother", "Son–in–law", "Cousin", "Brother–in–law"],
+        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.07.2016)",
+        answer: "Brother–in–law"
+    },
+    {
+        type: "TYPE–I",
         questionNumber: 56,
         question: "A and B are married couple. X and Y are brothers. X is the brother of A. How is Y related to B ?",
         options: ["Brother-in-law", "Brother", "Son-in-law", "Cousin"],
@@ -812,150 +812,6 @@ const mcqData = [
         answer: "Sister"
     },
     {
-        questionNumber: 70,
-        question: "Ranjeet is the son of Amit's father's sister. Sunil is the son of Divya who is mother of Gautam and grandmother of Amit. Arora is father of Dhanya and grandfather of Ranjeet. Divya is the wife of Arora. How is Sunil related to Dhanya?",
-        options: ["Son", "Brother", "Nephew", "Uncle"],
-        source: "RRB NTPC – 18.04.2016 Shift-III",
-        answer: "Brother",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 71,
-        question: "(Same family as Q70) How is Ranjeet related to Divya?",
-        options: ["Brother", "Nephew", "Son", "Grandson"],
-        source: "RRB NTPC – 18.04.2016 Shift-III",
-        answer: "Grandson",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 72,
-        question: "(Same family as Q70) How is Gautam's wife related to Dhanya?",
-        options: ["Sister-in-law", "Sister", "Niece", "Mother"],
-        source: "RRB NTPC – 18.04.2016 Shift-III",
-        answer: "Sister-in-law",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 93,
-        question: "Pointing to a man, a woman said, \"He is the brother of the daughter of my husband's wife.\" How is the woman related to that man?",
-        options: ["Son", "Mother", "Father", "Sister"],
-        source: "RRB NTPC – 19.04.2016 Shift-I",
-        answer: "Mother",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 54,
-        question: "Pointing to a woman, I said that her brother's only son is my wife's brother. How is the woman related to me?",
-        options: ["Sister of Father-in-law", "Mother-in-law", "Sister-in-law", "Sister"],
-        source: "RRB NTPC – 19.04.2016 Shift-II",
-        answer: "Sister of Father-in-law",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 42,
-        question: "Vijay says, \"This person is the son-in-law of the maternal grandmother of my sister's son.\" If Vijay has only one brother or sister, then how is that person related to Vijay?",
-        options: ["Brother", "Brother-in-law", "Maternal Uncle", "Cousin Brother"],
-        source: "RRB NTPC – 22.04.2016 Shift-III",
-        answer: "Brother-in-law",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 41,
-        question: "Mark says, \"Linda is the wife of my mother's grandson.\" How is Mark related to Linda?",
-        options: ["Father", "Grandfather", "Father-in-law", "Husband"],
-        source: "RRB NTPC – 26.04.2016 Shift-III",
-        answer: "Father-in-law",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 40,
-        question: "Hiten introduced Mita as mother-in-law of the only sister of the only son of his son's maternal grandfather. How is Mita related to Hiten?",
-        options: ["Mother", "Mother-in-law", "Wife", "Maternal Aunt"],
-        source: "RRB NTPC – 28.04.2016 Shift-II",
-        answer: "Mother",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 39,
-        question: "Divya says, \"That lady is the grandmother of the son of only brother of my husband's sister.\" How is that lady related to Divya?",
-        options: ["Mother", "Mother-in-law", "Maternal Aunt", "Maternal Grandmother"],
-        source: "RRB NTPC – 28.04.2016 Shift-II",
-        answer: "Mother-in-law",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 38,
-        question: "Ajay says, \"That woman is the grandmother of the son of my mother's only sister-in-law.\" If Ajay's father has only one brother and Ajay's mother has no brother, then how is the woman related to Ajay?",
-        options: ["Grandmother", "Wife", "Maternal Grandmother", "Mother"],
-        source: "RRB NTPC – 28.04.2016 Shift-III",
-        answer: "Grandmother",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 87,
-        question: "Pointing towards a picture of a person, Ritu says, \"He is the grandfather of the only nephew of only unmarried brother of my son's wife.\" How is the person related to Ritu?",
-        options: ["Husband", "Father", "Father-in-law", "Grandfather"],
-        source: "RRB NTPC – 28.04.2016 Shift-III",
-        answer: "Husband",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 86,
-        question: "Pointing to the lady in the metro, Twinkle said, \"She is the sister of the father of my mother's son.\" How is that lady related to Twinkle?",
-        options: ["Mother", "Sister", "Aunt", "Niece"],
-        source: "RRB NTPC – 29.04.2016 Shift-II",
-        answer: "Aunt",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 37,
-        question: "Hemant said to Naitik, \"That boy who is playing football is the younger of the two brothers of the daughter of my father's wife.\" How is the boy who is playing football related to Hemant?",
-        options: ["Son", "Brother", "Cousin", "Nephew"],
-        source: "RRB NTPC – 29.04.2016 Shift-II",
-        answer: "Brother",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 82,
-        question: "Pointing to a person, Nayan says, \"His only brother is the father of my daughter's father.\" How is the person related to Nayan?",
-        options: ["Father", "Grandfather", "Uncle", "Brother-in-law"],
-        source: "RRB NTPC – 29.04.2016 Shift-III",
-        answer: "Uncle",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 83,
-        question: "Pointing to a picture, Amisha says, \"He is the son of my grandfather's only son.\" How is the person in the picture related to Amisha?",
-        options: ["Brother", "Uncle", "Son", "Father"],
-        source: "RRB NTPC – 29.04.2016 Shift-III",
-        answer: "Brother",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 84,
-        question: "Pointing to a person, Nitish says, \"His only brother is the father of my daughter's father.\" How is the person related to Nitish?",
-        options: ["Father", "Grandfather", "Uncle", "Brother-in-law"],
-        source: "RRB NTPC – 30.04.2016 Shift-III",
-        answer: "Uncle",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 36,
-        question: "Rishi's mother is the only daughter of Maria's father. What is the relation between Maria's husband and Rishi?",
-        options: ["Uncle", "Father", "Grandfather", "Brother"],
-        source: "RRB NTPC – 30.04.2016 Shift-I",
-        answer: "Father",
-        type: "TYPE–I"
-    },
-    {
-        questionNumber: 85,
-        question: "Pointing to an old man, Kamal said, \"His son is my son's uncle.\" How is that old man related to Kamal?",
-        options: ["Brother", "Uncle", "Father", "Grandfather"],
-        source: "RRB NTPC – 30.04.2016 Shift-I",
-        answer: "Father",
-        type: "Type-2"
-    },
-    {
         questionNumber: 65,
         question: "Dharun has a brother Anand. Dharun is the son of Kumar. Krishnan is Kumar's father. How is Anand related to Krishnan?",
         options: ["Grandfather", "Father", "Grandson", "Son"],
@@ -1004,6 +860,30 @@ const mcqData = [
         type: "Type-2"
     },
     {
+        questionNumber: 70,
+        question: "Ranjeet is the son of Amit's father's sister. Sunil is the son of Divya who is mother of Gautam and grandmother of Amit. Arora is father of Dhanya and grandfather of Ranjeet. Divya is the wife of Arora. How is Sunil related to Dhanya?",
+        options: ["Son", "Brother", "Nephew", "Uncle"],
+        source: "RRB NTPC – 18.04.2016 Shift-III",
+        answer: "Brother",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 71,
+        question: "(Same family as Q70) How is Ranjeet related to Divya?",
+        options: ["Brother", "Nephew", "Son", "Grandson"],
+        source: "RRB NTPC – 18.04.2016 Shift-III",
+        answer: "Grandson",
+        type: "TYPE–I"
+    },
+    {
+        questionNumber: 72,
+        question: "(Same family as Q70) How is Gautam's wife related to Dhanya?",
+        options: ["Sister-in-law", "Sister", "Niece", "Mother"],
+        source: "RRB NTPC – 18.04.2016 Shift-III",
+        answer: "Sister-in-law",
+        type: "TYPE–I"
+    },
+    {
         questionNumber: 102,
         question: "P is the brother of Q and R. S is R's mother. T is P's father. Which statement cannot be definitely true?",
         options: ["T is S's husband", "T is Q's father", "S is P's mother", "T is Q's husband"],
@@ -1025,6 +905,14 @@ const mcqData = [
         options: ["Father-in-law", "Brother", "Uncle", "Father"],
         source: "RRB NTPC – 10.01.2021 (Shift-II) Stage-I",
         answer: "Uncle",
+        type: "Type-2"
+    },
+    {
+        questionNumber: 97,
+        question: "Pointing to a boy, Suresh said, \"His mother's brother is the only son of my mother's father.\" How is the boy's mother related to Suresh?",
+        options: ["Maternal Aunt", "Sister", "Grandmother", "Mother"],
+        source: "RRB NTPC – 10.02.2021",
+        answer: "Maternal Aunt",
         type: "Type-2"
     },
     {
@@ -1089,14 +977,6 @@ const mcqData = [
         options: ["Wife's father's sister", "Father's sister", "Wife's mother", "Wife's brother's wife"],
         source: "RRB NTPC – 04.02.2021 (Shift-I) Stage-I",
         answer: "Wife's father's sister",
-        type: "Type-2"
-    },
-    {
-        questionNumber: 97,
-        question: "Pointing to a boy, Suresh said, \"His mother's brother is the only son of my mother's father.\" How is the boy's mother related to Suresh?",
-        options: ["Maternal Aunt", "Sister", "Grandmother", "Mother"],
-        source: "RRB NTPC – 10.02.2021",
-        answer: "Maternal Aunt",
         type: "Type-2"
     },
     {
@@ -1291,13 +1171,24 @@ const mcqData = [
         answer: "A is daughter of D's son",
         type: "Type-4"
     }
-]
+].sort((a, b) => {
+    const getYear = (source: string) => {
+        const match = source.match(/(\d{4})/);
+        return match ? parseInt(match[0], 10) : 0;
+    };
+    const yearA = getYear(a.source);
+    const yearB = getYear(b.source);
+    return yearA - yearB;
+});
+
+type ViewMode = 'split' | 'question' | 'whiteboard';
 
 export default function BloodRelationshipPage() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [showAnswer, setShowAnswer] = useState(false);
     const [quizEnded, setQuizEnded] = useState(false);
+    const [viewMode, setViewMode] = useState<ViewMode>('split');
 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -1382,10 +1273,32 @@ export default function BloodRelationshipPage() {
         );
     }
 
+    const ResizerControls = () => (
+         <div className="hidden md:flex flex-col items-center justify-center gap-2 p-2 bg-background border-y">
+            <Button variant="ghost" size="icon" onClick={() => setViewMode('question')} disabled={viewMode === 'question'}>
+                <Maximize />
+                <span className="sr-only">Maximize Question</span>
+            </Button>
+             <Button variant="ghost" size="icon" onClick={() => setViewMode('split')} disabled={viewMode === 'split'}>
+                <ChevronsLeftRight />
+                <span className="sr-only">Split View</span>
+            </Button>
+             <Button variant="ghost" size="icon" onClick={() => setViewMode('whiteboard')} disabled={viewMode === 'whiteboard'}>
+                <Maximize />
+                <span className="sr-only">Maximize Whiteboard</span>
+            </Button>
+        </div>
+    );
+
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
             <div className="flex flex-col md:flex-row md:gap-8 justify-center">
-                <div className="md:w-1/2">
+                <div className={cn(
+                    "transition-all duration-300",
+                    viewMode === 'split' && 'md:w-1/2',
+                    viewMode === 'question' && 'md:w-full',
+                    viewMode === 'whiteboard' && 'md:w-0 md:hidden'
+                )}>
                     <Card>
                         <CardHeader>
                             <CardDescription>{currentQuestion.source}</CardDescription>
@@ -1465,7 +1378,15 @@ export default function BloodRelationshipPage() {
                         </CardFooter>
                     </Card>
                 </div>
-                <div className="md:w-1/2 mt-8 md:mt-0">
+
+                <ResizerControls />
+
+                <div className={cn(
+                    "md:w-1/2 mt-8 md:mt-0 transition-all duration-300",
+                    viewMode === 'split' && 'md:w-1/2',
+                    viewMode === 'whiteboard' && 'md:w-full',
+                    viewMode === 'question' && 'md:w-0 md:hidden'
+                )}>
                     <Whiteboard />
                 </div>
             </div>
