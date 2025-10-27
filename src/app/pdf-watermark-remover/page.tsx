@@ -11,11 +11,15 @@ export default function PdfWatermarkRemoverPage() {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processedFileUrl, setProcessedFileUrl] = useState<string | null>(null);
+  const [downloadFileName, setDownloadFileName] = useState('processed.pdf');
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
+    if (event.target.files && event.target.files.length > 0) {
+      const selectedFile = event.target.files[0];
+      setFile(selectedFile);
       setProcessedFileUrl(null);
+      setDownloadFileName(selectedFile.name.replace('.pdf', '_processed.pdf'));
     }
   };
 
@@ -27,8 +31,44 @@ export default function PdfWatermarkRemoverPage() {
     // Simulate AI processing
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // Simulate a successful response with a blob URL
-    const blob = new Blob(["This is a dummy processed PDF"], { type: 'application/pdf' });
+    // Create a simple but valid PDF blob
+    const pdfContent = `
+%PDF-1.1
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792]
+/Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 55 >>
+stream
+BT
+/F1 12 Tf
+100 700 Td
+(This is a dummy processed PDF) Tj
+ET
+endstream
+endobj
+xref
+0 5
+0000000000 65535 f 
+0000000010 00000 n 
+0000000059 00000 n 
+0000000118 00000 n 
+0000000210 00000 n 
+trailer
+<< /Size 5 /Root 1 0 R >>
+startxref
+278
+%%EOF
+`;
+
+    const blob = new Blob([pdfContent.trim()], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
 
     setProcessedFileUrl(url);
@@ -80,7 +120,7 @@ export default function PdfWatermarkRemoverPage() {
             </Button>
             
             {processedFileUrl && (
-              <a href={processedFileUrl} download={file?.name.replace('.pdf', '_processed.pdf') || 'processed.pdf'}>
+              <a href={processedFileUrl} download={downloadFileName}>
                 <Button variant="outline" className="w-full">
                   <FileDown className="mr-2 h-4 w-4" />
                   Download Processed PDF
