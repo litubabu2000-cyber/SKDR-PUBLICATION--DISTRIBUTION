@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -16,6 +16,7 @@ const quickLinks = [
   { href: '/all-india-tests', label: 'ALL INDIA TESTS', icon: Globe },
   { href: '/state-level-tests', label: 'STATE LEVEL TESTS', icon: Landmark },
   { href: '/translator', label: 'TRANSLATOR', icon: Languages },
+  { href: '/pdf-watermark-remover', label: 'PDF WATERMARK REMOVER', icon: Eraser },
 ];
 
 export default function Home() {
@@ -35,7 +36,7 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {quickLinks.map((link) => (
                   <Link
                     key={link.label}
