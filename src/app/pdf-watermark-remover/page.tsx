@@ -1,38 +1,64 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UploadCloud, FileDown, Loader2 } from 'lucide-react';
+import { UploadCloud, FileDown, Loader2, File as FileIcon, X, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
+
+type ProcessingState = 'idle' | 'selected' | 'processing' | 'completed' | 'error';
 
 export default function PdfWatermarkRemoverPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingState, setProcessingState] = useState<ProcessingState>('idle');
   const [processedFileUrl, setProcessedFileUrl] = useState<string | null>(null);
   const [downloadFileName, setDownloadFileName] = useState('processed.pdf');
-
+  const [isPending, startTransition] = useTransition();
+  const [progress, setProgress] = useState(0);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
-      setFile(selectedFile);
-      setProcessedFileUrl(null);
-      setDownloadFileName(selectedFile.name.replace('.pdf', '_processed.pdf'));
+      if (selectedFile.type === 'application/pdf') {
+        setFile(selectedFile);
+        setDownloadFileName(selectedFile.name.replace('.pdf', '_processed.pdf'));
+        setProcessingState('selected');
+        setProcessedFileUrl(null);
+      } else {
+        // Simple error handling for non-PDF files
+        alert('Please select a PDF file.');
+      }
     }
   };
 
   const handleRemoveWatermark = async () => {
     if (!file) return;
-    setIsProcessing(true);
+    setProcessingState('processing');
     setProcessedFileUrl(null);
+    setProgress(0);
 
-    // Simulate AI processing
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Simulate AI processing with progress updates
+    const progressInterval = setInterval(() => {
+        setProgress(prev => {
+            if (prev >= 90) {
+                clearInterval(progressInterval);
+                return 90;
+            }
+            return prev + 10;
+        })
+    }, 200);
 
-    // Create a simple but valid PDF blob
-    const pdfContent = `
+    startTransition(async () => {
+      await new Promise(resolve => setTimeout(resolve, 2500)); // Simulate network/processing delay
+
+      clearInterval(progressInterval);
+      setProgress(100);
+
+      // Create a simple but valid PDF blob
+      const pdfContent = `
 %PDF-1.1
 1 0 obj
 << /Type /Catalog /Pages 2 0 R >>
@@ -67,67 +93,114 @@ startxref
 278
 %%EOF
 `;
-
-    const blob = new Blob([pdfContent.trim()], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-
-    setProcessedFileUrl(url);
-    setIsProcessing(false);
+      const blob = new Blob([pdfContent.trim()], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      setProcessedFileUrl(url);
+      setProcessingState('completed');
+    });
   };
 
-  return (
-    <div className="container mx-auto py-12 px-4 md:px-6">
-      <div className="max-w-2xl mx-auto">
-        <Card className="text-center">
-          <CardHeader>
-            <CardTitle className="text-3xl font-bold font-headline">PDF Watermark Remover</CardTitle>
-            <CardDescription className="text-muted-foreground md:text-xl">
-              Upload your PDF file to remove the watermark using AI.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="relative border-2 border-dashed border-border rounded-lg p-12 flex flex-col items-center justify-center space-y-4">
-                <UploadCloud className="size-12 text-muted-foreground" />
-                <p className="text-muted-foreground">Drag & drop your PDF here, or click to browse</p>
-                <Input
-                    id="pdf-upload"
-                    type="file"
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    onChange={handleFileChange}
-                    accept="application/pdf"
-                />
-            </div>
-            {file && (
-              <div className="text-sm text-foreground">
-                Selected file: <span className="font-medium">{file.name}</span>
-              </div>
-            )}
-          </CardContent>
-          <CardFooter className="flex-col space-y-4">
-            <Button 
-                onClick={handleRemoveWatermark} 
-                disabled={!file || isProcessing}
-                className="w-full"
-            >
-              {isProcessing ? (
+  const resetState = () => {
+    setFile(null);
+    setProcessingState('idle');
+    setProcessedFileUrl(null);
+    setProgress(0);
+  };
+
+  const renderContent = () => {
+    switch (processingState) {
+        case 'selected':
+            return (
+                <div className='text-center p-6'>
+                    <FileIcon className="mx-auto size-16 text-primary" />
+                    <p className="mt-4 font-semibold text-foreground">{file?.name}</p>
+                    <p className="text-sm text-muted-foreground">{file && `${(file.size / 1024 / 1024).toFixed(2)} MB`}</p>
+                    <div className='flex gap-2 mt-6'>
+                        <Button variant="outline" onClick={resetState} className="w-full">
+                            <X className='mr-2 size-4'/> Cancel
+                        </Button>
+                        <Button onClick={handleRemoveWatermark} className="w-full">
+                            Remove Watermark
+                        </Button>
+                    </div>
+                </div>
+            )
+        case 'processing':
+            return (
+                <div className='text-center p-6'>
+                    <Loader2 className="mx-auto size-16 text-primary animate-spin" />
+                    <p className="mt-4 font-semibold text-foreground">Processing...</p>
+                    <p className="text-sm text-muted-foreground">{file?.name}</p>
+                    <Progress value={progress} className="w-full mt-4" />
+                    <p className="text-sm text-muted-foreground mt-2">{progress}%</p>
+                </div>
+            )
+        case 'completed':
+            return (
+                 <div className='text-center p-6'>
+                    <CheckCircle className="mx-auto size-16 text-green-500" />
+                    <p className="mt-4 font-semibold text-foreground">Watermark Removed!</p>
+                    <p className="text-sm text-muted-foreground">{file?.name}</p>
+                    {processedFileUrl && (
+                        <a href={processedFileUrl} download={downloadFileName} className='block w-full mt-6'>
+                            <Button className="w-full">
+                                <FileDown className="mr-2 h-4 w-4" />
+                                Download PDF
+                            </Button>
+                        </a>
+                    )}
+                    <Button variant="outline" onClick={resetState} className="w-full mt-2">
+                        Process another file
+                    </Button>
+                </div>
+            )
+        case 'idle':
+        default:
+            return (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Removing Watermark...
+                    <CardHeader className="text-center">
+                        <UploadCloud className="mx-auto size-16 text-primary" />
+                        <CardTitle className="text-2xl font-bold font-headline mt-4">PDF Watermark Remover</CardTitle>
+                        <CardDescription className="text-muted-foreground">
+                            Remove watermarks from your PDF files for free, with no quality loss.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6 px-6 pb-6">
+                        <div className="relative">
+                            <Button className="w-full h-16 text-lg" onClick={() => document.getElementById('pdf-upload')?.click()}>
+                                Choose File
+                            </Button>
+                            <Input
+                                id="pdf-upload"
+                                type="file"
+                                className="hidden"
+                                onChange={handleFileChange}
+                                accept="application/pdf"
+                            />
+                        </div>
+                        <p className="text-center text-sm text-muted-foreground">or drop files here</p>
+                    </CardContent>
                 </>
-              ) : (
-                'Remove Watermark'
-              )}
-            </Button>
-            
-            {processedFileUrl && (
-              <a href={processedFileUrl} download={downloadFileName}>
-                <Button variant="outline" className="w-full">
-                  <FileDown className="mr-2 h-4 w-4" />
-                  Download Processed PDF
-                </Button>
-              </a>
-            )}
-          </CardFooter>
+            );
+    }
+  }
+
+  return (
+    <div className="container mx-auto py-12 px-4 md:px-6 flex items-center justify-center min-h-[calc(100vh-10rem)]">
+      <div 
+        className="w-full max-w-lg"
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+            e.preventDefault();
+            const droppedFiles = e.dataTransfer.files;
+            if (droppedFiles.length > 0) {
+                // Manually trigger the file change handler
+                handleFileChange({ target: { files: droppedFiles } } as unknown as React.ChangeEvent<HTMLInputElement>);
+            }
+        }}
+        >
+        <Card className={cn("transition-all duration-300", processingState !== 'idle' && "min-h-[20rem] flex items-center justify-center")}>
+          {renderContent()}
         </Card>
       </div>
     </div>
