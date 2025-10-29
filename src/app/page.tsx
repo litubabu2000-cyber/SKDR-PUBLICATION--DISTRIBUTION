@@ -54,9 +54,9 @@ export default function Home() {
                           <Image
                             src={image.imageUrl}
                             alt={image.description}
-                            width={1200}
-                            height={800}
-                            className="aspect-[3/2] w-full object-cover"
+                            width={1280}
+                            height={720}
+                            className="aspect-[16/9] w-full object-cover"
                             data-ai-hint={image.imageHint}
                           />
                         </div>
