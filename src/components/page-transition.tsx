@@ -2,26 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
 
   const variants = {
     hidden: { opacity: 0, y: 20 },
     enter: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 20 },
+    exit: { opacity: 0, y: -20 },
   };
-
-  if (!isClient) {
-    return <>{children}</>;
-  }
 
   return (
     <motion.div
