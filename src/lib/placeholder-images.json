@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "gallery-1",
+      "description": "A person reading a book in a library.",
+      "imageUrl": "https://images.unsplash.com/photo-1614849963640-9cc74b2a826f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsaWJyYXJ5JTIwYm9va3N8ZW58MHx8fHwxNzYxNjMzNDQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "library books"
+    },
+    {
+      "id": "gallery-2",
+      "description": "A student studying at a desk with many books.",
+      "imageUrl": "https://images.unsplash.com/photo-1741699428220-65f37f3fbbcb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzdHVkZW50JTIwc3R1ZHlpbmd8ZW58MHx8fHwxNzYxNjMxNDUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student studying"
+    },
+    {
+      "id": "gallery-3",
+      "description": "A stack of old books on a wooden table.",
+      "imageUrl": "https://images.unsplash.com/photo-1498906538030-8da82e61e424?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxvbGQlMjBib29rc3xlbnwwfHx8fDE3NjE3MDM1NjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "old books"
+    },
+    {
+      "id": "gallery-4",
+      "description": "An open book with glowing pages.",
+      "imageUrl": "https://images.unsplash.com/photo-1711185900590-b118146e3988?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxmYW50YXN5JTIwYm9va3xlbnwwfHx8fDE3NjE2MzMxNzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy book"
+    }
+  ]
 }

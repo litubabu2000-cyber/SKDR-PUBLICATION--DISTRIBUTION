@@ -1,11 +1,17 @@
 
+'use client';
+
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, Rocket, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+
 
 const quickLinks = [
   { href: '/categories', label: 'CHOOSE YOUR BOOK CATEGORY', icon: LayoutGrid },
@@ -20,6 +26,14 @@ const quickLinks = [
 ];
 
 export default function Home() {
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
+
+  const galleryImages = PlaceHolderImages.filter(img => img.id.startsWith('gallery-'));
+
+
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
       <main className="flex-1">
@@ -27,14 +41,29 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                    THE SKDR PUBLICATION AND DISTRIBUTION
-                  </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Your Gateway to Academic Excellence & Knowledge Distribution
-                  </p>
-                </div>
+                 <Carousel
+                  plugins={[plugin.current]}
+                  className="w-full"
+                  onMouseEnter={plugin.current.stop}
+                  onMouseLeave={plugin.current.reset}
+                >
+                  <CarouselContent>
+                    {galleryImages.map((image) => (
+                      <CarouselItem key={image.id}>
+                        <div className="overflow-hidden rounded-xl">
+                          <Image
+                            src={image.imageUrl}
+                            alt={image.description}
+                            width={1200}
+                            height={800}
+                            className="aspect-[3/2] w-full object-cover"
+                            data-ai-hint={image.imageHint}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {quickLinks.map((link) => (
