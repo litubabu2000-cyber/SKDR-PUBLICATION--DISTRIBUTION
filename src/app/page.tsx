@@ -23,6 +23,7 @@ const quickLinks = [
   { href: '/state-level-tests', label: 'STATE LEVEL TESTS', icon: Landmark },
   { href: '/translator', label: 'TRANSLATOR', icon: Languages },
   { href: '/pdf-watermark-remover', label: 'PDF WATERMARK REMOVER', icon: Eraser },
+  { href: '/for-teachers', label: 'FOR TEACHER', icon: Users },
 ];
 
 export default function Home() {
@@ -65,7 +66,7 @@ export default function Home() {
                   </CarouselContent>
                 </Carousel>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
                 {quickLinks.map((link) => (
                   <Link
                     key={link.label}
