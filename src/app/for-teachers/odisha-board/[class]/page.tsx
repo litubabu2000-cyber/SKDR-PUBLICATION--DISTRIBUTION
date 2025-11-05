@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, FlaskConical, BarChart } from "lucide-react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Subject = string;
@@ -38,8 +39,10 @@ const isStreamArray = (data: any[]): data is Stream[] => {
     return data.length > 0 && typeof data[0] === 'object' && 'subjects' in data[0];
 };
 
+const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
 export default function OdishaBoardClassPage({ params }: { params: { class: string } }) {
-    const className = decodeURIComponent(params.class);
+    const className = params.class;
     const subjects = odishaBoardSubjects[className];
 
     if (!subjects) {
@@ -59,9 +62,13 @@ export default function OdishaBoardClassPage({ params }: { params: { class: stri
                                 <CardTitle className="text-2xl font-headline">{stream.title}</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+                                <ul className="space-y-2 text-muted-foreground">
                                     {stream.subjects.map((subject) => (
-                                        <li key={subject}>{subject}</li>
+                                        <li key={subject}>
+                                            <Link href={`/for-teachers/odisha-board/${className}/${slugify(subject)}`} className="block p-2 -m-2 rounded-md hover:bg-muted transition-colors">
+                                                {subject}
+                                            </Link>
+                                        </li>
                                     ))}
                                 </ul>
                             </CardContent>
@@ -78,9 +85,13 @@ export default function OdishaBoardClassPage({ params }: { params: { class: stri
                         <CardTitle className="text-2xl font-headline">Subjects</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <ul className="list-disc pl-5 space-y-2 text-muted-foreground columns-2">
+                        <ul className="space-y-1 text-muted-foreground columns-1 sm:columns-2">
                             {(subjects as Subject[]).map((subject) => (
-                                <li key={subject}>{subject}</li>
+                                <li key={subject}>
+                                    <Link href={`/for-teachers/odisha-board/${className}/${slugify(subject)}`} className="block p-2 -m-2 rounded-md hover:bg-muted transition-colors">
+                                        {subject}
+                                    </Link>
+                                </li>
                             ))}
                         </ul>
                     </CardContent>
