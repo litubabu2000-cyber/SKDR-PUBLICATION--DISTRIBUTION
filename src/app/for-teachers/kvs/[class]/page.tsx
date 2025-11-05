@@ -1,6 +1,4 @@
 
-'use client';
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, FlaskConical, BarChart } from "lucide-react";
 import { notFound } from "next/navigation";
