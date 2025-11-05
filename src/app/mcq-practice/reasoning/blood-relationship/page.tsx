@@ -1400,8 +1400,8 @@ export default function BloodRelationshipPage() {
 
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
-            <div className="flex flex-col lg:flex-row lg:gap-8 justify-center">
-                <div className="lg:w-1/2">
+            <div className="flex flex-col md:flex-row gap-8 justify-center">
+                <div className="md:w-1/2">
                     <Card>
                         <CardHeader>
                             <CardDescription>{currentQuestion.source}</CardDescription>
@@ -1482,7 +1482,7 @@ export default function BloodRelationshipPage() {
                     </Card>
                 </div>
 
-                <div className="lg:w-1/2 mt-8 lg:mt-0">
+                <div className="md:w-1/2 mt-8 md:mt-0">
                     <Whiteboard />
                 </div>
             </div>
