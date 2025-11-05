@@ -62,15 +62,13 @@ export default function OdishaBoardClassPage({ params }: { params: { class: stri
                                 <CardTitle className="text-2xl font-headline">{stream.title}</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <ul className="space-y-2 text-muted-foreground">
+                                <div className="grid grid-cols-1 gap-3">
                                     {stream.subjects.map((subject) => (
-                                        <li key={subject}>
-                                            <Link href={`/for-teachers/odisha-board/${className}/${slugify(subject)}`} className="block p-2 -m-2 rounded-md hover:bg-muted transition-colors">
-                                                {subject}
-                                            </Link>
-                                        </li>
+                                        <Link key={subject} href={`/for-teachers/odisha-board/${className}/${slugify(subject)}`} className="block p-3 border rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+                                            {subject}
+                                        </Link>
                                     ))}
-                                </ul>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
@@ -79,21 +77,19 @@ export default function OdishaBoardClassPage({ params }: { params: { class: stri
         }
 
         return (
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-4xl mx-auto">
                 <Card className="bg-card">
                     <CardHeader>
                         <CardTitle className="text-2xl font-headline">Subjects</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <ul className="space-y-1 text-muted-foreground columns-1 sm:columns-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {(subjects as Subject[]).map((subject) => (
-                                <li key={subject}>
-                                    <Link href={`/for-teachers/odisha-board/${className}/${slugify(subject)}`} className="block p-2 -m-2 rounded-md hover:bg-muted transition-colors">
-                                        {subject}
-                                    </Link>
-                                </li>
+                                <Link key={subject} href={`/for-teachers/odisha-board/${className}/${slugify(subject)}`} className="block p-4 border rounded-md text-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+                                    {subject}
+                                </Link>
                             ))}
-                        </ul>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
