@@ -4,12 +4,12 @@ import { Building, Train, Banknote, School, User, Rocket, Atom, Book, Globe } fr
 import Link from "next/link";
 
 const nationalExams = [
-    { name: "UPSC", icon: User },
-    { name: "SSC", icon: Building },
-    { name: "Banking", icon: Banknote },
-    { name: "Railways", icon: Train },
-    { name: "NEET/JEE", icon: Rocket },
-    { name: "Teaching (TET/TGT)", icon: School },
+    { name: "UPSC", icon: User, href: "#" },
+    { name: "SSC", icon: Building, href: "#" },
+    { name: "Banking", icon: Banknote, href: "#" },
+    { name: "Railways", icon: Train, href: "https://rrbchennai.gov.in/" },
+    { name: "NEET/JEE", icon: Rocket, href: "#" },
+    { name: "Teaching (TET/TGT)", icon: School, href: "#" },
 ];
 
 const states = [
@@ -43,7 +43,7 @@ export default function ExamNotificationPage() {
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {nationalExams.map((exam) => (
-                <Link href="#" key={exam.name}>
+                <Link href={exam.href} key={exam.name} target="_blank" rel="noopener noreferrer">
                   <div className="p-4 bg-card border rounded-lg text-center font-medium text-muted-foreground transition-all duration-300 ease-in-out hover:bg-primary hover:text-primary-foreground hover:shadow-md h-full flex flex-col items-center justify-center gap-2">
                     <exam.icon className="size-8" />
                     <span>{exam.name}</span>
