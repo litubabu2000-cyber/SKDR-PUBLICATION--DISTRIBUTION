@@ -10,6 +10,7 @@ const nationalExams = [
     { name: "Railways", icon: Train, href: "https://rrbchennai.gov.in/" },
     { name: "NEET/JEE", icon: Rocket, href: "#" },
     { name: "Teaching (TET/TGT)", icon: School, href: "#" },
+    { name: "DSSSB", icon: School, href: "https://dsssb.delhi.gov.in/" },
 ];
 
 const states = [
