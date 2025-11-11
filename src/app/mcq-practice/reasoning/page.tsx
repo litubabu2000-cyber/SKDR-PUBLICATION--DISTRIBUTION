@@ -14,7 +14,7 @@ const reasoningTopics = [
   { name: "Coding-Decoding", href: "/mcq-practice/reasoning/coding-decoding" },
   { name: "Word Formation", href: "#" },
   { name: "Syllogism, Statement & Conclusions", href: "#" },
-  { name: "Ranking/Arrangement", href: "#" },
+  { name: "Seating Arrangement", href: "/mcq-practice/reasoning/seating-arrangement" },
   { name: "Finding the Missing Number", href: "#" },
   { name: "Arithmetical Problems", href: "#" },
   { name: "Arrangement of Words in a Logical Order", href: "/mcq-practice/reasoning/dictionary-order" },
