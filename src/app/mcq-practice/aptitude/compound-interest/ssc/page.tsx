@@ -1121,7 +1121,7 @@ export default function CompoundInterestSscPage() {
                         <CardHeader>
                             <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
                             <CardDescription>{currentQuestion.source}</CardDescription>
-                            <CardTitle className="font-body text-xl leading-relaxed">
+                            <CardTitle className="font-body text-lg leading-relaxed">
                                 {currentQuestion.questionNumber}. {currentQuestion.question}
                             </CardTitle>
                         </CardHeader>

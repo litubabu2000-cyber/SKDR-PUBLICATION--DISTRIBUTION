@@ -53,6 +53,9 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply text-sm md:text-base;
+  }
   body {
     @apply bg-background text-foreground;
     background-size: 400% 400%;
