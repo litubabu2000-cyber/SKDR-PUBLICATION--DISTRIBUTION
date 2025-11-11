@@ -31,9 +31,9 @@ const mcqData = [
         type: "Type 1: Problems based on finding the Principal",
         questionNumber: 3,
         question: "A sum of money was borrowed and paid back in two equal annual installments of ₹980, allowing 4% compound interest. What was the sum borrowed (in ₹ rounded to the nearest decimal)?",
-        options: ["2,050", "1,960", "1,850", "1,760"],
+        options: ["₹2,050", "₹1,960", "₹1,850", "₹1,760"],
         source: "Exam: SSC CGL – 11/04/2022 (Shift-III)",
-        answer: "1,850"
+        answer: "₹1,850"
     },
     {
         type: "Type 1: Problems based on finding the Principal",
@@ -159,17 +159,17 @@ const mcqData = [
         type: "Type 2: Problems based on finding the Amount",
         questionNumber: 19,
         question: "The compound interest on a certain sum of money at 21% per annum compounded for 2 years is ₹11138.40 (interest is compounded annually). What will be the amount (in ₹) received after 2 years?",
-        options: ["35,138.40", "31,538.040", "24,000.50", "28,315.40"],
+        options: ["₹35,138.40", "₹31,538.040", "₹24,000.50", "₹28,315.40"],
         source: "Exam: SSC CGL – 19/04/2022 (Shift-II)",
-        answer: "35,138.40"
+        answer: "₹35,138.40"
     },
     {
         type: "Type 2: Problems based on finding the Amount",
         questionNumber: 20,
         question: "What is the amount (in ₹) of a sum ₹32,000 at 20% per annum for 9 months, compounded quarterly?",
-        options: ["37,044", "35,087", "32,000", "30,876"],
+        options: ["₹37,044", "₹35,087", "₹32,000", "₹30,876"],
         source: "Exam: SSC CGL (Tier-I) – 18/04/2022 (Shift-I)",
-        answer: "37,044"
+        answer: "₹37,044"
     },
     {
         type: "Type 2: Problems based on finding the Amount",
@@ -255,9 +255,9 @@ const mcqData = [
         type: "Type 3: Problems based on finding the Compound Interest",
         questionNumber: 31,
         question: "What will be the compound interest (in ₹) received on a sum of ₹62500 in two years at 12% annual interest compounded every 8 months?",
-        options: ["16,548", "16,232", "13,428", "18,342"],
+        options: ["₹16,548", "₹16,232", "₹13,428", "₹18,342"],
         source: "Exam: SSC CGL – 21/04/2022 (Shift-II)",
-        answer: "16,232"
+        answer: "₹16,232"
     },
     {
         type: "Type 3: Problems based on finding the Compound Interest",
@@ -271,17 +271,17 @@ const mcqData = [
         type: "Type 3: Problems based on finding the Compound Interest",
         questionNumber: 33,
         question: "If interest is calculated compounded half-yearly (rounded off to the nearest integer), what will be the compound interest (in ₹) on an amount of ₹7200 at 20% per annum for 18 months?",
-        options: ["2,338", "3,238", "2,833", "2,383"],
+        options: ["₹2,338", "₹3,238", "₹2,833", "₹2,383"],
         source: "Exam: SSC GD Constable – 08/02/2023 (Shift-I)",
-        answer: "2,383"
+        answer: "₹2,383"
     },
     {
         type: "Type 3: Problems based on finding the Compound Interest",
         questionNumber: 34,
         question: "What will be the compound interest (in ₹, rounded off to the nearest ₹) received on a sum of ₹7500 at 24% per annum in 3 months if the interest is compounded monthly?",
-        options: ["303", "459", "439", "465"],
+        options: ["₹303", "₹459", "₹439", "₹465"],
         source: "Exam: SSC GD Constable – 08/02/2023 (Shift-III)",
-        answer: "459"
+        answer: "₹459"
     },
     {
         type: "Type 3: Problems based on finding the Compound Interest",
@@ -295,17 +295,17 @@ const mcqData = [
         type: "Type 3: Problems based on finding the Compound Interest",
         questionNumber: 36,
         question: "What is the compound interest (in ₹) on a sum of ₹46,000 for (2 2/5) years at 15% per annum, interest being compounded annually (nearest to ₹1)?",
-        options: ["18458", "19458", "19485", "18485"],
+        options: ["₹18458", "₹19458", "₹19485", "₹18485"],
         source: "Exam: SSC CHSL – 12/08/2021 (Shift-I)",
-        answer: "18458"
+        answer: "₹18458"
     },
     {
         type: "Type 3: Problems based on finding the Compound Interest",
         questionNumber: 37,
         question: "What will be the compound interest (in ₹) on a sum of ₹7,200 for 18 months at rate of 20% per annum, if the interest is compounded half-yearly (nearest to an integer)?",
-        options: ["2,338", "3,238", "2,833", "2,383"],
+        options: ["₹2,338", "₹3,238", "₹2,833", "₹2,383"],
         source: "Exam: SSC CHSL – 05/08/2021 (Shift-II)",
-        answer: "2,383"
+        answer: "₹2,383"
     },
     {
         type: "Type 3: Problems based on finding the Compound Interest",
@@ -775,33 +775,33 @@ const mcqData = [
         type: "Type 8: Miscellaneous",
         questionNumber: 96,
         question: "Rajneesh borrowed a sum of ₹1500 from a bank and repaid the entire amount including interest in two equal annual installments where Rajneesh paid the first installment after one year of borrowing from the bank. If the rate of interest was 40% per annum and the interest was compounded annually, find the value (in ₹) of each installment paid by Rajneesh.",
-        options: ["1125", "1225", "1470", "1350"],
+        options: ["₹1125", "₹1225", "₹1470", "₹1350"],
         source: "Exam: SSC CGL Mains (Tier-II) – 07/03/2022",
-        answer: "1125"
+        answer: "₹1125"
     },
     {
         type: "Type 8: Miscellaneous",
         questionNumber: 97,
         question: "A sum is deposited for 4 years at a rate of 10% per annum compounded annually. The difference between the interest received at the end of 2 years and the received at the end of 4 years is ₹5082. Find the sum (in ₹).",
-        options: ["20,000", "50,820", "25,500", "10,164"],
+        options: ["₹20,000", "₹50,820", "₹25,500", "₹10,164"],
         source: "Exam: SSC CGL – 11/04/2022 (Shift-I)",
-        answer: "20,000"
+        answer: "₹20,000"
     },
     {
         type: "Type 8: Miscellaneous",
         questionNumber: 98,
         question: "What is the difference (in ₹) between the interests on ₹50,000 for one year at 8% per annum compounded half-yearly and yearly?",
-        options: ["100", "80", "70", "50"],
+        options: ["₹100", "₹80", "₹70", "₹50"],
         source: "Exam: SSC CGL (Tier-II) – 29/01/2022 (Shift-I)",
-        answer: "80"
+        answer: "₹80"
     },
     {
         type: "Type 8: Miscellaneous",
         questionNumber: 99,
         question: "A sum of money becomes ₹11880 after 4 years and ₹17820 after 6 years on compound interest, if the interest is compounded annually. What will be half of the sum (in ₹)?",
-        options: ["2,410", "2,530", "2,640", "2,750"],
+        options: ["₹2,410", "₹2,530", "₹2,640", "₹2,750"],
         source: "Exam: SSC CGL (Tier-II) – 29/01/2022 (Shift-I)",
-        answer: "2,640"
+        answer: "₹2,640"
     },
     {
         type: "Type 8: Miscellaneous",
@@ -815,17 +815,17 @@ const mcqData = [
         type: "Type 8: Miscellaneous",
         questionNumber: 101,
         question: "A man borrows money for 2 years at the rate of 10% compound interest per annum and pays back in twice yearly installments of ₹1089. If the interest is calculated annually, then find the amount borrowed (in ₹).",
-        options: ["2,178", "2,090", "1,890", "1,800"],
+        options: ["₹2,178", "₹2,090", "₹1,890", "₹1,800"],
         source: "Exam: SSC MTS – 08/09/2023 (Shift-II)",
-        answer: "1,890"
+        answer: "₹1,890"
     },
     {
         type: "Type 8: Miscellaneous",
         questionNumber: 102,
         question: "When interest is compounded every 8 months, the compound interest received on a sum of money in (1 1/3) year at 12% annual interest rate is ₹2496. At the same rate of interest, if the interest is compounded annually, what will be the same amount of money in four years (in ₹ to the nearest)?",
-        options: ["23603", "20336", "26033", "30632"],
+        options: ["₹23603", "₹20336", "₹26033", "₹30632"],
         source: "Exam: SSC CPO SI – 10/11/2022 (Shift-II)",
-        answer: "30632"
+        answer: "₹30632"
     },
     {
         type: "Type 8: Miscellaneous",
@@ -839,9 +839,9 @@ const mcqData = [
         type: "Type 8: Miscellaneous",
         questionNumber: 104,
         question: "A person borrowed a sum of ₹30,800 at 10% per annum for 3 years. Interest compounded annually. At the end of the second year, he paid a sum of ₹13268. At the end of the IIIrd year he paid ₹x to clear the debt. Find the value of x.",
-        options: ["26,400", "26,200", "26,510", "26,620"],
+        options: ["₹26,400", "₹26,200", "₹26,510", "₹26,620"],
         source: "Exam: SSC CPO SI – 11/11/2022 (Shift-III)",
-        answer: "26,620"
+        answer: "₹26,620"
     },
     {
         type: "Type 8: Miscellaneous",
@@ -863,9 +863,9 @@ const mcqData = [
         type: "Type 8: Miscellaneous",
         questionNumber: 107,
         question: "A sum of ₹18,000 becomes ₹21,780 after 2 years on compound interest compounded annually. What will be the compound interest (in ₹) on the same sum for the same period if the rate of interest increases by 5%?",
-        options: ["1,845", "4,670", "5,805", "5,500"],
+        options: ["₹1,845", "₹4,670", "₹5,805", "₹5,500"],
         source: "Exam: SSC CGL (Tier-I) – 19/04/2022 (Shift-I)",
-        answer: "5,805"
+        answer: "₹5,805"
     },
     {
         type: "Type 8: Miscellaneous",
