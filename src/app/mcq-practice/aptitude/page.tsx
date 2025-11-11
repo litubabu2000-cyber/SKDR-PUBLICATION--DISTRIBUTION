@@ -4,35 +4,37 @@ import { Brain } from "lucide-react";
 import Link from "next/link";
 
 const aptitudeTopics = [
-    { name: "Number System", href: "#" },
-    { name: "Decimal Fractions", href: "#" },
-    { name: "Indices and Surds", href: "#" },
-    { name: "Simplification", href: "#" },
-    { name: "Lowest Common Multiple & Highest Common Factor", href: "#" },
-    { name: "Percentage", href: "#" },
-    { name: "Profit & Loss", href: "#" },
-    { name: "Discount", href: "#" },
-    { name: "Ratio & Proportion", href: "#" },
-    { name: "Partnership", href: "#" },
-    { name: "Work & Time", href: "#" },
-    { name: "Alligation", href: "#" },
-    { name: "Pipe & Cistern", href: "#" },
-    { name: "Simple Interest", href: "#" },
-    { name: "Compound Interest", href: "#" },
-    { name: "Problems Based on Age", href: "#" },
-    { name: "Average", href: "#" },
-    { name: "Speed, Time & Distance", href: "#" },
-    { name: "Train", href: "#" },
-    { name: "Boat & Stream", href: "#" },
-    { name: "Mensuration", href: "#" },
-    { name: "Algebra", href: "#" },
-    { name: "Trigonometry", href: "#" },
-    { name: "Co-ordinate Geometry", href: "#" },
-    { name: "Geometry", href: "#" },
-    { name: "Elementary Statistics / Probability", href: "#" },
-    { name: "Data Interpretation", href: "#" },
-    { name: "Miscellaneous", href: "#" },
+    { name: "Number System" },
+    { name: "Decimal Fractions" },
+    { name: "Indices and Surds" },
+    { name: "Simplification" },
+    { name: "Lowest Common Multiple & Highest Common Factor" },
+    { name: "Percentage" },
+    { name: "Profit & Loss" },
+    { name: "Discount" },
+    { name: "Ratio & Proportion" },
+    { name: "Partnership" },
+    { name: "Work & Time" },
+    { name: "Alligation" },
+    { name: "Pipe & Cistern" },
+    { name: "Simple Interest" },
+    { name: "Compound Interest" },
+    { name: "Problems Based on Age" },
+    { name: "Average" },
+    { name: "Speed, Time & Distance" },
+    { name: "Train" },
+    { name: "Boat & Stream" },
+    { name: "Mensuration" },
+    { name: "Algebra" },
+    { name: "Trigonometry" },
+    { name: "Co-ordinate Geometry" },
+    { name: "Geometry" },
+    { name: "Elementary Statistics / Probability" },
+    { name: "Data Interpretation" },
+    { name: "Miscellaneous" },
 ];
+
+const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export default function AptitudePage() {
     return (
@@ -52,7 +54,7 @@ export default function AptitudePage() {
                     <CardContent>
                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                          {aptitudeTopics.map((topic) => (
-                           <Link key={topic.name} href={topic.href}>
+                           <Link key={topic.name} href={`/mcq-practice/aptitude/${slugify(topic.name)}`}>
                             <div className="p-4 bg-card border rounded-lg text-center text-muted-foreground transition-all duration-300 ease-in-out hover:shadow-md hover:border-primary h-full flex items-center justify-center">
                                 {topic.name}
                             </div>
