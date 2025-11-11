@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -216,7 +215,7 @@ const mcqData = [
         type: "Type 3: Problems based on finding the Compound Interest",
         questionNumber: 26,
         question: "What will be the compound interest received on an amount of ₹450000 at the rate of 10% per annum in 2 years, if the interest is compounded annually?",
-        options: ["₹85,450", "₹50,500", "₹54,450", "₹94,500"],
+        options: ["₹85,450", "₹50,500", "₹94,500", "₹94,500"],
         source: "Exam: SSC MTS – 14/07/2022 (Shift-II)",
         answer: "₹94,500"
     },
