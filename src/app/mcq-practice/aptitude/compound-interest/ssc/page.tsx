@@ -1100,6 +1100,7 @@ export default function CompoundInterestSscPage() {
                 <div className="md:w-1/2">
                     <Card>
                         <CardHeader>
+                            <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
                             <CardDescription>{currentQuestion.source}</CardDescription>
                             <CardTitle className="font-body text-xl leading-relaxed">
                                 {currentQuestion.questionNumber}. {currentQuestion.question}
@@ -1183,3 +1184,5 @@ export default function CompoundInterestSscPage() {
         </div>
     );
 }
+
+    
