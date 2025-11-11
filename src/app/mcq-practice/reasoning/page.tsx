@@ -4,7 +4,7 @@ import { ListChecks } from "lucide-react";
 import Link from "next/link";
 
 const reasoningTopics = [
-  { name: "Analogy or Similarity", href: "#" },
+  { name: "Analogy or Similarity", href: "/mcq-practice/reasoning/analogy" },
   { name: "Blood Relationship", href: "/mcq-practice/reasoning/blood-relationship" },
   { name: "Symbols & Notations", href: "#" },
   { name: "Classification", href: "#" },
