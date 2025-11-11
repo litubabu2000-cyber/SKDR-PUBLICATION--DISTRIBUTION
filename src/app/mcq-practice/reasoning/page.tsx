@@ -17,7 +17,7 @@ const reasoningTopics = [
   { name: "Ranking/Arrangement", href: "#" },
   { name: "Finding the Missing Number", href: "#" },
   { name: "Arithmetical Problems", href: "#" },
-  { name: "Arrangement of Words in a Logical Order", href: "#" },
+  { name: "Arrangement of Words in a Logical Order", href: "/mcq-practice/reasoning/dictionary-order" },
   { name: "Cubes and Dices", href: "#" },
   { name: "Logical Venn-Diagram", href: "#" },
   { name: "Miscellaneous", href: "#" },
