@@ -24,7 +24,7 @@ import {
 import Link from 'next/link';
 
 const mcqSubjects: { name: string, href: string, color: string, icon: LucideIcon }[] = [
-    { name: 'Aptitude', href: '#', color: 'bg-red-500 hover:bg-red-600', icon: Brain },
+    { name: 'Aptitude', href: '/mcq-practice/aptitude', color: 'bg-red-500 hover:bg-red-600', icon: Brain },
     { name: 'Reasoning', href: '/mcq-practice/reasoning', color: 'bg-blue-500 hover:bg-blue-600', icon: BrainCircuit },
     { name: 'Non Verbal Reasoning', href: '#', color: 'bg-pink-500 hover:bg-pink-600', icon: Shapes },
     { name: 'English', href: '#', color: 'bg-purple-500 hover:bg-purple-600', icon: BookOpen },
