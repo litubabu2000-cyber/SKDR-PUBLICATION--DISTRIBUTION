@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle }
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -1014,6 +1014,8 @@ export default function CompoundInterestSscPage() {
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+    const questionTypes = useMemo(() => [...new Set(mcqData.map(q => q.type))], []);
+
 
     useEffect(() => {
         if (activeQuestionRef.current && scrollContainerRef.current) {
@@ -1070,8 +1072,25 @@ export default function CompoundInterestSscPage() {
         setQuizEnded(false);
     };
 
+    const handleNextType = () => {
+        const currentType = mcqData[currentQuestionIndex].type;
+        const currentTypeIndex = questionTypes.indexOf(currentType);
+        if (currentTypeIndex < questionTypes.length - 1) {
+            const nextType = questionTypes[currentTypeIndex + 1];
+            const nextQuestionIndex = mcqData.findIndex(q => q.type === nextType);
+            if (nextQuestionIndex !== -1) {
+                setCurrentQuestionIndex(nextQuestionIndex);
+                resetQuestionState();
+            }
+        }
+    };
+
     const currentQuestion = mcqData[currentQuestionIndex];
     const isCorrect = selectedAnswer === currentQuestion.answer;
+
+    const currentType = mcqData[currentQuestionIndex].type;
+    const currentTypeIndex = questionTypes.indexOf(currentType);
+    const hasNextType = currentTypeIndex < questionTypes.length - 1;
 
     if (quizEnded) {
         return (
@@ -1138,6 +1157,13 @@ export default function CompoundInterestSscPage() {
                                     <ChevronLeft className="mr-2 h-4 w-4" />
                                     Previous
                                 </Button>
+                                 <Button
+                                    onClick={handleNextType}
+                                    disabled={!hasNextType}
+                                    variant="outline"
+                                >
+                                    Next Type
+                                </Button>
                                 <Button
                                     onClick={handleNext}
                                 >
@@ -1184,5 +1210,3 @@ export default function CompoundInterestSscPage() {
         </div>
     );
 }
-
-    
