@@ -11,7 +11,7 @@ const reasoningTopics = [
   { name: "Direction & Distance Test", href: "#" },
   { name: "Scheduled Day/Date/Time", href: "#" },
   { name: "Series", href: "#" },
-  { name: "Coding-Decoding", href: "#" },
+  { name: "Coding-Decoding", href: "/mcq-practice/reasoning/coding-decoding" },
   { name: "Word Formation", href: "#" },
   { name: "Syllogism, Statement & Conclusions", href: "#" },
   { name: "Ranking/Arrangement", href: "#" },
