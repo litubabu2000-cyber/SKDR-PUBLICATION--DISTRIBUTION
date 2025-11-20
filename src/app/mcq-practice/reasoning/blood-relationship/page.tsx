@@ -4,11 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle }
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Whiteboard } from "@/components/whiteboard";
 import { OverlayWhiteboard } from "@/components/overlay-whiteboard";
 
 
