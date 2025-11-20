@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -273,7 +274,7 @@ const mcqData = [
         questionNumber: 39,
         question: "P is the father of T. T is the daughter of M. M is the daughter of K. What is P to K ?",
         options: ["Father", "Father-in-law", "Brother", "Son-in-law"],
-        source: "SSC Stenographer (Grade'C &amp; D') Exam. 26.09.2010",
+        source: "SSC Stenographer (Grade'C & D') Exam. 26.09.2010",
         answer: "Son-in-law"
     },
     {
@@ -281,7 +282,7 @@ const mcqData = [
         questionNumber: 40,
         question: "A and B are brothers. E is the daugther of F. F is the wife of B. What is the relation of E to A ?",
         options: ["sister", "daugther", "niece", "sister-in-law"],
-        source: "SSC Higher Secondary Level Data Entry Operator &amp; LDC Exam. 28.11.2010 (Ist sitting)",
+        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (Ist sitting)",
         answer: "niece"
     },
     {
@@ -289,7 +290,7 @@ const mcqData = [
         questionNumber: 41,
         question: "M and F are a married couple. A and B are sisters. A is the sister of F. Who is B to M ?",
         options: ["Sister", "Sister-in-law", "Niece", "Daughter"],
-        source: "SSC Higher Secondary Level Data Entry Operator &amp; LDC Exam. 28.11.2010 (IInd sitting)",
+        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (IInd sitting)",
         answer: "Sister-in-law"
     },
     {
@@ -337,7 +338,7 @@ const mcqData = [
         questionNumber: 42,
         question: "If A is the mother of D, B is not the son of C, C is the father of D, D is the sister of B, then how is A related to B ?",
         options: ["Mother", "Brother", "Step son", "Sister"],
-        source: "SSC Stenographer Grade 'C' &amp; 'D' Exam. 09.01.2011)",
+        source: "SSC Stenographer Grade 'C' & 'D' Exam. 09.01.2011)",
         answer: "Mother"
     },
     {
@@ -361,7 +362,7 @@ const mcqData = [
         questionNumber: 21,
         question: "If P is the husband of Q and R is the mother of S and Q, what is R to P ?",
         options: ["Mother", "Sister", "Aunt", "Mother-in-law"],
-        source: "SSC CPO (SI, ASI &amp; Intelligence Officer) Exam. 28.08.2011 (Paper-I)",
+        source: "SSC CPO (SI, ASI & Intelligence Officer) Exam. 28.08.2011 (Paper-I)",
         answer: "Mother-in-law"
     },
     {
@@ -369,7 +370,7 @@ const mcqData = [
         questionNumber: 45,
         question: "P and Q are brothers. R and S are sisters. P’s son is S’s brother. How is Q related to R ?",
         options: ["Uncle", "Brother", "Father", "Grandfather"],
-        source: "SSC (10+2) Level Data Entry Operator &amp; LDC Exam. 04.12.2011 (IInd Sitting (North Zone)",
+        source: "SSC (10+2) Level Data Entry Operator & LDC Exam. 04.12.2011 (IInd Sitting (North Zone)",
         answer: "Uncle"
     },
     {
@@ -377,7 +378,7 @@ const mcqData = [
         questionNumber: 46,
         question: "A and B are the young ones of C. If C is the mother of B, but A is not the daughter of C, then what is the relationship between C and A ?",
         options: ["Nephew and Aunty", "Brother and Sister", "Mother and Son", "Niece and Aunty"],
-        source: "SSC (10+2) Level Data Entry Operator &amp; LDC Exam. 11.12.2011 (Ist Sitting (East Zone)",
+        source: "SSC (10+2) Level Data Entry Operator & LDC Exam. 11.12.2011 (Ist Sitting (East Zone)",
         answer: "Mother and Son"
     },
     {
@@ -385,7 +386,7 @@ const mcqData = [
         questionNumber: 47,
         question: "A is the mother of D and sister of B. B has a daughter C who is married to F. G is the husband of A. How is G related to D ?",
         options: ["uncle", "husband", "son", "father"],
-        source: "SSC Level Data Entry Operator &amp; LDC Exam. 21.10.2012 (IInd Sitting)",
+        source: "SSC Level Data Entry Operator & LDC Exam. 21.10.2012 (IInd Sitting)",
         answer: "father"
     },
     {
@@ -393,7 +394,7 @@ const mcqData = [
         questionNumber: 48,
         question: "Pointing towards A, B said “your mother is the younger sister of my mother”. How is A related to B ?",
         options: ["Uncle", "Cousin", "Nephew", "Father"],
-        source: "SSC Level Data Entry Operator &amp; LDC Exam. 28.10.2012 (Ist Sitting)",
+        source: "SSC Level Data Entry Operator & LDC Exam. 28.10.2012 (Ist Sitting)",
         answer: "Cousin"
     },
     {
@@ -409,7 +410,7 @@ const mcqData = [
         questionNumber: 50,
         question: "A and B are brothers. C and D are sisters. A’s son is D’s brother. How is B related to C?",
         options: ["Father", "Brother", "Uncle", "Son"],
-        source: "SSC CAPFs SI, CISF ASI &amp; Delhi Police SI Exam. 22.06.2014)",
+        source: "SSC CAPFs SI, CISF ASI & Delhi Police SI Exam. 22.06.2014)",
         answer: "Uncle"
     },
     {
@@ -417,7 +418,7 @@ const mcqData = [
         questionNumber: 51,
         question: "A is B’s sister. C is B’s mother. D is C’s father. E is D’s mother. Then how is A related to D ?",
         options: ["Grandmother", "Grandfather", "Daughter", "Granddaughter"],
-        source: "SSC CHSL (10+2) DEO &amp; LDC Exam. 16.11.2014, Patna Region : Ist Sitting",
+        source: "SSC CHSL (10+2) DEO & LDC Exam. 16.11.2014, Patna Region : Ist Sitting",
         answer: "Granddaughter"
     },
     {
@@ -441,7 +442,7 @@ const mcqData = [
         questionNumber: 54,
         question: "A’s mother is sister of B and has a daughter C. How can A be related to B from among the following?",
         options: ["Niece", "Uncle", "Daughter", "Father"],
-        source: "SSC (10+2) Stenographer Grade ‘C’ &amp; ‘D’ Exam. 31.01.2016 TF No. 3513283)",
+        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.01.2016 TF No. 3513283)",
         answer: "Niece"
     },
     {
@@ -761,7 +762,7 @@ const mcqData = [
         questionNumber: 55,
         question: "A and B are a married couple. C and D are brothers. C is the brother of A. How is D related to B ?",
         options: ["Brother", "Son–in–law", "Cousin", "Brother–in–law"],
-        source: "SSC (10+2) Stenographer Grade ‘C’ &amp; ‘D’ Exam. 31.07.2016)",
+        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.07.2016)",
         answer: "Brother–in–law"
     },
     {
@@ -1241,7 +1242,7 @@ const mcqData = [
         question: "A is the sister of B and C. D is the father of C. E is the mother of A. Which statement CANNOT be verified?",
         options: ["D is the father of A.", "E is the mother of B.", "D is E's husband.", "B is E's son."],
         source: "RRB NTPC (Stage-II) – 13/06/2022 (Shift-II)",
-        answer: "B is E's son.",
+        answer: "B is E's son."],
         type: "TYPE–I"
     },
     {
@@ -1273,8 +1274,7 @@ const mcqData = [
         question: "Symbols: ‘+’ = father, ‘–’ = mother, ‘/’ = sister, ‘∪’ = son, ‘∩’ = daughter. Which means A is E’s daughter’s son?",
         options: ["A/B + C – D ∪ E", "A ∩ B ∩ C / D + E", "A/B ∪ C ∪ D / E", "A ∪ B / C / D ∪ E"],
         source: "RRB NTPC (Stage-II) – 15/06/2022 (Shift-II)",
-        answer: "A ∪ B / C / D ∪ E"],
-        type: "Type-4"
+        answer: "A ∪ B / C / D ∪ E"
     },
     {
         questionNumber: 151,
