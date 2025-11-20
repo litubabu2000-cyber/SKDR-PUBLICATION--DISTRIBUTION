@@ -278,8 +278,8 @@ const mcqData = [
     {
         type: "Letter/Word to Symbol Coding",
         questionNumber: 34,
-        question: "If ARC is coded as $@* and HIT is coded as #&%, then CHAIR will be coded as?",
-        options: ["#* & $@", "#*$&%", "*#$&@", "*#$&%"],
+        question: "If ARC is coded as $@* and HIT is coded as #&amp;%, then CHAIR will be coded as?",
+        options: ["#* &amp; $@", "#*$&amp;%", "*#$&@", "*#$&amp;%"],
         source: "RPF SI – 10/01/2019 (Shift-II)",
         answer: "*#$&@"
     },
@@ -531,3 +531,5 @@ export default function CodingDecodingRailwayPage() {
         </div>
     );
 }
+
+    

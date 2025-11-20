@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -9,7 +8,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { OverlayWhiteboard } from "@/components/overlay-whiteboard";
+import { Whiteboard } from "@/components/whiteboard";
 
 
 const mcqData = [
@@ -96,7 +95,7 @@ const mcqData = [
     {
         type: "TYPE–I",
         questionNumber: 27,
-        question: "A is B’s bother, C is A’s mother, D is C’s father, E is B’s son, How is B related to D?",
+        question: "A is B’s brother, C is A’s mother, D is C’s father, E is B’s son, How is B related to D?",
         options: ["Son", "Granddaughter", "Grandfather", "Great grandfather"],
         source: "SSC Combined Matric Level (PRE) Exam. 05.05.2002 (IInd Sitting) (Eastern Zone, Guwahati)",
         answer: "Granddaughter"
@@ -274,7 +273,7 @@ const mcqData = [
         questionNumber: 39,
         question: "P is the father of T. T is the daughter of M. M is the daughter of K. What is P to K ?",
         options: ["Father", "Father-in-law", "Brother", "Son-in-law"],
-        source: "SSC Stenographer (Grade'C & D') Exam. 26.09.2010",
+        source: "SSC Stenographer (Grade'C &amp; D') Exam. 26.09.2010",
         answer: "Son-in-law"
     },
     {
@@ -282,7 +281,7 @@ const mcqData = [
         questionNumber: 40,
         question: "A and B are brothers. E is the daugther of F. F is the wife of B. What is the relation of E to A ?",
         options: ["sister", "daugther", "niece", "sister-in-law"],
-        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (Ist sitting)",
+        source: "SSC Higher Secondary Level Data Entry Operator &amp; LDC Exam. 28.11.2010 (Ist sitting)",
         answer: "niece"
     },
     {
@@ -290,7 +289,7 @@ const mcqData = [
         questionNumber: 41,
         question: "M and F are a married couple. A and B are sisters. A is the sister of F. Who is B to M ?",
         options: ["Sister", "Sister-in-law", "Niece", "Daughter"],
-        source: "SSC Higher Secondary Level Data Entry Operator & LDC Exam. 28.11.2010 (IInd sitting)",
+        source: "SSC Higher Secondary Level Data Entry Operator &amp; LDC Exam. 28.11.2010 (IInd sitting)",
         answer: "Sister-in-law"
     },
     {
@@ -338,7 +337,7 @@ const mcqData = [
         questionNumber: 42,
         question: "If A is the mother of D, B is not the son of C, C is the father of D, D is the sister of B, then how is A related to B ?",
         options: ["Mother", "Brother", "Step son", "Sister"],
-        source: "SSC Stenographer Grade 'C' & 'D' Exam. 09.01.2011)",
+        source: "SSC Stenographer Grade 'C' &amp; 'D' Exam. 09.01.2011)",
         answer: "Mother"
     },
     {
@@ -362,7 +361,7 @@ const mcqData = [
         questionNumber: 21,
         question: "If P is the husband of Q and R is the mother of S and Q, what is R to P ?",
         options: ["Mother", "Sister", "Aunt", "Mother-in-law"],
-        source: "SSC CPO (SI, ASI & Intelligence Officer) Exam. 28.08.2011 (Paper-I)",
+        source: "SSC CPO (SI, ASI &amp; Intelligence Officer) Exam. 28.08.2011 (Paper-I)",
         answer: "Mother-in-law"
     },
     {
@@ -370,7 +369,7 @@ const mcqData = [
         questionNumber: 45,
         question: "P and Q are brothers. R and S are sisters. P’s son is S’s brother. How is Q related to R ?",
         options: ["Uncle", "Brother", "Father", "Grandfather"],
-        source: "SSC (10+2) Level Data Entry Operator & LDC Exam. 04.12.2011 (IInd Sitting (North Zone)",
+        source: "SSC (10+2) Level Data Entry Operator &amp; LDC Exam. 04.12.2011 (IInd Sitting (North Zone)",
         answer: "Uncle"
     },
     {
@@ -378,7 +377,7 @@ const mcqData = [
         questionNumber: 46,
         question: "A and B are the young ones of C. If C is the mother of B, but A is not the daughter of C, then what is the relationship between C and A ?",
         options: ["Nephew and Aunty", "Brother and Sister", "Mother and Son", "Niece and Aunty"],
-        source: "SSC (10+2) Level Data Entry Operator & LDC Exam. 11.12.2011 (Ist Sitting (East Zone)",
+        source: "SSC (10+2) Level Data Entry Operator &amp; LDC Exam. 11.12.2011 (Ist Sitting (East Zone)",
         answer: "Mother and Son"
     },
     {
@@ -386,7 +385,7 @@ const mcqData = [
         questionNumber: 47,
         question: "A is the mother of D and sister of B. B has a daughter C who is married to F. G is the husband of A. How is G related to D ?",
         options: ["uncle", "husband", "son", "father"],
-        source: "SSC Level Data Entry Operator & LDC Exam. 21.10.2012 (IInd Sitting)",
+        source: "SSC Level Data Entry Operator &amp; LDC Exam. 21.10.2012 (IInd Sitting)",
         answer: "father"
     },
     {
@@ -394,7 +393,7 @@ const mcqData = [
         questionNumber: 48,
         question: "Pointing towards A, B said “your mother is the younger sister of my mother”. How is A related to B ?",
         options: ["Uncle", "Cousin", "Nephew", "Father"],
-        source: "SSC Level Data Entry Operator & LDC Exam. 28.10.2012 (Ist Sitting)",
+        source: "SSC Level Data Entry Operator &amp; LDC Exam. 28.10.2012 (Ist Sitting)",
         answer: "Cousin"
     },
     {
@@ -410,7 +409,7 @@ const mcqData = [
         questionNumber: 50,
         question: "A and B are brothers. C and D are sisters. A’s son is D’s brother. How is B related to C?",
         options: ["Father", "Brother", "Uncle", "Son"],
-        source: "SSC CAPFs SI, CISF ASI & Delhi Police SI Exam. 22.06.2014)",
+        source: "SSC CAPFs SI, CISF ASI &amp; Delhi Police SI Exam. 22.06.2014)",
         answer: "Uncle"
     },
     {
@@ -418,7 +417,7 @@ const mcqData = [
         questionNumber: 51,
         question: "A is B’s sister. C is B’s mother. D is C’s father. E is D’s mother. Then how is A related to D ?",
         options: ["Grandmother", "Grandfather", "Daughter", "Granddaughter"],
-        source: "SSC CHSL (10+2) DEO & LDC Exam. 16.11.2014, Patna Region : Ist Sitting",
+        source: "SSC CHSL (10+2) DEO &amp; LDC Exam. 16.11.2014, Patna Region : Ist Sitting",
         answer: "Granddaughter"
     },
     {
@@ -442,7 +441,7 @@ const mcqData = [
         questionNumber: 54,
         question: "A’s mother is sister of B and has a daughter C. How can A be related to B from among the following?",
         options: ["Niece", "Uncle", "Daughter", "Father"],
-        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.01.2016 TF No. 3513283)",
+        source: "SSC (10+2) Stenographer Grade ‘C’ &amp; ‘D’ Exam. 31.01.2016 TF No. 3513283)",
         answer: "Niece"
     },
     {
@@ -762,7 +761,7 @@ const mcqData = [
         questionNumber: 55,
         question: "A and B are a married couple. C and D are brothers. C is the brother of A. How is D related to B ?",
         options: ["Brother", "Son–in–law", "Cousin", "Brother–in–law"],
-        source: "SSC (10+2) Stenographer Grade ‘C’ & ‘D’ Exam. 31.07.2016)",
+        source: "SSC (10+2) Stenographer Grade ‘C’ &amp; ‘D’ Exam. 31.07.2016)",
         answer: "Brother–in–law"
     },
     {
@@ -1255,10 +1254,10 @@ const mcqData = [
     },
     {
         questionNumber: 153,
-        question: "‘X < Y’ = X is mother of Y, ‘X > Y’ = X is husband of Y, ‘X @ Y’ = X is sister of Y, ‘X $ Y’ = X is son of Y. Which shows R is daughter of Q?",
-        options: ["Q > K @ R $ H", "R @ H > K < Q", "Q < K @ H $ R", "R @ H $ K > Q"],
+        question: "‘X &lt; Y’ = X is mother of Y, ‘X &gt; Y’ = X is husband of Y, ‘X @ Y’ = X is sister of Y, ‘X $ Y’ = X is son of Y. Which shows R is daughter of Q?",
+        options: ["Q &gt; K @ R $ H", "R @ H &gt; K &lt; Q", "Q &lt; K @ H $ R", "R @ H $ K &gt; Q"],
         source: "RRB NTPC (Stage-II) – 14/06/2022 (Shift-II)",
-        answer: "R @ H $ K > Q",
+        answer: "R @ H $ K &gt; Q",
         type: "Type-4"
     },
     {
@@ -1274,7 +1273,7 @@ const mcqData = [
         question: "Symbols: ‘+’ = father, ‘–’ = mother, ‘/’ = sister, ‘∪’ = son, ‘∩’ = daughter. Which means A is E’s daughter’s son?",
         options: ["A/B + C – D ∪ E", "A ∩ B ∩ C / D + E", "A/B ∪ C ∪ D / E", "A ∪ B / C / D ∪ E"],
         source: "RRB NTPC (Stage-II) – 15/06/2022 (Shift-II)",
-        answer: "A ∪ B / C / D ∪ E",
+        answer: "A ∪ B / C / D ∪ E"],
         type: "Type-4"
     },
     {
@@ -1303,4 +1302,210 @@ const mcqData = [
     }
 ]
 
-This structured list can be used to populate your application or for further analysis.
+export default function BloodRelationshipPage() {
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+    const [showAnswer, setShowAnswer] = useState(false);
+    const [quizEnded, setQuizEnded] = useState(false);
+
+    const activeQuestionRef = useRef<HTMLButtonElement>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const questionTypes = useMemo(() => [...new Set(mcqData.map(q => q.type))], []);
+
+
+    useEffect(() => {
+        if (activeQuestionRef.current && scrollContainerRef.current) {
+            const scrollContainer = scrollContainerRef.current;
+            const activeQuestion = activeQuestionRef.current;
+
+            const containerWidth = scrollContainer.offsetWidth;
+            const activeQuestionLeft = activeQuestion.offsetLeft;
+            const activeQuestionWidth = activeQuestion.offsetWidth;
+
+            const scrollLeft = activeQuestionLeft - (containerWidth / 2) + (activeQuestionWidth / 2);
+
+            scrollContainer.scrollTo({
+                left: scrollLeft,
+                behavior: 'smooth',
+            });
+        }
+    }, [currentQuestionIndex]);
+
+
+    const handleNext = () => {
+        if (currentQuestionIndex < mcqData.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            resetQuestionState();
+        } else {
+            setQuizEnded(true);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+            resetQuestionState();
+        }
+    };
+
+    const handleQuestionSelect = (index: number) => {
+        setCurrentQuestionIndex(index);
+        resetQuestionState();
+    }
+
+    const resetQuestionState = () => {
+        setSelectedAnswer(null);
+        setShowAnswer(false);
+    }
+
+    const handleEndQuiz = () => {
+        setQuizEnded(true);
+    };
+
+    const handleRestartQuiz = () => {
+        setCurrentQuestionIndex(0);
+        resetQuestionState();
+        setQuizEnded(false);
+    };
+    
+    const handleNextType = () => {
+        const currentType = mcqData[currentQuestionIndex].type;
+        const currentTypeIndex = questionTypes.indexOf(currentType);
+        if (currentTypeIndex < questionTypes.length - 1) {
+            const nextType = questionTypes[currentTypeIndex + 1];
+            const nextQuestionIndex = mcqData.findIndex(q => q.type === nextType);
+            if (nextQuestionIndex !== -1) {
+                setCurrentQuestionIndex(nextQuestionIndex);
+                resetQuestionState();
+            }
+        }
+    };
+
+    const currentQuestion = mcqData[currentQuestionIndex];
+    const isCorrect = selectedAnswer === currentQuestion.answer;
+    
+    const currentType = mcqData[currentQuestionIndex].type;
+    const currentTypeIndex = questionTypes.indexOf(currentType);
+    const hasNextType = currentTypeIndex < questionTypes.length - 1;
+
+
+    if (quizEnded) {
+        return (
+            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
+                <Card className="w-full max-w-xl text-center">
+                    <CardHeader>
+                        <CardTitle>Quiz Completed!</CardTitle>
+                        <CardDescription>You have completed the Blood Relationship quiz.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-lg">Thank you for participating.</p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button onClick={handleRestartQuiz} className="w-full">
+                            Restart Quiz
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
+        );
+    }
+
+    return (
+        <div className="container mx-auto py-12 px-4 md:px-6">
+            <div className="flex flex-col md:flex-row gap-8">
+                <div className="md:w-1/2">
+                    <Card>
+                        <CardHeader>
+                            <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
+                            <CardDescription>{currentQuestion.source}</CardDescription>
+                            <CardTitle className="font-body text-xl leading-relaxed">
+                                {currentQuestion.questionNumber}. {currentQuestion.question}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <RadioGroup
+                                value={selectedAnswer ?? undefined}
+                                onValueChange={setSelectedAnswer}
+                                disabled={showAnswer}
+                            >
+                                {currentQuestion.options.map((option, index) => (
+                                    <div key={index} className={cn(
+                                        "flex items-center space-x-2 p-3 rounded-md border",
+                                        showAnswer && option === currentQuestion.answer && "bg-green-100 border-green-400 dark:bg-green-900/30 dark:border-green-700",
+                                        showAnswer && selectedAnswer === option && option !== currentQuestion.answer && "bg-red-100 border-red-400 dark:bg-red-900/30 dark:border-red-700"
+                                    )}>
+                                        <RadioGroupItem value={option} id={`option-${index}`} />
+                                        <Label htmlFor={`option-${index}`} className="flex-1">
+                                            {option}
+                                        </Label>
+                                        {showAnswer && option === currentQuestion.answer && <CheckCircle className="text-green-600 dark:text-green-500" />}
+                                        {showAnswer && selectedAnswer === option && option !== currentQuestion.answer && <XCircle className="text-red-600 dark:text-red-500" />}
+                                    </div>
+                                ))}
+                            </RadioGroup>
+                        </CardContent>
+                        <CardFooter className="flex-col items-start space-y-4">
+                            <div className="flex justify-between w-full gap-2">
+                                <Button
+                                    onClick={handlePrevious}
+                                    disabled={currentQuestionIndex === 0}
+                                    variant="outline"
+                                >
+                                    <ChevronLeft className="mr-2 h-4 w-4" />
+                                    Previous
+                                </Button>
+                                <Button
+                                    onClick={handleNextType}
+                                    disabled={!hasNextType}
+                                    variant="outline"
+                                >
+                                    Next Type
+                                </Button>
+                                <Button
+                                    onClick={handleNext}
+                                >
+                                    {currentQuestionIndex === mcqData.length - 1 ? 'Finish' : 'Next'}
+                                    <ChevronRight className="ml-2 h-4 w-4" />
+                                </Button>
+                            </div>
+
+                            <ScrollArea className="w-full" ref={scrollContainerRef}>
+                                <div className="flex w-max space-x-2 p-2">
+                                    {mcqData.map((question, index) => (
+                                        <Button
+                                            key={index}
+                                            ref={index === currentQuestionIndex ? activeQuestionRef : null}
+                                            variant={index === currentQuestionIndex ? 'default' : 'outline'}
+                                            size="icon"
+                                            onClick={() => handleQuestionSelect(index)}
+                                            className="h-10 w-10 flex-shrink-0"
+                                        >
+                                            {index + 1}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <ScrollBar orientation="horizontal" />
+                            </ScrollArea>
+
+                            <div className="flex gap-2 w-full">
+                                <Button onClick={() => setShowAnswer(!showAnswer)} variant="secondary" className="w-1/2">
+                                    <Lightbulb className="mr-2 h-4 w-4" /> {showAnswer ? 'Hide' : 'Show'} Answer
+                                </Button>
+                                <Button onClick={handleEndQuiz} variant="destructive" className="w-1/2">
+                                    End
+                                </Button>
+                            </div>
+
+                        </CardFooter>
+                    </Card>
+                </div>
+
+                <div className="md:w-1/2 mt-8 md:mt-0">
+                    <Whiteboard />
+                </div>
+            </div>
+        </div>
+    );
+}
+    

@@ -119,9 +119,9 @@ const mcqData = [
         type: "Type 2: Problems based on finding the Amount",
         questionNumber: 14,
         question: "If the interest is compounded quarterly, what will be a sum of ₹75000 amount in one year at 16% per annum (rounded to two decimal places)?",
-        options: ["₹87379.40", "₹87739.40", "₹89773.40", "₹87937.40"],
+        options: ["₹87,379.40", "₹87,739.40", "₹89,773.40", "₹87,937.40"],
         source: "Exam: SSC MTS – 05/09/2023 (Shift-II)",
-        answer: "₹87379.40"
+        answer: "₹87,379.40"
     },
     {
         type: "Type 2: Problems based on finding the Amount",
@@ -504,7 +504,7 @@ const mcqData = [
         questionNumber: 62,
         question: "The difference between compound interest and simple interest on a sum of money at 20% per annum for 2 years is ₹200. The principal amount is:",
         options: ["₹3,000", "₹4,500", "₹4,000", "₹5,000"],
-        source: "Exam: SSC MTS – 21/08/2019 (Shift-II) & SSC CHSL (Tier-I) – 14/03/2023 (Shift-IV)",
+        source: "Exam: SSC MTS – 21/08/2019 (Shift-II) &amp; SSC CHSL (Tier-I) – 14/03/2023 (Shift-IV)",
         answer: "₹5,000"
     },
     {
@@ -520,7 +520,7 @@ const mcqData = [
         questionNumber: 64,
         question: "For a certain sum of money at 5% annual interest rate, the difference between the simple interest and the compound interest (compounded annually) for 2 years is ₹25.00. Find the sum.",
         options: ["₹7,500", "₹12,000", "₹8,000", "₹10,000"],
-        source: "Exam: SSC GD – 25/11/2021 (Shift-III) & SSC CHSL (Tier-I) – 13/03/2023 (Shift-III)",
+        source: "Exam: SSC GD – 25/11/2021 (Shift-III) &amp; SSC CHSL (Tier-I) – 13/03/2023 (Shift-III)",
         answer: "₹10,000"
     },
     {
@@ -720,7 +720,7 @@ const mcqData = [
         questionNumber: 89,
         question: "A sum of money doubles itself in 15 years at a certain rate of compound interest. In how many years will it 4 times itself?",
         options: ["45", "30", "25", "15"],
-        source: "Exam: SSC MTS – 26/10/2021 (Shift-I) & SSC CHSL (Tier-I) – 10/03/2023 (Shift-II)",
+        source: "Exam: SSC MTS – 26/10/2021 (Shift-I) &amp; SSC CHSL (Tier-I) – 10/03/2023 (Shift-II)",
         answer: "30"
     },
     {
@@ -728,7 +728,7 @@ const mcqData = [
         questionNumber: 90,
         question: "A certain sum of money becomes double in 2 years at a certain annual rate of compound interest. In how many years will it become 4 times at the same compound interest rate?",
         options: ["6", "5", "4", "3"],
-        source: "Exam: SSC GD – 01/12/2021 (Shift-II) & SSC CHSL (Tier-I) – 09/03/2023 (Shift-I)",
+        source: "Exam: SSC GD – 01/12/2021 (Shift-II) &amp; SSC CHSL (Tier-I) – 09/03/2023 (Shift-I)",
         answer: "4"
     },
     {
@@ -848,7 +848,7 @@ const mcqData = [
         questionNumber: 105,
         question: "₹15000 is lent at 16% per annum compound interest. What is the difference between the compound interest for the second year and the third year?",
         options: ["₹548", "₹544", "₹445.44", "₹454.88"],
-        source: "Exam: SSC CPO SI – 10/11/2022 (Shift-II) & SSC CHSL (Tier-I) – 21/03/2023 (Shift-I)",
+        source: "Exam: SSC CPO SI – 10/11/2022 (Shift-II) &amp; SSC CHSL (Tier-I) – 21/03/2023 (Shift-I)",
         answer: "₹454.88"
     },
     {
@@ -856,7 +856,7 @@ const mcqData = [
         questionNumber: 106,
         question: "What will be the difference (in rupees) between half-yearly compound interest and annual compound interest on ₹25000 at the rate of 20% for 1 year?",
         options: ["₹125", "₹250", "₹500", "₹375"],
-        source: "Exam: SSC CGL (Tier-II) – 21/02/2018 & SSC CHSL (Tier-I) – 20/03/2023 (Shift-I)",
+        source: "Exam: SSC CGL (Tier-II) – 21/02/2018 &amp; SSC CHSL (Tier-I) – 20/03/2023 (Shift-I)",
         answer: "₹250"
     },
     {
@@ -1210,3 +1210,5 @@ export default function CompoundInterestSscPage() {
         </div>
     );
 }
+
+    
