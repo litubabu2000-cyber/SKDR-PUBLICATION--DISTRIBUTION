@@ -1302,3 +1302,4 @@ const mcqData = [
         type: "Type-2"
     }
 ]
+
