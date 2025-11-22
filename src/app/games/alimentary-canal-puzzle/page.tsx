@@ -16,20 +16,20 @@ const ItemTypes = {
   LABEL: 'label',
 };
 
-const PARTS = [
-    { id: 'mouth', label: 'Mouth (Oral Cavity)', x: '68.6', y: '26.4', placed: false },
-    { id: 'tongue', label: 'Tongue', x: '64.0', y: '29.1', placed: false },
-    { id: 'esophagus', label: 'Esophagus', x: '54.8', y: '39.3', placed: false },
-    { id: 'liver', label: 'Liver', x: '44.8', y: '53.3', placed: false },
-    { id: 'stomach', label: 'Stomach', x: '62.8', y: '55.7', placed: false },
-    { id: 'gallbladder', label: 'Gallbladder', x: '48.8', y: '57.3', placed: false },
-    { id: 'spleen', label: 'Spleen', x: '65.8', y: '59.6', placed: false },
-    { id: 'pancreas', label: 'Pancreas', x: '50.6', y: '63.2', placed: false },
-    { id: 'large-intestine', label: 'Large Intestine', x: '43.6', y: '72.3', placed: false },
-    { id: 'small-intestine', label: 'Small Intestine', x: '56.8', y: '72.2', placed: false },
-    { id: 'appendix', label: 'Appendix', x: '49.4', y: '81.2', placed: false },
-    { id: 'rectum', label: 'Rectum', x: '56.2', y: '81.6', placed: false },
-    { id: 'anus', label: 'Anus', x: '55.0', y: '86.3', placed: false },
+const PARTS_DATA = [
+    { id: 'mouth', label: 'Mouth (Oral Cavity)', x: '68.6', y: '26.4' },
+    { id: 'tongue', label: 'Tongue', x: '64.0', y: '29.1' },
+    { id: 'esophagus', label: 'Esophagus', x: '54.8', y: '39.3' },
+    { id: 'liver', label: 'Liver', x: '44.8', y: '53.3' },
+    { id: 'stomach', label: 'Stomach', x: '62.8', y: '55.7' },
+    { id: 'gallbladder', label: 'Gallbladder', x: '48.8', y: '57.3' },
+    { id: 'spleen', label: 'Spleen', x: '65.8', y: '59.6' },
+    { id: 'pancreas', label: 'Pancreas', x: '50.6', y: '63.2' },
+    { id: 'large-intestine', label: 'Large Intestine', x: '43.6', y: '72.3' },
+    { id: 'small-intestine', label: 'Small Intestine', x: '56.8', y: '72.2' },
+    { id: 'appendix', label: 'Appendix', x: '49.4', y: '81.2' },
+    { id: 'rectum', label: 'Rectum', x: '56.2', y: '81.6' },
+    { id: 'anus', label: 'Anus', x: '55.0', y: '86.3' },
 ];
 
 
@@ -62,7 +62,7 @@ const DraggableLabel: React.FC<LabelProps> = ({ id, label }) => {
 
 interface DropTargetProps {
   id: string;
-  onDrop: (id: string, item: { id: string }) => void;
+  onDrop: (id: string, item: { id: string; label: string; }) => void;
   placedLabel: { id: string; label: string; isCorrect: boolean | null } | null;
   x: string;
   y: string;
@@ -71,7 +71,7 @@ interface DropTargetProps {
 const DropTarget: React.FC<DropTargetProps> = ({ id, onDrop, placedLabel, x, y }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.LABEL,
-    drop: (item: { id: string }) => onDrop(id, item),
+    drop: (item: { id: string; label: string; }) => onDrop(id, item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -105,8 +105,8 @@ const DropTarget: React.FC<DropTargetProps> = ({ id, onDrop, placedLabel, x, y }
 };
 
 const AlimentaryCanalPuzzle: React.FC = () => {
-  const [parts, setParts] = useState(PARTS.map(p => ({...p, placed: false, placedLabel: null as {id: string, label: string} | null, isCorrect: null as boolean | null })));
-  const [unplacedLabels, setUnplacedLabels] = useState(PARTS.map(p => ({ id: p.id, label: p.label })));
+  const [parts, setParts] = useState(PARTS_DATA.map(p => ({...p, placed: false, placedLabel: null as {id: string, label: string} | null, isCorrect: null as boolean | null })));
+  const [unplacedLabels, setUnplacedLabels] = useState(PARTS_DATA.map(p => ({ id: p.id, label: p.label })));
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -138,8 +138,8 @@ const AlimentaryCanalPuzzle: React.FC = () => {
   };
 
   const resetGame = () => {
-      setParts(PARTS.map(p => ({...p, placed: false, placedLabel: null, isCorrect: null })));
-      setUnplacedLabels(PARTS.map(p => ({ id: p.id, label: p.label })));
+      setParts(PARTS_DATA.map(p => ({...p, placed: false, placedLabel: null, isCorrect: null })));
+      setUnplacedLabels(PARTS_DATA.map(p => ({ id: p.id, label: p.label })));
       setShowResults(false);
       setScore(0);
   }
@@ -179,7 +179,7 @@ const AlimentaryCanalPuzzle: React.FC = () => {
                                  <DropTarget
                                     key={part.id}
                                     id={part.id}
-                                    onDrop={(targetId, item) => handleDrop(targetId, item as any)}
+                                    onDrop={handleDrop}
                                     placedLabel={part.placedLabel ? {...part.placedLabel, isCorrect: part.isCorrect} : null}
                                     x={part.x}
                                     y={part.y}
@@ -223,7 +223,7 @@ const AlimentaryCanalPuzzle: React.FC = () => {
                        {showResults ? (
                             <div className="text-center">
                                 <Trophy className="mx-auto size-12 text-amber-500 mb-2"/>
-                                <h3 className="text-2xl font-bold">Your Score: {score} / {PARTS.length}</h3>
+                                <h3 className="text-2xl font-bold">Your Score: {score} / {PARTS_DATA.length}</h3>
                                 <Button onClick={resetGame} className="mt-4 w-full">
                                     <RefreshCw className="mr-2 size-4" />
                                     Play Again
@@ -248,5 +248,3 @@ const AlimentaryCanalPuzzle: React.FC = () => {
 };
 
 export default AlimentaryCanalPuzzle;
-
-    
