@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -23,18 +22,18 @@ const INITIAL_PARTS = [
 
 export default function App() {
   const [parts, setParts] = useState(INITIAL_PARTS);
-  const [placements, setPlacements] = useState({});
-  const [selectedLabel, setSelectedLabel] = useState(null);
-  const [feedback, setFeedback] = useState(null);
+  const [placements, setPlacements] = useState<Record<string, { id: string; label: string }>>({});
+  const [selectedLabel, setSelectedLabel] = useState<{ id: string; label: string } | null>(null);
+  const [feedback, setFeedback] = useState<{ type: string; message: string } | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [shuffledLabels, setShuffledLabels] = useState([]);
-  const [customImage, setCustomImage] = useState(null);
+  const [shuffledLabels, setShuffledLabels] = useState<{ id: string; label: string }[]>([]);
+  const [customImage, setCustomImage] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [draggedPartId, setDraggedPartId] = useState(null);
-  const [draggedCoords, setDraggedCoords] = useState(null);
-  const diagramRef = useRef(null);
-  const fileInputRef = useRef(null);
+  const [draggedPartId, setDraggedPartId] = useState<string | null>(null);
+  const [draggedCoords, setDraggedCoords] = useState<{ x: string; y: string } | null>(null);
+  const diagramRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     resetGame(parts);
@@ -54,7 +53,7 @@ export default function App() {
     }
   };
 
-  const handleLabelClick = (part) => {
+  const handleLabelClick = (part: { id: string; label: string }) => {
     if (placements[part.id] || isEditMode) return;
     
     if (selectedLabel && selectedLabel.id === part.id) {
@@ -65,7 +64,7 @@ export default function App() {
     }
   };
 
-  const handleDropZoneClick = (targetId) => {
+  const handleDropZoneClick = (targetId: string) => {
     if (!selectedLabel || isEditMode) return;
 
     if (selectedLabel.id === targetId) {
@@ -83,8 +82,8 @@ export default function App() {
     setTimeout(() => setFeedback(null), 1500);
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setCustomImage(imageUrl);
@@ -92,36 +91,34 @@ export default function App() {
     }
   };
 
-  const isPlaced = (partId) => !!placements[partId];
+  const isPlaced = (partId: string) => !!placements[partId];
 
   // --- Drag Logic for Edit Mode ---
-  const handleStartDrag = (e, partId) => {
+  const handleStartDrag = (e: React.MouseEvent | React.TouchEvent, partId: string) => {
     if (!isEditMode) return;
     setIsDragging(true);
     setDraggedPartId(partId);
     
-    // Determine the starting position (for touch/mouse consistency)
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const clientX = 'touches' in e ? (e as React.TouchEvent).touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clientY = 'touches' in e ? (e as React.TouchEvent).touches[0].clientY : (e as React.MouseEvent).clientY;
     
-    // Store the initial position of the dot (relative to the screen)
     const part = parts.find(p => p.id === partId);
-    setDraggedCoords({ x: part.x, y: part.y, initialMouseX: clientX, initialMouseY: clientY });
+    if (part) {
+        setDraggedCoords({ x: String(part.x), y: String(part.y) });
+    }
   };
   
-  const handleDrag = (e) => {
+  const handleDrag = (e: MouseEvent | TouchEvent) => {
     if (!isDragging || !diagramRef.current) return;
     
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     
     const diagramRect = diagramRef.current.getBoundingClientRect();
     
-    // Calculate new position relative to the diagram container (in pixels)
     let newX = clientX - diagramRect.left;
     let newY = clientY - diagramRect.top;
     
-    // Convert to percentage (0 to 100)
     const newXPercent = Math.max(0, Math.min(100, (newX / diagramRect.width) * 100));
     const newYPercent = Math.max(0, Math.min(100, (newY / diagramRect.height) * 100));
 
@@ -130,9 +127,8 @@ export default function App() {
         y: newYPercent.toFixed(1) 
     });
 
-    // Update parts state in real-time
     setParts(currentParts => currentParts.map(part => 
-        part.id === draggedPartId ? { ...part, x: newXPercent.toFixed(1), y: newYPercent.toFixed(1) } : part
+        part.id === draggedPartId ? { ...part, x: Number(newXPercent.toFixed(1)), y: Number(newYPercent.toFixed(1)) } : part
     ));
   };
 
@@ -142,7 +138,6 @@ export default function App() {
     setDraggedPartId(null);
   };
 
-  // Attach global drag listeners
   useEffect(() => {
     if (isEditMode) {
       window.addEventListener('mousemove', handleDrag);
@@ -163,38 +158,29 @@ export default function App() {
     };
   }, [isEditMode, isDragging]);
   
-  // Toggle Edit Mode and reset if leaving edit mode
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
     if (isEditMode) {
-        // Leaving edit mode, prepare game for play
         resetGame(parts);
         setDraggedCoords(null);
     } else {
-        // Entering edit mode
         setPlacements({});
     }
   };
   
-  // Copy coordinates to clipboard (using document.execCommand for iframe compatibility)
   const copyCoordinates = () => {
     const coordsString = JSON.stringify(parts, null, 2);
-    
-    // Format the output to be a valid JS array constant
     const formattedOutput = `const UPDATED_PARTS = ${coordsString};`;
     
-    // 1. Create a temporary textarea element
     const textArea = document.createElement('textarea');
     textArea.value = formattedOutput;
     
-    // 2. Make it invisible and append it to the body
     textArea.style.position = 'fixed';
     textArea.style.top = '0';
     textArea.style.left = '0';
     textArea.style.opacity = '0';
     document.body.appendChild(textArea);
     
-    // 3. Select the text and attempt to copy using the deprecated but often allowed execCommand
     textArea.focus();
     textArea.select();
     
@@ -205,13 +191,11 @@ export default function App() {
       console.error('Fallback clipboard copy failed:', err);
     }
     
-    // 4. Clean up the element
     document.body.removeChild(textArea);
     
     if (success) {
         setFeedback({ type: 'success', message: 'Coordinates copied to clipboard!' });
     } else {
-        // Fallback: If execCommand also fails, show the code to the user.
         setFeedback({ 
             type: 'error', 
             message: 'Automatic copy failed. Please copy the coordinates from the console.' 
@@ -227,7 +211,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-blue-50 p-4 font-sans flex flex-col items-center">
       
-      {/* Header */}
       <header className="w-full max-w-4xl mb-6 flex flex-wrap gap-4 justify-between items-center bg-white p-4 rounded-xl shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
@@ -236,7 +219,6 @@ export default function App() {
           <p className="text-gray-500 text-sm">Identify the parts of the Digestive System</p>
         </div>
         <div className="flex items-center gap-4">
-          {/* Hidden File Input */}
           <input 
             type="file" 
             ref={fileInputRef}
@@ -283,128 +265,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="w-full max-w-6xl flex flex-col lg:flex-row gap-8 items-start justify-center">
-        
-        {/* Diagram Area */}
-        <div 
-          ref={diagramRef}
-          className="relative flex-shrink-0 w-full max-w-[500px] aspect-[3/4] bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mx-auto group"
-        >
-          
-          {feedback && (
-            <div className={`absolute top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2 rounded-full shadow-lg font-bold animate-bounce ${
-              feedback.type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'
-            }`}>
-              {feedback.message}
-            </div>
-          )}
-
-          {/* Edit Mode Instructions / Dragged Coords Display */}
-          {isEditMode && (
-            <div className="absolute top-0 left-0 right-0 p-2 bg-orange-100 text-orange-800 text-center text-sm font-medium z-30 shadow-inner">
-                {draggedCoords ? (
-                    <span>Dragging {parts.find(p => p.id === draggedPartId)?.label}: <strong>X: {draggedCoords.x}%</strong>, <strong>Y: {draggedCoords.y}%</strong></span>
-                ) : (
-                    <span><strong>EDIT MODE ACTIVE</strong>. Drag the dots to reposition them.</span>
-                )}
-            </div>
-          )}
-
-          {/* Display Custom Image OR Default SVG */}
-          {customImage ? (
-            <div className="w-full h-full relative">
-               <img 
-                src={customImage} 
-                alt="Digestive System" 
-                className="w-full h-full object-contain bg-gray-50"
-              />
-              {/* Overlay so dots sit on top clearly */}
-              <div className="absolute inset-0 bg-white/10 pointer-events-none" />
-            </div>
-          ) : (
-            <div className="relative w-full h-full">
-               {/* Placeholder message to encourage upload */}
-               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                  <p className="text-gray-300 text-2xl font-bold opacity-20 rotate-45">Upload Your Diagram</p>
-               </div>
-               <svg viewBox="0 0 400 600" className="w-full h-full opacity-90 pointer-events-none z-10">
-                {/* Default diagram background */}
-                <path d="M 120 600 L 120 350 Q 90 350 80 250 Q 70 150 130 150 L 130 100 Q 130 20 200 20 Q 270 20 270 100 L 270 150 Q 330 150 320 250 Q 310 350 280 350 L 280 600" fill="#f0f4f8" stroke="#cbd5e1" strokeWidth="2" />
-                {/* Esophagus */}
-                <path d="M 200 90 L 200 250" fill="none" stroke="#fca5a5" strokeWidth="12" strokeLinecap="round" />
-                {/* Stomach */}
-                <path d="M 200 240 C 240 240 260 280 240 320 C 220 350 180 340 190 290" fill="#f87171" stroke="#b91c1c" strokeWidth="2" />
-                {/* Liver */}
-                <path d="M 190 240 L 140 240 C 110 240 110 300 160 300 L 190 280 Z" fill="#7f1d1d" stroke="#450a0a" strokeWidth="2" />
-                {/* Gallbladder */}
-                <ellipse cx="170" cy="290" rx="8" ry="12" fill="#166534" />
-                {/* Pancreas */}
-                <path d="M 210 310 C 230 310 250 300 260 310 C 250 330 220 330 210 320" fill="#fcd34d" stroke="#d97706" strokeWidth="1" />
-                {/* Spleen */}
-                <ellipse cx="270" cy="270" rx="15" ry="20" fill="#7f1d1d" opacity="0.8" />
-                {/* Large Intestine */}
-                <path d="M 240 450 L 240 360 C 240 340 160 340 160 360 L 160 480 C 160 500 180 500 190 490" fill="none" stroke="#db2777" strokeWidth="25" strokeLinecap="round" strokeLinejoin="round" />
-                {/* Small Intestine */}
-                <path d="M 190 370 Q 220 380 190 400 Q 160 420 190 440 Q 220 460 200 480" fill="none" stroke="#f472b6" strokeWidth="18" strokeLinecap="round" />
-                {/* Rectum */}
-                <path d="M 200 490 L 200 530" fill="none" stroke="#db2777" strokeWidth="15" />
-                {/* Appendix */}
-                <path d="M 150 470 L 150 490" fill="none" stroke="#db2777" strokeWidth="8" strokeLinecap="round" />
-                {/* Mouth/Head Area */}
-                <path d="M 190 70 Q 200 60 210 70 Q 210 90 190 90 Z" fill="#ef4444" opacity="0.5" />
-               </svg>
-            </div>
-          )}
-
-          {/* Drop Zones - Interactive Points */}
-          {parts.map((part, index) => {
-            const completed = isPlaced(part.id);
-            const isActive = selectedLabel?.id === part.id;
-            const isDragged = draggedPartId === part.id;
-            
-            return (
-              <div
-                key={part.id}
-                onClick={() => handleDropZoneClick(part.id)}
-                onMouseDown={isEditMode ? (e) => handleStartDrag(e, part.id) : undefined}
-                onTouchStart={isEditMode ? (e) => handleStartDrag(e, part.id) : undefined}
-                className={`absolute w-6 h-6 -ml-3 -mt-3 rounded-full border-2 transition-all duration-300 z-20 flex items-center justify-center
-                  ${isEditMode 
-                    ? `cursor-move border-orange-600 ${isDragged ? 'bg-orange-400 scale-125 shadow-xl' : 'bg-orange-500 hover:scale-110 shadow-lg'}`
-                    : completed 
-                      ? 'bg-green-500 border-white shadow-md scale-100 cursor-default' 
-                      : isActive 
-                        ? 'bg-blue-400 border-blue-200 animate-pulse scale-125 cursor-pointer' 
-                        : 'bg-blue-500 border-white shadow-sm hover:bg-blue-400 hover:scale-110 cursor-pointer'
-                  }
-                `}
-                style={{ 
-                  left: `${part.x}%`, 
-                  top: `${part.y}%` 
-                }}
-                title={isEditMode ? `Drag ${part.label}` : completed ? part.label : "Touch here"}
-              >
-                {isEditMode ? (
-                    // Display index number in Edit Mode
-                    <span className="text-white text-xs font-bold leading-none select-none">
-                        {index + 1}
-                    </span>
-                ) : completed ? (
-                  <Check size={14} className="text-white" />
-                ) : (
-                  <div className="w-2 h-2 bg-white rounded-full opacity-80" />
-                )}
-                
-                {/* Label Tag (appears when completed) */}
-                {completed && (
-                  <div className="absolute left-full ml-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-md shadow-md border border-green-100 text-xs font-bold text-gray-800 whitespace-nowrap z-30">
-                    {part.label}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+      <main className="w-full max-w-6xl flex flex-col-reverse lg:flex-row gap-8 items-start justify-center">
 
         {/* Controls / Label Bank */}
         <div className="flex flex-col w-full lg:w-64 gap-4">
@@ -470,6 +331,108 @@ export default function App() {
               )}
             </div>
           </div>
+        </div>
+        
+        {/* Diagram Area */}
+        <div 
+          ref={diagramRef}
+          className="relative flex-shrink-0 w-full max-w-[500px] aspect-[3/4] bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mx-auto group"
+        >
+          
+          {feedback && (
+            <div className={`absolute top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2 rounded-full shadow-lg font-bold animate-bounce ${
+              feedback.type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'
+            }`}>
+              {feedback.message}
+            </div>
+          )}
+
+          {isEditMode && (
+            <div className="absolute top-0 left-0 right-0 p-2 bg-orange-100 text-orange-800 text-center text-sm font-medium z-30 shadow-inner">
+                {draggedCoords ? (
+                    <span>Dragging {parts.find(p => p.id === draggedPartId)?.label}: <strong>X: {draggedCoords.x}%</strong>, <strong>Y: {draggedCoords.y}%</strong></span>
+                ) : (
+                    <span><strong>EDIT MODE ACTIVE</strong>. Drag the dots to reposition them.</span>
+                )}
+            </div>
+          )}
+
+          {customImage ? (
+            <div className="w-full h-full relative">
+               <img 
+                src={customImage} 
+                alt="Digestive System" 
+                className="w-full h-full object-contain bg-gray-50"
+              />
+              <div className="absolute inset-0 bg-white/10 pointer-events-none" />
+            </div>
+          ) : (
+            <div className="relative w-full h-full">
+               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                  <p className="text-gray-300 text-2xl font-bold opacity-20 rotate-45">Upload Your Diagram</p>
+               </div>
+               <svg viewBox="0 0 400 600" className="w-full h-full opacity-90 pointer-events-none z-10">
+                <path d="M 120 600 L 120 350 Q 90 350 80 250 Q 70 150 130 150 L 130 100 Q 130 20 200 20 Q 270 20 270 100 L 270 150 Q 330 150 320 250 Q 310 350 280 350 L 280 600" fill="#f0f4f8" stroke="#cbd5e1" strokeWidth="2" />
+                <path d="M 200 90 L 200 250" fill="none" stroke="#fca5a5" strokeWidth="12" strokeLinecap="round" />
+                <path d="M 200 240 C 240 240 260 280 240 320 C 220 350 180 340 190 290" fill="#f87171" stroke="#b91c1c" strokeWidth="2" />
+                <path d="M 190 240 L 140 240 C 110 240 110 300 160 300 L 190 280 Z" fill="#7f1d1d" stroke="#450a0a" strokeWidth="2" />
+                <ellipse cx="170" cy="290" rx="8" ry="12" fill="#166534" />
+                <path d="M 210 310 C 230 310 250 300 260 310 C 250 330 220 330 210 320" fill="#fcd34d" stroke="#d97706" strokeWidth="1" />
+                <ellipse cx="270" cy="270" rx="15" ry="20" fill="#7f1d1d" opacity="0.8" />
+                <path d="M 240 450 L 240 360 C 240 340 160 340 160 360 L 160 480 C 160 500 180 500 190 490" fill="none" stroke="#db2777" strokeWidth="25" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 190 370 Q 220 380 190 400 Q 160 420 190 440 Q 220 460 200 480" fill="none" stroke="#f472b6" strokeWidth="18" strokeLinecap="round" />
+                <path d="M 200 490 L 200 530" fill="none" stroke="#db2777" strokeWidth="15" />
+                <path d="M 150 470 L 150 490" fill="none" stroke="#db2777" strokeWidth="8" strokeLinecap="round" />
+                <path d="M 190 70 Q 200 60 210 70 Q 210 90 190 90 Z" fill="#ef4444" opacity="0.5" />
+               </svg>
+            </div>
+          )}
+
+          {parts.map((part, index) => {
+            const completed = isPlaced(part.id);
+            const isActive = selectedLabel?.id === part.id;
+            const isDragged = draggedPartId === part.id;
+            
+            return (
+              <div
+                key={part.id}
+                onClick={() => handleDropZoneClick(part.id)}
+                onMouseDown={(e) => isEditMode && handleStartDrag(e, part.id)}
+                onTouchStart={(e) => isEditMode && handleStartDrag(e, part.id)}
+                className={`absolute w-6 h-6 -ml-3 -mt-3 rounded-full border-2 transition-all duration-300 z-20 flex items-center justify-center
+                  ${isEditMode 
+                    ? `cursor-move border-orange-600 ${isDragged ? 'bg-orange-400 scale-125 shadow-xl' : 'bg-orange-500 hover:scale-110 shadow-lg'}`
+                    : completed 
+                      ? 'bg-green-500 border-white shadow-md scale-100 cursor-default' 
+                      : isActive 
+                        ? 'bg-blue-400 border-blue-200 animate-pulse scale-125 cursor-pointer' 
+                        : 'bg-blue-500 border-white shadow-sm hover:bg-blue-400 hover:scale-110 cursor-pointer'
+                  }
+                `}
+                style={{ 
+                  left: `${part.x}%`, 
+                  top: `${part.y}%` 
+                }}
+                title={isEditMode ? `Drag ${part.label}` : completed ? part.label : "Touch here"}
+              >
+                {isEditMode ? (
+                    <span className="text-white text-xs font-bold leading-none select-none">
+                        {index + 1}
+                    </span>
+                ) : completed ? (
+                  <Check size={14} className="text-white" />
+                ) : (
+                  <div className="w-2 h-2 bg-white rounded-full opacity-80" />
+                )}
+                
+                {completed && (
+                  <div className="absolute left-full ml-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-md shadow-md border border-green-100 text-xs font-bold text-gray-800 whitespace-nowrap z-30">
+                    {part.label}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </main>
 
