@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 export default function PeriodicTablePage() {
 
     useEffect(() => {
-        const loadScript = (src: string, type = 'module') => {
+        const loadScript = (src: string, isModule = false) => {
             return new Promise((resolve, reject) => {
                 if (document.querySelector(`script[src="${src}"]`)) {
                     resolve(true);
@@ -13,21 +13,24 @@ export default function PeriodicTablePage() {
                 }
                 const script = document.createElement('script');
                 script.src = src;
-                if (type === 'module') {
+                if (isModule) {
                     script.type = 'module';
                 }
                 script.onload = () => resolve(true);
                 script.onerror = () => reject(new Error(`Script load error for ${src}`));
-                document.head.appendChild(script);
+                document.body.appendChild(script);
             });
         };
 
         const initPeriodicTable = async () => {
             try {
-                await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js', 'nomodule');
-                await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/tween.module.js', 'module');
-                await loadScript('/trackball-controls.js', 'module');
-                await loadScript('/css3d-renderer.js', 'module');
+                // Ensure THREE is loaded first and is available on window
+                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js');
+                
+                // Now load dependent scripts
+                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/tween.min.js');
+                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TrackballControls.js');
+                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js');
                 
                 const table = [
                     "H", "Hydrogen", "1.0079", 1, 1,
@@ -150,13 +153,13 @@ export default function PeriodicTablePage() {
                     "Og", "Oganesson", "294", 18, 7
                 ];
 
-                const { TWEEN } = window;
-                const { TrackballControls } = window;
-                const { CSS3DRenderer, CSS3DObject } = window;
+                const { TWEEN } = (window as any);
+                const { TrackballControls } = (window as any).THREE;
+                const { CSS3DRenderer, CSS3DObject } = (window as any).THREE;
 
-                let camera, scene, renderer, controls;
-                const objects = [];
-                const targets = { table: [], sphere: [], helix: [], grid: [] };
+                let camera: any, scene: any, renderer: any, controls: any;
+                const objects: any[] = [];
+                const targets = { table: [] as any[], sphere: [] as any[], helix: [] as any[], grid: [] as any[] };
 
                 init();
                 animate();
@@ -164,36 +167,36 @@ export default function PeriodicTablePage() {
                 function init() {
                     const container = document.getElementById('canvas-container');
 
-                    camera = new window.THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+                    camera = new (window as any).THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
                     camera.position.z = 3000;
 
-                    scene = new window.THREE.Scene();
+                    scene = new (window as any).THREE.Scene();
 
                     for (let i = 0; i < table.length; i += 5) {
                         const element = document.createElement('div');
                         element.className = 'element';
                         
-                        const col = table[i + 3];
+                        const col = table[i + 3] as number;
                         if(col === 18) element.classList.add('group-gas');
                         if(col === 1) element.classList.add('group-alkali');
                         
                         const number = document.createElement('div');
                         number.className = 'number';
-                        number.textContent = (i / 5) + 1;
+                        number.textContent = ((i / 5) + 1).toString();
                         element.appendChild(number);
 
                         const symbol = document.createElement('div');
                         symbol.className = 'symbol';
-                        symbol.textContent = table[i];
+                        symbol.textContent = table[i] as string;
                         element.appendChild(symbol);
 
                         const details = document.createElement('div');
                         details.className = 'details';
-                        details.innerHTML = table[i + 1] + '<br>' + table[i + 2];
+                        details.innerHTML = (table[i + 1] as string) + '<br>' + (table[i + 2] as string);
                         element.appendChild(details);
 
                         element.addEventListener('pointerdown', () => {
-                            showModal(table[i], table[i+1], table[i+2]);
+                            showModal(table[i] as string, table[i+1] as string, table[i+2] as string);
                         });
 
                         const objectCSS = new CSS3DObject(element);
@@ -203,17 +206,17 @@ export default function PeriodicTablePage() {
                         scene.add(objectCSS);
                         objects.push(objectCSS);
 
-                        const objectTarget = new window.THREE.Object3D();
-                        objectTarget.position.x = (table[i + 3] * 140) - 1330;
-                        objectTarget.position.y = -(table[i + 4] * 180) + 990;
+                        const objectTarget = new (window as any).THREE.Object3D();
+                        objectTarget.position.x = ((table[i + 3] as number) * 140) - 1330;
+                        objectTarget.position.y = -((table[i + 4] as number) * 180) + 990;
                         targets.table.push(objectTarget);
                     }
 
-                    const vector = new window.THREE.Vector3();
+                    const vector = new (window as any).THREE.Vector3();
                     for (let i = 0, l = objects.length; i < l; i++) {
                         const phi = Math.acos(-1 + (2 * i) / l);
                         const theta = Math.sqrt(l * Math.PI) * phi;
-                        const object = new window.THREE.Object3D();
+                        const object = new (window as any).THREE.Object3D();
                         object.position.setFromSphericalCoords(800, phi, theta);
                         vector.copy(object.position).multiplyScalar(2);
                         object.lookAt(vector);
@@ -223,7 +226,7 @@ export default function PeriodicTablePage() {
                     for (let i = 0, l = objects.length; i < l; i++) {
                         const theta = i * 0.175 + Math.PI;
                         const y = -(i * 8) + 450;
-                        const object = new window.THREE.Object3D();
+                        const object = new (window as any).THREE.Object3D();
                         object.position.setFromCylindricalCoords(900, theta, y);
                         vector.x = object.position.x * 2;
                         vector.y = object.position.y;
@@ -233,7 +236,7 @@ export default function PeriodicTablePage() {
                     }
 
                     for (let i = 0; i < objects.length; i++) {
-                        const object = new window.THREE.Object3D();
+                        const object = new (window as any).THREE.Object3D();
                         object.position.x = ((i % 5) * 400) - 800;
                         object.position.y = (-(Math.floor(i / 5) % 5) * 400) + 800;
                         object.position.z = (Math.floor(i / 25)) * 1000 - 2000;
@@ -263,14 +266,14 @@ export default function PeriodicTablePage() {
                     const button2D = document.getElementById('mode-2d');
                     const button3D = document.getElementById('mode-3d');
 
-                    buttonTable.addEventListener('click', function() { transform(targets.table, 2000); setActive(this); });
-                    buttonSphere.addEventListener('click', function() { transform(targets.sphere, 2000); setActive(this); });
-                    buttonHelix.addEventListener('click', function() { transform(targets.helix, 2000); setActive(this); });
-                    buttonGrid.addEventListener('click', function() { transform(targets.grid, 2000); setActive(this); });
+                    if (buttonTable) buttonTable.addEventListener('click', function() { transform(targets.table, 2000); setActive(this); });
+                    if (buttonSphere) buttonSphere.addEventListener('click', function() { transform(targets.sphere, 2000); setActive(this); });
+                    if (buttonHelix) buttonHelix.addEventListener('click', function() { transform(targets.helix, 2000); setActive(this); });
+                    if (buttonGrid) buttonGrid.addEventListener('click', function() { transform(targets.grid, 2000); setActive(this); });
 
-                    button2D.addEventListener('click', () => {
+                    if (button2D) button2D.addEventListener('click', () => {
                         button2D.classList.add('active');
-                        button3D.classList.remove('active');
+                        if (button3D) button3D.classList.remove('active');
                         controls.noRotate = true;
                         controls.reset();
                         new TWEEN.Tween(camera.position)
@@ -282,44 +285,51 @@ export default function PeriodicTablePage() {
                             .easing(TWEEN.Easing.Cubic.Out)
                             .start();
                         transform(targets.table, 1500);
-                        setActive(buttonTable);
-                        buttonSphere.classList.add('disabled');
-                        buttonHelix.classList.add('disabled');
-                        buttonGrid.classList.add('disabled');
+                        if (buttonTable) setActive(buttonTable);
+                        if (buttonSphere) buttonSphere.classList.add('disabled');
+                        if (buttonHelix) buttonHelix.classList.add('disabled');
+                        if (buttonGrid) buttonGrid.classList.add('disabled');
                     });
 
-                    button3D.addEventListener('click', () => {
+                    if (button3D) button3D.addEventListener('click', () => {
                         button3D.classList.add('active');
-                        button2D.classList.remove('active');
+                        if (button2D) button2D.classList.remove('active');
                         controls.noRotate = false;
-                        buttonSphere.classList.remove('disabled');
-                        buttonHelix.classList.remove('disabled');
-                        buttonGrid.classList.remove('disabled');
+                        if (buttonSphere) buttonSphere.classList.remove('disabled');
+                        if (buttonHelix) buttonHelix.classList.remove('disabled');
+                        if (buttonGrid) buttonGrid.classList.remove('disabled');
                     });
 
                     transform(targets.table, 2000);
-                    setActive(buttonTable);
+                    if (buttonTable) setActive(buttonTable);
 
                     window.addEventListener('resize', onWindowResize);
                     
-                    document.getElementById('close-btn').addEventListener('click', () => {
-                        document.getElementById('overlay').style.display = 'none';
+                    const closeBtn = document.getElementById('close-btn');
+                    if(closeBtn) closeBtn.addEventListener('click', () => {
+                        const overlay = document.getElementById('overlay');
+                        if (overlay) overlay.style.display = 'none';
                     });
                 }
 
-                function setActive(button) {
+                function setActive(button: HTMLElement) {
                     document.querySelectorAll('#menu button').forEach(b => b.classList.remove('active'));
                     button.classList.add('active');
                 }
 
-                function showModal(symbol, name, mass) {
-                    document.getElementById('m-symbol').textContent = symbol;
-                    document.getElementById('m-name').textContent = name;
-                    document.getElementById('m-details').textContent = `Atomic Mass: ${mass}`;
-                    document.getElementById('overlay').style.display = 'flex';
+                function showModal(symbol: string, name: string, mass: string) {
+                    const mSymbol = document.getElementById('m-symbol');
+                    const mName = document.getElementById('m-name');
+                    const mDetails = document.getElementById('m-details');
+                    const overlay = document.getElementById('overlay');
+
+                    if (mSymbol) mSymbol.textContent = symbol;
+                    if (mName) mName.textContent = name;
+                    if (mDetails) mDetails.textContent = `Atomic Mass: ${mass}`;
+                    if (overlay) overlay.style.display = 'flex';
                 }
 
-                function transform(targets, duration) {
+                function transform(targets: any[], duration: number) {
                     TWEEN.removeAll();
                     for (let i = 0; i < objects.length; i++) {
                         const object = objects[i];
@@ -362,6 +372,27 @@ export default function PeriodicTablePage() {
         };
 
         initPeriodicTable();
+
+        return () => {
+             const scripts = [
+                'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js',
+                'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/tween.min.js',
+                'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TrackballControls.js',
+                'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js'
+            ];
+            scripts.forEach(src => {
+                const script = document.querySelector(`script[src="${src}"]`);
+                if (script) {
+                    document.body.removeChild(script);
+                }
+            });
+            const container = document.getElementById('canvas-container');
+            if(container) {
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+            }
+        }
     }, []);
 
   return (
@@ -376,16 +407,21 @@ export default function PeriodicTablePage() {
             font-family: 'Rajdhani', sans-serif;
             overflow: hidden;
             color: white;
-        }
-
-        #canvas-container {
             width: 100vw;
             height: 100vh;
-            display: block;
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
+            z-index: 1000;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         #menu {
@@ -393,7 +429,7 @@ export default function PeriodicTablePage() {
             bottom: 30px;
             width: 100%;
             text-align: center;
-            z-index: 100;
+            z-index: 101;
             pointer-events: none;
         }
 
@@ -401,7 +437,7 @@ export default function PeriodicTablePage() {
             position: absolute;
             top: 20px;
             right: 20px;
-            z-index: 100;
+            z-index: 101;
         }
 
         #menu button, #view-controls button {
