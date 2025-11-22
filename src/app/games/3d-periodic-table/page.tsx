@@ -28,9 +28,11 @@ export default function PeriodicTablePage() {
                 await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js');
                 
                 // Now load dependent scripts
-                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/tween.min.js');
-                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TrackballControls.js');
-                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js');
+                await Promise.all([
+                    loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/tween.min.js'),
+                    loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TrackballControls.js'),
+                    loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js')
+                ]);
                 
                 const table = [
                     "H", "Hydrogen", "1.0079", 1, 1,
