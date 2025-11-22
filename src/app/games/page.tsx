@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gamepad2, Puzzle, Atom } from "lucide-react";
+import { Gamepad2, Puzzle, Atom, Beaker } from "lucide-react";
 import Link from "next/link";
 
 const games = [
@@ -15,6 +15,12 @@ const games = [
     description: "An interactive 3D model of an atom.",
     href: "/games/atom-visualizer",
     icon: Atom
+  },
+  {
+    title: "3D Periodic Table",
+    description: "Explore the elements in an interactive 3D space.",
+    href: "/games/3d-periodic-table",
+    icon: Beaker
   }
 ];
 
