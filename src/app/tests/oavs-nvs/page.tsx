@@ -5,7 +5,7 @@ export default function OavsNvsTestPage() {
       <h1 className="text-3xl font-bold">OAVS & NVS Tests</h1>
       <p className="mt-4 text-muted-foreground">
         Mock tests for OAVS & NVS will be available here.
-      p>
+      </p>
     </div>
   );
 }
