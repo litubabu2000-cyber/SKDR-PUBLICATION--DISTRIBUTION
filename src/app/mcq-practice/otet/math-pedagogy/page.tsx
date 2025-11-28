@@ -206,7 +206,7 @@ const mcqData = [
         answer: "(b) i and iii",
         source: "CTET 2021, Junior Level (Class VI-VIII) - 20.12.2021"
     },
-     {
+    {
         type: "Mathematical Methods",
         questionNumber: 16,
         question: "23. Which of the following methods/approaches is NOT regarding mathematics teaching?",
