@@ -70,4 +70,9 @@ export default function GamesPage() {
             <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full">
                 <Gamepad2 className="size-8 text-muted-foreground mb-2"/>
                 <h3 className="text-xl font-headline text-muted-foreground">More Games Coming Soon!</h3>
-            </
+            </CardContent>
+         </Card>
+      </div>
+    </div>
+  );
+}
