@@ -37,7 +37,7 @@ const mcqSubjects: { name: string, href: string, color: string, icon: LucideIcon
     { name: 'Chemistry GK', href: '#', color: 'bg-pink-600 hover:bg-pink-700', icon: FlaskConical },
     { name: 'Biology GK', href: '#', color: 'bg-green-600 hover:bg-green-700', icon: Dna },
     { name: 'Odisha GK', href: '#', color: 'bg-yellow-600 hover:bg-yellow-700', icon: MapPin },
-    { name: 'OTET MCQ', href: '#', color: 'bg-indigo-500 hover:bg-indigo-600', icon: School },
+    { name: 'OTET MCQ', href: '/mcq-practice/otet', color: 'bg-indigo-500 hover:bg-indigo-600', icon: School },
     { name: 'CTET MCQ', href: '#', color: 'bg-purple-700 hover:bg-purple-800', icon: School },
     { name: 'OSSTET MCQ', href: '#', color: 'bg-teal-600 hover:bg-teal-700', icon: GraduationCap },
     { name: 'TGT Physics', href: '#', color: 'bg-teal-700 hover:bg-teal-800', icon: Atom },
