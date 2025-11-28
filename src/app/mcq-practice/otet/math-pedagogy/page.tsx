@@ -285,6 +285,175 @@ const mcqData = [
         source: "OTET 2017 (1st) Paper II"
     },
     {
+        type: "Mathematical Methods",
+        questionNumber: 26,
+        question: "106. Which method is most suitable to establish mathematical formula and its application?",
+        options: [
+            "(A) Analytic and synthetic method",
+            "(B) Inductive and deductive method",
+            "(C) Project method",
+            "(D) Lecture method"
+        ],
+        answer: "(B) Inductive and deductive method",
+        source: "OTET 2018 Paper II"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 27,
+        question: "118. In which method a Mathematical Problem is divided into meaningful parts to derive at solutions?",
+        options: [
+            "(A) Inductive",
+            "(B) Deductive",
+            "(C) Analysis",
+            "(D) Synthesis"
+        ],
+        answer: "(C) Analysis",
+        source: "OTET 2021 Paper II"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 28,
+        question: "115. Which method starts from unknown to reach at a known fact?",
+        options: [
+            "(A) Inductive",
+            "(B) Deductive",
+            "(C) Analysis",
+            "(D) Synthesis"
+        ],
+        answer: "(C) Analysis",
+        source: "OTET 2022 Paper I"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 29,
+        question: "116. It becomes difficult for the learners to understand a general rule without any specific example. In teaching mathematics, it is a limitation of which method?",
+        options: [
+            "(A) Inductive",
+            "(B) Deductive",
+            "(C) Analysis",
+            "(D) Synthesis"
+        ],
+        answer: "(B) Deductive",
+        source: "OTET 2022 Paper I"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 30,
+        question: "28. To find the value of exponential number operation like a^x * a^y etc, the teacher first writes all the formulae on the black board and then instructs the students to solve many examples based on the formulae. This is an example of",
+        options: [
+            "(a) Inductive method of teaching",
+            "(b) Deductive method of teaching",
+            "(c) Scientific method of teaching",
+            "(d) Child centered method of teaching"
+        ],
+        answer: "(b) Deductive method of teaching",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 12.01.2022"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 31,
+        question: "30. The statement Learning experiences of students involve looking at specific examples and seeking patterns in order to devise and write generalisations is most appropriate to",
+        options: [
+            "(a) Project method",
+            "(b) Inductive method",
+            "(c) Deductive method",
+            "(d) Analytical method"
+        ],
+        answer: "(b) Inductive method",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 28.12.2021"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 32,
+        question: "59. While explaining Evaporationl a teacher made the following statement : water evaporates, milk evaporates, oil evaporate, Therefore all liquids evaporates. This is an example of:–",
+        options: [
+            "(a) Induction",
+            "(b) Deduction",
+            "(c) Explanation",
+            "(d) Justification"
+        ],
+        answer: "(a) Induction",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 24.12.2021"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 33,
+        question: "30. In class 8th mathematics classroom, Rashmi solved the problem in following way. To prove 2ac... if a/b = c/d is given, she starts from 2ac... and gets the answer a/b = c/d Which method is Rashmi applying in her class?",
+        options: [
+            "(a) Inductive method",
+            "(b) Proof by contradiction",
+            "(c) Deductive method",
+            "(d) Analytical method"
+        ],
+        answer: "(d) Analytical method",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 21.12.2021"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 34,
+        question: "51. Out of the following, in which lesson is a general rule explained first and after that examples are illustrated?",
+        options: [
+            "(a) Deductive lesson",
+            "(b) Inductive lesson",
+            "(c) Cognitive lesson",
+            "(d) Skill lesson"
+        ],
+        answer: "(a) Deductive lesson",
+        source: "CTET 2012, Junior Level (Class VI-VIII) - Nov.- 2012"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 35,
+        question: "27. A student observed the following examples... and concluded that (a + b)^2 = a^2 + 2(a)(b) + b^2 The above method of drawing conclusions is",
+        options: [
+            "(a) Deductive",
+            "(b) Inductive",
+            "(c) Analytical",
+            "(d) Activity"
+        ],
+        answer: "(b) Inductive",
+        source: "CTET 2012, Junior Level (Class VI-VIII) - Jan.- 2012"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 36,
+        question: "22. Which of the following methods is used most commonly in mathematics classrooms for geometrical proofs.",
+        options: [
+            "(a) Deductive method",
+            "(b) Inductive method",
+            "(c) Proof by contradiction",
+            "(d) Proof by counter example"
+        ],
+        answer: "(a) Deductive method",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 03.01.2022"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 37,
+        question: "23. A teacher tells her students to draw a few triangles... find the sum of their angles by measuring each angle... The students realize that the sum of angles is close to 180º... This is an example of which approach of teaching?",
+        options: [
+            "(a) Generalization",
+            "(b) Teacher-centric approach",
+            "(c) Deductive approach",
+            "(d) Inductive approach"
+        ],
+        answer: "(d) Inductive approach",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 05.01.2022"
+    },
+    {
+        type: "Mathematical Methods",
+        questionNumber: 38,
+        question: "21. A middle school mathematics teacher distributes different type of triangles to the students... Asked to measure angles and consolidate data to find sum is 180. The method used by the teacher is :",
+        options: [
+            "(a) Analytical Method",
+            "(b) Deductive Method",
+            "(c) Synthesis Method",
+            "(d) Inductive Method"
+        ],
+        answer: "(d) Inductive Method",
+        source: "CTET 2021, Junior Level (Class VI-VIII) - 27.12.2021"
+    },
+    {
         type: "NCF 2005 views on mathematics",
         questionNumber: 22,
         question: "21. According to National Curriculum Framework 2005 the place of mathematics education in the curricular framework is positional on twin concerns. These are:",
@@ -335,175 +504,6 @@ const mcqData = [
         ],
         answer: "(c) Mathematics must include such meaningful problems, which teacher and students consider worth solving and as part of their experiences",
         source: "CTET 2021, Junior Level (Class VI-VIII) - 04.01.2022"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 26,
-        "question": "106. Which method is most suitable to establish mathematical formula and its application?",
-        "options": [
-            "(A) Analytic and synthetic method",
-            "(B) Inductive and deductive method",
-            "(C) Project method",
-            "(D) Lecture method"
-        ],
-        "answer": "(B) Inductive and deductive method",
-        "source": "OTET 2018 Paper II"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 27,
-        "question": "118. In which method a Mathematical Problem is divided into meaningful parts to derive at solutions?",
-        "options": [
-            "(A) Inductive",
-            "(B) Deductive",
-            "(C) Analysis",
-            "(D) Synthesis"
-        ],
-        "answer": "(C) Analysis",
-        "source": "OTET 2021 Paper II"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 28,
-        "question": "115. Which method starts from unknown to reach at a known fact?",
-        "options": [
-            "(A) Inductive",
-            "(B) Deductive",
-            "(C) Analysis",
-            "(D) Synthesis"
-        ],
-        "answer": "(C) Analysis",
-        "source": "OTET 2022 Paper I"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 29,
-        "question": "116. It becomes difficult for the learners to understand a general rule without any specific example. In teaching mathematics, it is a limitation of which method?",
-        "options": [
-            "(A) Inductive",
-            "(B) Deductive",
-            "(C) Analysis",
-            "(D) Synthesis"
-        ],
-        "answer": "(B) Deductive",
-        "source": "OTET 2022 Paper I"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 30,
-        "question": "28. To find the value of exponential number operation like a^x * a^y etc, the teacher first writes all the formulae on the black board and then instructs the students to solve many examples based on the formulae. This is an example of",
-        "options": [
-            "(a) Inductive method of teaching",
-            "(b) Deductive method of teaching",
-            "(c) Scientific method of teaching",
-            "(d) Child centered method of teaching"
-        ],
-        "answer": "(b) Deductive method of teaching",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 12.01.2022"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 31,
-        "question": "30. The statement Learning experiences of students involve looking at specific examples and seeking patterns in order to devise and write generalisations is most appropriate to",
-        "options": [
-            "(a) Project method",
-            "(b) Inductive method",
-            "(c) Deductive method",
-            "(d) Analytical method"
-        ],
-        "answer": "(b) Inductive method",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 28.12.2021"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 32,
-        "question": "59. While explaining Evaporationl a teacher made the following statement : water evaporates, milk evaporates, oil evaporate, Therefore all liquids evaporates. This is an example of:–",
-        "options": [
-            "(a) Induction",
-            "(b) Deduction",
-            "(c) Explanation",
-            "(d) Justification"
-        ],
-        "answer": "(a) Induction",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 24.12.2021"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 33,
-        "question": "30. In class 8th mathematics classroom, Rashmi solved the problem in following way. To prove 2ac... if a/b = c/d is given, she starts from 2ac... and gets the answer a/b = c/d Which method is Rashmi applying in her class?",
-        "options": [
-            "(a) Inductive method",
-            "(b) Proof by contradiction",
-            "(c) Deductive method",
-            "(d) Analytical method"
-        ],
-        "answer": "(d) Analytical method",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 21.12.2021"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 34,
-        "question": "51. Out of the following, in which lesson is a general rule explained first and after that examples are illustrated?",
-        "options": [
-            "(a) Deductive lesson",
-            "(b) Inductive lesson",
-            "(c) Cognitive lesson",
-            "(d) Skill lesson"
-        ],
-        "answer": "(a) Deductive lesson",
-        "source": "CTET 2012, Junior Level (Class VI-VIII) - Nov.- 2012"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 35,
-        "question": "27. A student observed the following examples... and concluded that (a + b)^2 = a^2 + 2(a)(b) + b^2 The above method of drawing conclusions is",
-        "options": [
-            "(a) Deductive",
-            "(b) Inductive",
-            "(c) Analytical",
-            "(d) Activity"
-        ],
-        "answer": "(b) Inductive",
-        "source": "CTET 2012, Junior Level (Class VI-VIII) - Jan.- 2012"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 36,
-        "question": "22. Which of the following methods is used most commonly in mathematics classrooms for geometrical proofs.",
-        "options": [
-            "(a) Deductive method",
-            "(b) Inductive method",
-            "(c) Proof by contradiction",
-            "(d) Proof by counter example"
-        ],
-        "answer": "(a) Deductive method",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 03.01.2022"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 37,
-        "question": "23. A teacher tells her students to draw a few triangles... find the sum of their angles by measuring each angle... The students realize that the sum of angles is close to 180º... This is an example of which approach of teaching?",
-        "options": [
-            "(a) Generalization",
-            "(b) Teacher-centric approach",
-            "(c) Deductive approach",
-            "(d) Inductive approach"
-        ],
-        "answer": "(d) Inductive approach",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 05.01.2022"
-    },
-    {
-        "type": "Mathematical Methods",
-        "questionNumber": 38,
-        "question": "21. A middle school mathematics teacher distributes different type of triangles to the students... Asked to measure angles and consolidate data to find sum is 180. The method used by the teacher is :",
-        "options": [
-            "(a) Analytical Method",
-            "(b) Deductive Method",
-            "(c) Synthesis Method",
-            "(d) Inductive Method"
-        ],
-        "answer": "(d) Inductive Method",
-        "source": "CTET 2021, Junior Level (Class VI-VIII) - 27.12.2021"
     }
 ];
 
