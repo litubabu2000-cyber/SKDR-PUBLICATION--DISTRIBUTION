@@ -1,14 +1,38 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gamepad2, Puzzle, Atom, Beaker } from "lucide-react";
+import { Gamepad2, Puzzle, Atom, Beaker, Heart, Activity, Droplet, Filter, Utensils } from "lucide-react";
 import Link from "next/link";
 
 const games = [
   {
-    title: "Alimentary Canal Puzzle",
-    description: "A fun puzzle to learn the parts of the alimentary canal.",
-    href: "/games/alimentary-canal-puzzle",
-    icon: Puzzle
+    title: "Digestive System Puzzle",
+    description: "Learn the parts of the digestive system.",
+    href: "/games/anatomy-puzzle?system=digestive",
+    icon: Utensils
+  },
+  {
+    title: "Respiratory System Puzzle",
+    description: "Explore the human respiratory system.",
+    href: "/games/anatomy-puzzle?system=respiratory",
+    icon: Activity
+  },
+    {
+    title: "Human Heart Puzzle",
+    description: "Identify the chambers and vessels of the heart.",
+    href: "/games/anatomy-puzzle?system=heart",
+    icon: Heart
+  },
+    {
+    title: "Excretory System Puzzle",
+    description: "Discover the organs of the excretory system.",
+    href: "/games/anatomy-puzzle?system=excretory",
+    icon: Droplet
+  },
+    {
+    title: "Kidney Anatomy Puzzle",
+    description: "Learn the detailed structure of the kidney.",
+    href: "/games/anatomy-puzzle?system=kidney",
+    icon: Filter
   },
   {
     title: "Atom Visualizer",
@@ -46,9 +70,4 @@ export default function GamesPage() {
             <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full">
                 <Gamepad2 className="size-8 text-muted-foreground mb-2"/>
                 <h3 className="text-xl font-headline text-muted-foreground">More Games Coming Soon!</h3>
-            </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
+            </
