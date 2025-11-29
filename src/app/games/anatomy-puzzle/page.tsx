@@ -15,6 +15,7 @@ import {
   Edit2,
   Loader2
 } from 'lucide-react';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 // --- Types ---
 
@@ -587,29 +588,32 @@ function AnatomyPuzzle() {
             </h2>
 
             {/* Labels Grid */}
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              {shuffledLabels.map((part) => (
-                <button
-                  key={part.id}
-                  onClick={() => handleLabelClick(part)}
-                  className={`
-                    p-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 border-2 shadow-sm
-                    ${selectedLabel?.id === part.id
-                      ? `bg-${activeSystem === 'heart' ? 'red' : activeSystem === 'digestive' ? 'blue' : activeSystem === 'respiratory' ? 'cyan' : activeSystem === 'excretory' ? 'violet' : 'amber'}-50 
-                         border-${activeSystem === 'heart' ? 'red' : activeSystem === 'digestive' ? 'blue' : activeSystem === 'respiratory' ? 'cyan' : activeSystem === 'excretory' ? 'violet' : 'amber'}-500 
-                         text-${activeSystem === 'heart' ? 'red' : activeSystem === 'digestive' ? 'blue' : activeSystem === 'respiratory' ? 'cyan' : activeSystem === 'excretory' ? 'violet' : 'amber'}-700 scale-105`
-                      : 'bg-white border-slate-100 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
-                    }
-                  `}
-                >
-                  {part.label}
-                </button>
-              ))}
-            </div>
+            <ScrollArea className="w-full md:w-auto">
+                <div className="flex space-x-3 pb-4 md:grid md:grid-cols-2 md:gap-3 md:space-x-0">
+                  {shuffledLabels.map((part) => (
+                    <button
+                      key={part.id}
+                      onClick={() => handleLabelClick(part)}
+                      className={`
+                        p-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 border-2 shadow-sm w-36 flex-shrink-0 md:w-full
+                        ${selectedLabel?.id === part.id
+                          ? `bg-${activeSystem === 'heart' ? 'red' : activeSystem === 'digestive' ? 'blue' : activeSystem === 'respiratory' ? 'cyan' : activeSystem === 'excretory' ? 'violet' : 'amber'}-50 
+                             border-${activeSystem === 'heart' ? 'red' : activeSystem === 'digestive' ? 'blue' : activeSystem === 'respiratory' ? 'cyan' : activeSystem === 'excretory' ? 'violet' : 'amber'}-500 
+                             text-${activeSystem === 'heart' ? 'red' : activeSystem === 'digestive' ? 'blue' : activeSystem === 'respiratory' ? 'cyan' : activeSystem === 'excretory' ? 'violet' : 'amber'}-700 scale-105`
+                          : 'bg-white border-slate-100 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                        }
+                      `}
+                    >
+                      {part.label}
+                    </button>
+                  ))}
+                </div>
+                <ScrollBar orientation="horizontal" className="md:hidden" />
+            </ScrollArea>
 
             {/* Completed List */}
             {Object.keys(placements).length > 0 && (
-                <div className="border-t border-slate-100 pt-4">
+                <div className="border-t border-slate-100 pt-4 mt-2">
                     <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Identified</h3>
                     <div className="flex flex-wrap gap-2">
                         {Object.values(placements).map(part => (
@@ -658,5 +662,3 @@ export default function AnatomyPuzzlePage() {
         </Suspense>
     )
 }
-
-    
