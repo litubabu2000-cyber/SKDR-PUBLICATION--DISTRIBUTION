@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
@@ -13,13 +12,8 @@ import {
   Filter, 
   Upload, 
   Image as ImageIcon, 
-  Edit2, 
-  Sparkles,
-  Loader2,
-  BookOpen,
-  HelpCircle,
-  Lightbulb,
-  GraduationCap
+  Edit2,
+  Loader2
 } from 'lucide-react';
 
 // --- Types ---
@@ -43,14 +37,7 @@ interface DraggedCoords {
   initialMouseY: number;
 }
 
-interface QuizQuestion {
-  question: string;
-  options: string[];
-  correctAnswerIndex: number; // 0-3
-}
-
 type SystemType = 'digestive' | 'respiratory' | 'heart' | 'excretory' | 'kidney';
-type AiTab = 'tutor' | 'quiz' | 'fact';
 
 // --- Data ---
 
@@ -109,53 +96,6 @@ const SYSTEM_DATA_MAP: Record<SystemType, Part[]> = {
 };
 
 
-// --- API Logic ---
-
-const callGemini = async (prompt: string, isJson = false): Promise<string> => {
-  const apiKey = ""; // Set by runtime environment
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-  const payload: any = {
-    contents: [{ parts: [{ text: prompt }] }]
-  };
-
-  if (isJson) {
-    payload.generationConfig = {
-      responseMimeType: "application/json"
-    };
-  }
-
-  let attempt = 0;
-  const maxRetries = 3;
-  const delays = [1000, 2000, 4000];
-
-  while (attempt <= maxRetries) {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-         if (response.status === 429) throw new Error('Too many requests');
-         throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    } catch (error) {
-      if (attempt === maxRetries) {
-        console.error("Gemini API failed after retries:", error);
-        throw error;
-      }
-      await new Promise(resolve => setTimeout(resolve, delays[attempt]));
-      attempt++;
-    }
-  }
-  return "";
-};
-
 // --- Main Component ---
 
 function AnatomyPuzzle() {
@@ -177,17 +117,6 @@ function AnatomyPuzzle() {
   const [draggedPartId, setDraggedPartId] = useState<string | null>(null);
   const [draggedCoords, setDraggedCoords] = useState<DraggedCoords | null>(null);
 
-  // AI State
-  const [activeAiTab, setActiveAiTab] = useState<AiTab>('tutor');
-  const [aiResponse, setAiResponse] = useState<string | null>(null);
-  const [isAiLoading, setIsAiLoading] = useState(false);
-  const [aiContext, setAiContext] = useState<string | null>(null);
-  
-  // Quiz State
-  const [quizData, setQuizData] = useState<QuizQuestion | null>(null);
-  const [quizSelectedOption, setQuizSelectedOption] = useState<number | null>(null);
-  const [quizResult, setQuizResult] = useState<'correct' | 'incorrect' | null>(null);
-
   const diagramRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -206,7 +135,6 @@ function AnatomyPuzzle() {
     setFeedback(null);
     setShowSuccess(false);
     setCustomImage(null);
-    resetAiState();
     if (!isEditMode) {
       setShuffledLabels([...newParts].sort(() => Math.random() - 0.5));
     } else {
@@ -219,22 +147,12 @@ function AnatomyPuzzle() {
     setSelectedLabel(null);
     setFeedback(null);
     setShowSuccess(false);
-    resetAiState();
     
     if (!isEditMode) {
         setShuffledLabels([...currentParts].sort(() => Math.random() - 0.5));
     } else {
         setShuffledLabels([]);
     }
-  };
-
-  const resetAiState = () => {
-    setAiResponse(null);
-    setAiContext(null);
-    setQuizData(null);
-    setQuizSelectedOption(null);
-    setQuizResult(null);
-    setIsAiLoading(false);
   };
 
   const handleLabelClick = (part: Part) => {
@@ -245,10 +163,6 @@ function AnatomyPuzzle() {
     } else {
       setSelectedLabel(part);
       setFeedback(null);
-      if (activeAiTab === 'tutor' && aiContext !== part.label) {
-          setAiResponse(null);
-          setAiContext(null);
-      }
     }
   };
 
@@ -288,102 +202,6 @@ function AnatomyPuzzle() {
 
   const getSystemName = () => {
       return activeSystem === 'heart' ? 'Human Heart' : `${activeSystem.charAt(0).toUpperCase() + activeSystem.slice(1)} System`;
-  };
-
-  const handleExplainSystem = async () => {
-    if (isAiLoading) return;
-    setIsAiLoading(true);
-    setAiContext("System Overview");
-    setAiResponse(null);
-
-    const prompt = `Explain the main function of the ${getSystemName()} in simple terms for a biology student. Keep it under 60 words and be engaging.`;
-
-    try {
-        const response = await callGemini(prompt);
-        setAiResponse(response);
-    } catch (e) {
-        setAiResponse("Could not connect to AI Tutor.");
-    }
-    setIsAiLoading(false);
-  };
-
-  const handleExplainPart = async (part: Part) => {
-    if (isAiLoading) return;
-    setIsAiLoading(true);
-    setAiContext(part.label);
-    setAiResponse(null);
-
-    const prompt = `Explain the specific function of the ${part.label} within the ${getSystemName()}. Keep it simple, educational, and under 50 words.`;
-
-    try {
-        const response = await callGemini(prompt);
-        setAiResponse(response);
-    } catch (e) {
-        setAiResponse("Could not connect to AI Tutor.");
-    }
-    setIsAiLoading(false);
-  };
-
-  const handleGenerateFunFact = async () => {
-      if (isAiLoading) return;
-      setIsAiLoading(true);
-      setAiContext("Fun Fact");
-      setAiResponse(null);
-
-      const prompt = `Tell me a surprising one-sentence fun fact about the human ${getSystemName()}.`;
-
-      try {
-          const response = await callGemini(prompt);
-          setAiResponse(response);
-      } catch (e) {
-          setAiResponse("Could not fetch a fun fact.");
-      }
-      setIsAiLoading(false);
-  };
-
-  const handleGenerateQuiz = async () => {
-      if (isAiLoading) return;
-      setIsAiLoading(true);
-      setQuizData(null);
-      setQuizSelectedOption(null);
-      setQuizResult(null);
-
-      const prompt = `Generate a multiple choice question about the ${getSystemName()} suitable for a student. 
-      Return ONLY a JSON object with this structure: 
-      { 
-        "question": "The question text", 
-        "options": ["Option A", "Option B", "Option C", "Option D"], 
-        "correctAnswerIndex": 0 
-      }
-      Make the question interesting but not too hard.`;
-
-      try {
-          const response = await callGemini(prompt, true);
-          const data = JSON.parse(response);
-          if (data.question && Array.isArray(data.options)) {
-              setQuizData(data);
-          } else {
-              throw new Error("Invalid format");
-          }
-      } catch (e) {
-          console.error(e);
-          setQuizData({
-              question: "Which organ pumps blood throughout the body?",
-              options: ["Lung", "Heart", "Liver", "Kidney"],
-              correctAnswerIndex: 1
-          });
-      }
-      setIsAiLoading(false);
-  };
-
-  const handleQuizAnswer = (index: number) => {
-      if (!quizData || quizResult) return;
-      setQuizSelectedOption(index);
-      if (index === quizData.correctAnswerIndex) {
-          setQuizResult('correct');
-      } else {
-          setQuizResult('incorrect');
-      }
   };
 
   // --- Drag Logic for Edit Mode ---
@@ -827,197 +645,6 @@ function AnatomyPuzzle() {
                 </div>
             )}
           </div>
-
-          {/* AI Tutor Panel */}
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-sm border border-indigo-100 p-4 lg:p-6 relative overflow-hidden flex flex-col min-h-[300px]">
-             
-             {/* Header */}
-             <div className="flex items-center justify-between mb-4 relative z-10">
-                 <h2 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
-                     <Sparkles size={18} className="text-indigo-600" />
-                     AI Tutor
-                 </h2>
-                 {isAiLoading && <Loader2 size={18} className="animate-spin text-indigo-400" />}
-             </div>
-
-             {/* Tab Switcher */}
-             <div className="flex p-1 bg-white/60 rounded-xl mb-4 relative z-10 border border-indigo-100">
-                <button 
-                  onClick={() => { setActiveAiTab('tutor'); resetAiState(); }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${activeAiTab === 'tutor' ? 'bg-indigo-600 text-white shadow-sm' : 'text-indigo-600 hover:bg-indigo-50'}`}
-                >
-                  Explain
-                </button>
-                <button 
-                  onClick={() => { setActiveAiTab('quiz'); resetAiState(); }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${activeAiTab === 'quiz' ? 'bg-indigo-600 text-white shadow-sm' : 'text-indigo-600 hover:bg-indigo-50'}`}
-                >
-                  Pop Quiz
-                </button>
-                <button 
-                  onClick={() => { setActiveAiTab('fact'); resetAiState(); }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${activeAiTab === 'fact' ? 'bg-indigo-600 text-white shadow-sm' : 'text-indigo-600 hover:bg-indigo-50'}`}
-                >
-                  Fun Fact
-                </button>
-             </div>
-             
-             {/* Content Area */}
-             <div className="relative z-10 flex-1 flex flex-col">
-                 
-                 {/* MODE: TUTOR */}
-                 {activeAiTab === 'tutor' && (
-                   <>
-                     {!aiResponse ? (
-                         <div className="flex flex-col gap-3 animate-[fadeIn_0.3s_ease-out]">
-                             <p className="text-sm text-indigo-700 mb-2">
-                                 Select a mode or ask me to explain parts of the diagram!
-                             </p>
-                             
-                             <button 
-                                 onClick={handleExplainSystem}
-                                 disabled={isAiLoading}
-                                 className="flex items-center justify-center gap-2 w-full p-3 bg-white text-indigo-600 rounded-xl font-semibold shadow-sm border border-indigo-200 hover:bg-indigo-50 transition-colors text-sm"
-                             >
-                                 <BookOpen size={16} /> Explain {activeSystem} system
-                             </button>
-
-                             {selectedLabel ? (
-                                 <button 
-                                     onClick={() => handleExplainPart(selectedLabel)}
-                                     disabled={isAiLoading}
-                                     className="flex items-center justify-center gap-2 w-full p-3 bg-indigo-600 text-white rounded-xl font-semibold shadow-sm hover:bg-indigo-700 transition-colors text-sm"
-                                 >
-                                     <Lightbulb size={16} /> Learn about {selectedLabel.label}
-                                 </button>
-                             ) : (
-                                 <div className="text-center p-4 border-2 border-dashed border-indigo-200 rounded-xl text-indigo-400 text-xs">
-                                     Select a label above to ask about a specific part
-                                 </div>
-                             )}
-                         </div>
-                     ) : (
-                         <div className="animate-[fadeIn_0.5s_ease-out] flex-1 flex flex-col">
-                             <div className="flex items-center justify-between mb-2">
-                                 <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider bg-white/50 px-2 py-0.5 rounded-md">
-                                     {aiContext}
-                                 </span>
-                                 <button onClick={() => setAiResponse(null)} className="text-indigo-400 hover:text-indigo-600 p-1"><RefreshCw size={14} /></button>
-                             </div>
-                             <div className="bg-white/90 p-4 rounded-xl border border-indigo-100 text-indigo-900 text-sm leading-relaxed shadow-sm flex-1">
-                                 {aiResponse}
-                             </div>
-                         </div>
-                     )}
-                   </>
-                 )}
-
-                 {/* MODE: QUIZ */}
-                 {activeAiTab === 'quiz' && (
-                    <div className="animate-[fadeIn_0.3s_ease-out] flex-1 flex flex-col">
-                      {!quizData ? (
-                        <div className="flex flex-col items-center justify-center h-full gap-4 py-4">
-                           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-indigo-200">
-                             <HelpCircle size={32} />
-                           </div>
-                           <p className="text-sm text-indigo-800 text-center max-w-[200px]">
-                              Ready to test your knowledge about the {activeSystem} system?
-                           </p>
-                           <button 
-                                onClick={handleGenerateQuiz}
-                                disabled={isAiLoading}
-                                className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold shadow-md shadow-indigo-200 hover:bg-indigo-700 transition-all"
-                           >
-                               Start Quiz
-                           </button>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col gap-3 h-full">
-                           <div className="bg-white p-3 rounded-xl border border-indigo-100 shadow-sm">
-                             <h3 className="font-bold text-indigo-900 text-sm">{quizData.question}</h3>
-                           </div>
-                           <div className="flex flex-col gap-2">
-                             {quizData.options.map((option, idx) => {
-                               let btnClass = "bg-white/60 border-indigo-100 text-indigo-800 hover:bg-indigo-50";
-                               
-                               if (quizSelectedOption !== null) {
-                                 if (idx === quizData.correctAnswerIndex) {
-                                   btnClass = "bg-green-100 border-green-300 text-green-800 font-bold";
-                                 } else if (idx === quizSelectedOption && idx !== quizData.correctAnswerIndex) {
-                                   btnClass = "bg-red-100 border-red-300 text-red-800";
-                                 } else {
-                                   btnClass = "bg-slate-50 border-slate-100 text-slate-400 opacity-50";
-                                 }
-                               }
-
-                               return (
-                                 <button
-                                   key={idx}
-                                   onClick={() => handleQuizAnswer(idx)}
-                                   disabled={quizSelectedOption !== null}
-                                   className={`p-3 rounded-lg text-left text-xs border transition-all ${btnClass}`}
-                                 >
-                                   {String.fromCharCode(65 + idx)}. {option}
-                                 </button>
-                               )
-                             })}
-                           </div>
-                           {quizResult && (
-                             <div className="mt-auto pt-2 flex items-center justify-between animate-[slideUp_0.2s_ease-out]">
-                               <span className={`text-xs font-bold px-3 py-1 rounded-full ${quizResult === 'correct' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                 {quizResult === 'correct' ? 'Correct!' : 'Incorrect'}
-                                </span>
-                                <button onClick={handleGenerateQuiz} className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1">
-                                  Next Question <RefreshCw size={10} />
-                                </button>
-                             </div>
-                           )}
-                        </div>
-                      )}
-                    </div>
-                 )}
-
-                 {/* MODE: FUN FACT */}
-                 {activeAiTab === 'fact' && (
-                   <div className="animate-[fadeIn_0.3s_ease-out] flex-1 flex flex-col">
-                      {!aiResponse ? (
-                         <div className="flex flex-col items-center justify-center h-full gap-4 py-4">
-                            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-amber-200">
-                                <GraduationCap size={32} />
-                            </div>
-                            <button 
-                                onClick={handleGenerateFunFact}
-                                disabled={isAiLoading}
-                                className="px-6 py-2 bg-amber-500 text-white rounded-xl font-bold shadow-md shadow-amber-200 hover:bg-amber-600 transition-all"
-                            >
-                                Tell me a Fact
-                            </button>
-                         </div>
-                      ) : (
-                         <div className="flex flex-col h-full">
-                            <div className="bg-amber-50 p-6 rounded-xl border border-amber-100 text-amber-900 text-sm font-medium leading-relaxed shadow-sm relative overflow-hidden">
-                                <div className="absolute top-0 right-0 -mt-4 -mr-4 w-16 h-16 bg-amber-200 rounded-full opacity-20"></div>
-                                " {aiResponse} "
-                            </div>
-                            <div className="mt-4 flex justify-center">
-                                <button 
-                                    onClick={handleGenerateFunFact}
-                                    className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-amber-100"
-                                >
-                                    <RefreshCw size={12} /> Another Fact
-                                </button>
-                            </div>
-                         </div>
-                      )}
-                   </div>
-                 )}
-
-             </div>
-
-             {/* Background Decoration */}
-             <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-indigo-100 rounded-full opacity-50 blur-2xl pointer-events-none"></div>
-             <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-24 h-24 bg-purple-100 rounded-full opacity-50 blur-2xl pointer-events-none"></div>
-          </div>
         </div>
       </main>
     </div>
@@ -1031,3 +658,5 @@ export default function AnatomyPuzzlePage() {
         </Suspense>
     )
 }
+
+    
