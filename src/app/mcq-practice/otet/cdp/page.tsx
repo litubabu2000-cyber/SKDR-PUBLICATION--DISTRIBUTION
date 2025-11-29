@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -644,7 +645,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "80",
         question: "Which of the following is the most important in learner centred curriculum?",
         options: ["(A) Teacher", "(B) Child", "(C) Content", "(D) Environment"],
@@ -652,7 +653,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "81",
         question: "Which one is not related with learner centric education?",
         options: ["(A) Emphasis given in child’s learning experience", "(B) Teacher acts as a facilitator of learning", "(C) Teaching through question answer method", "(D) Learner as the central point of learning process"],
@@ -660,7 +661,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "82",
         question: "A progressive school curriculum should be done in a way that:",
         options: ["(A) Boys and Girls have different curricula", "(B) Intelligent child should not be allowed to mix with normal children", "(C) Children should be given a free hand to choose subjects from a very young age", "(D) It is a flexible and rich curriculum including various co-curricular activities"],
@@ -668,7 +669,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "83",
         question: "An empowering school will promote which of the following qualities the most in its teachers?",
         options: ["(A) Competitive aptitude", "(B) Tendency to experiment", "(C) Memory", "(D) Disciplined nature"],
@@ -676,7 +677,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "84",
         question: "Which one does not find place in the curriculum?",
         options: ["(A) objectives", "(B) content", "(C) evaluation", "(D) Teaching method"],
@@ -684,7 +685,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "85",
         question: "Which term is used to express the totality of the learning experiences that the pupil receives through manifold activities in the school?",
         options: ["(A) Curriculum", "(B) Content", "(C) Lesson plan", "(D) Syllabus"],
@@ -692,7 +693,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "86",
         question: "Which of the following is not a 'principle' of curriculum organisation?",
         options: ["(A) Correlation", "(B) Activity", "(C) Manipulation", "(D) Utility"],
@@ -700,7 +701,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "87",
         question: "Which is not a component of core curriculum?",
         options: ["(A) Duty towards constitution", "(B) Study of foreign culture and tradition", "(C) Protection of environment", "(D) Scientific temper"],
@@ -708,7 +709,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "88",
         question: "Which is not a type of curriculum?",
         options: ["(A) Child centered", "(B) Experience", "(C) Regional", "(D) Activity centered"],
@@ -716,7 +717,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "89",
         question: "Which is not a projected teaching aid?",
         options: ["(A) Slide projector", "(B) Blackboard", "(C) Overhead projector", "(D) Epidoscope"],
@@ -724,7 +725,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "90",
         question: "After teaching the process of addition and substraction in a period, the teacher asked the following question to test the learning achievements. What type of evaluation is it?",
         options: ["(A) Achievement", "(B) Activity based", "(C) Placement", "(D) Diagnostic"],
@@ -732,7 +733,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "91",
         question: "By which method of evaluation is the weakness of a student identified?",
         options: ["(A) Diagnostic", "(B) Situation", "(C) Conclusive", "(D) Continuous"],
@@ -740,7 +741,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "92",
         question: "If a question measures the learning objective it intends to measure, then what quality of the test does it indicate?",
         options: ["(A) Reliability", "(B) objectivity", "(C) utility", "(D) Validity"],
@@ -748,7 +749,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "93",
         question: "India : New Delhi :: Pakistan : __________ What type of tests is it?",
         options: ["(A) Analogy", "(B) Completion", "(C) Multiple choice", "(D) Recognition"],
@@ -756,7 +757,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "94",
         question: "Who did make hierarchical classification of the instructional objectives?",
         options: ["(A) Piaget", "(B) Guilford", "(C) Galton", "(D) Bloom"],
@@ -764,7 +765,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "95",
         question: "Which is not reflected in a three dimensional blueprint?",
         options: ["(A) Content", "(B) Difficulty level", "(C) Learning objectives", "(D) Form of questions"],
@@ -772,7 +773,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "96",
         question: "Which is not a quality of a standard text book?",
         options: ["(A) flexibility", "(B) need based", "(C) utility", "(D) individual based"],
@@ -780,7 +781,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "97",
         question: "How many rectangles are there in the given figure? What type of instructional objective this question measures?",
         options: ["(A) The pupil indentifies the rectangles", "(B) The pupil counts the rectangles correctly", "(C) The pupil both identifies and counts the rectangles", "(D) None of these"],
@@ -788,7 +789,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "98",
         question: "Which is not a component of a three dimensional Blueprint?",
         options: ["(A) Question forms", "(B) Learning objectives", "(C) Learning contents", "(D) Learning level"],
@@ -796,7 +797,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "99",
         question: "A teacher prepared a test in Mathematics and administered it to a group of students. He then administered a standardised test to the same group. The co-efficient of correlation (r) of two sets of marks so obtained was +0.90. What does it indicate about the teacher-made test?",
         options: ["(A) The test is valid", "(B) The test is reliable", "(C) The test is objective", "(D) The test is objective based"],
@@ -804,7 +805,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "100",
         question: "What does the acronym LATS stand for?",
         options: ["(A) Learning Assessment Transferring Scheme", "(B) Learners' Achievement Testing System", "(C) Learning Achievement Tracking System", "(D) Learning Activity Testing System"],
@@ -812,7 +813,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "101",
         question: "Which of the following is an objective of evaluation?",
         options: ["(A) Know about learning difficulties", "(B) Measure the achievement of learning", "(C) Know that learning has actually taken place", "(D) All of the above"],
@@ -820,7 +821,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "102",
         question: "Mita wants to know whether she will perform well in a particular job or not. Which of the following tool will predict this?",
         options: ["(A) Achievement test", "(B) Attitude test", "(C) Aptitude test", "(D) Intelligence test"],
@@ -828,7 +829,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "103",
         question: "Which one is not a tool for learning assessment?",
         options: ["(A) Assessment", "(B) Rating scale", "(C) Check List", "(D) Questionnaire"],
@@ -836,7 +837,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "104",
         question: "Which one of the following scales is used to record the progress of the learners in curricular areas?",
         options: ["(A) 4-point scale", "(B) 5-point scale", "(C) 3-point scale", "(D) 6-point scale"],
@@ -844,7 +845,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "105",
         question: "Which of the following tools could be used as a scoring guide?",
         options: ["(A) Portfolio", "(B) Observation", "(C) Checklist", "(D) Rubric"],
@@ -852,7 +853,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "106",
         question: "In which of the following rating scale, a sequence of definite numbers is supplied to the rater or to the observer and the observer awards an appropriate number?",
         options: ["(A) Standard scale", "(B) Rating by cumulative point", "(C) Graphic scale", "(D) Numerical scale"],
@@ -860,7 +861,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "107",
         question: "A test was administered thrice on a group of students at different intervals. The co-efficient of co-relation (r) of the scores was + 0.72. What quality of the test does it indicate?",
         options: ["(A) validity", "(B) reliability", "(C) utility", "(D) usability"],
@@ -868,7 +869,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "108",
         question: "Study the statements and choose the correct answer: (I) Evaluation is based on measurement (II) Evaluation is quantitative, but measurement is qualitative.",
         options: ["(A) (I) correct, (II) wrong", "(B) (I) wrong", "(C) (I) and (II) correct", "(D) (I) and (II) wrong"],
@@ -876,7 +877,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "109",
         question: "What qualities do a standardized test have?",
         options: ["(A) validity, reliability, usability", "(B) reliability, flexibility, validity", "(C) usability, objectivity, reliability", "(D) validity, flexibility, usability"],
@@ -884,7 +885,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "110",
         question: "Which characteristic does a good test have?",
         options: ["(A) Usability", "(B) Reliability", "(C) Validity", "(D) All of the above"],
@@ -892,7 +893,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "111",
         question: "The most common method of estimating internal consistency of a test reliability is the:",
         options: ["(A) Split-half method", "(B) Test-retest method", "(C) Both split-half and test-retest method", "(D) None of these"],
@@ -900,7 +901,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "112",
         question: "What qualities do a standardised test have?",
         options: ["(A) Validity, Reliability and Usability", "(B) Reliability, Flexibility and Validity", "(C) Usability, Subjectivity and Reliability", "(D) Validity, Flexibility and Usability"],
@@ -908,7 +909,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "113",
         question: "When the scores on a newly constructed test are correlated with scores on a standardised test, then which type of validity needs to be calculated?",
         options: ["(A) Concurrent", "(B) Construct", "(C) Face", "(D) Content"],
@@ -916,7 +917,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "114",
         question: "When a test measures an individual's ability consistently and accurately, then that quality of test is known as ____________________",
         options: ["(A) Validity", "(B) Reliability", "(C) Objectivity", "(D) Focus centered"],
@@ -924,7 +925,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "115",
         question: "How can the internal consistency be measured?",
         options: ["(A) Anecdotal Record method", "(B) Test - retest method", "(C) Split - half method", "(D) None of the above"],
@@ -932,7 +933,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "116",
         question: "Which of the following is not a method of estimating reliability of a test?",
         options: ["(A) Test - retest method", "(B) Alternate/parallel form method", "(C) Split - Half method", "(D) Testing condition method"],
@@ -940,7 +941,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "117",
         question: "Which of the central tendencies is comparatively stable?",
         options: ["(A) Median", "(B) Mean", "(C) Mode", "(D) Distribution"],
@@ -948,7 +949,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "118",
         question: "What does the lowest and the highest scores of a distribution indicate?",
         options: ["(A) length", "(B) distance", "(C) height", "(D) range"],
@@ -956,7 +957,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "119",
         question: "Which of the following measures of variability is used when the statistics having the greatest stability is sought?",
         options: ["(A) Mean Deviation", "(B) Standard Deviation", "(C) Quartile Deviation", "(D) Range"],
@@ -964,11 +965,11 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit III: Curriculum & Evaluation",
+        type: "Unit III: Curriculum Teaching – Learning Approaches and Evaluation",
         questionNumber: "120",
         question: "When a constant figure is added to each individual score, what will be the effect on mean value?",
         options: ["(A) Mean value will be added by the same figure", "(B) Mean value will be subtracted by the same figure", "(C) Mean value will be multiplied by the same figure", "(D) Mean value will be divided by the same figure"],
         answer: "(A) Mean value will be added by the same figure",
         source: "Exam: OTET 2018 (Set D)"
     }
-];
+]
