@@ -176,7 +176,7 @@ function AnatomyPuzzle() {
       setSelectedLabel(null);
       setFeedback({ type: 'success', message: 'Correct!' });
       
-      setShuffledLabels(prev => prev.filter(p => p.id !== selectedLabel.id));
+      setShuffledLabels(prev => prev.filter(p => p.id !== selectedLabel!.id));
 
       if (Object.keys(newPlacements).length === parts.length) {
         setTimeout(() => setShowSuccess(true), 500);
@@ -303,7 +303,7 @@ function AnatomyPuzzle() {
   }
 
   return (
-    <div className={`flex flex-col items-center w-full min-h-screen pb-12 transition-colors duration-500 ${getBackgroundClass()} font-sans`}>
+    <div className={`flex flex-col items-center w-full min-h-screen md:pb-12 transition-colors duration-500 ${getBackgroundClass()} font-sans`}>
       
       {/* Header */}
       <header className="w-full max-w-6xl p-4 mb-2 lg:mb-6">
@@ -362,7 +362,7 @@ function AnatomyPuzzle() {
       </header>
 
       {/* Main Content */}
-      <main className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 px-4 items-start justify-center">
+      <main className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 md:px-4 items-start justify-center flex-1">
         
         {/* Diagram Area */}
         <div 
@@ -578,7 +578,7 @@ function AnatomyPuzzle() {
         </div>
 
         {/* Labels / Interactions Area */}
-        <div className="flex-1 w-full max-w-lg flex flex-col gap-6">
+        <div className="flex-1 w-full max-w-lg flex flex-col gap-6 lg:max-w-none">
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 lg:p-6">
             <h2 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
                 Part Names
