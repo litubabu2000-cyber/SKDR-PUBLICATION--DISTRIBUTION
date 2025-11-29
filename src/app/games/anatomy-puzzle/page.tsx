@@ -176,7 +176,7 @@ function AnatomyPuzzle() {
       setSelectedLabel(null);
       setFeedback({ type: 'success', message: 'Correct!' });
       
-      setShuffledLabels(prev => prev.filter(p => p.id !== selectedLabel!.id));
+      setShuffledLabels(prev => prev.filter(p => p.id !== selectedLabel.id));
 
       if (Object.keys(newPlacements).length === parts.length) {
         setTimeout(() => setShowSuccess(true), 500);
@@ -303,7 +303,7 @@ function AnatomyPuzzle() {
   }
 
   return (
-    <div className={`flex flex-col items-center w-full min-h-screen md:pb-12 transition-colors duration-500 ${getBackgroundClass()} font-sans`}>
+    <div className={`flex flex-col items-center w-full min-h-screen md:h-screen md:overflow-hidden transition-colors duration-500 ${getBackgroundClass()} font-sans`}>
       
       {/* Header */}
       <header className="w-full max-w-6xl p-4 mb-2 lg:mb-6">
@@ -362,12 +362,12 @@ function AnatomyPuzzle() {
       </header>
 
       {/* Main Content */}
-      <main className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 md:px-4 items-start justify-center flex-1">
+      <main className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-8 px-0 md:px-4 items-start justify-center flex-1">
         
         {/* Diagram Area */}
         <div 
           ref={diagramRef}
-          className="relative flex-shrink-0 w-full max-w-[500px] aspect-[3/4] bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mx-auto select-none"
+          className="relative flex-shrink-0 w-full lg:flex-1 h-[65vh] lg:h-full bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mx-auto select-none"
         >
           {/* Progress Bar */}
           {!isEditMode && (
@@ -578,8 +578,8 @@ function AnatomyPuzzle() {
         </div>
 
         {/* Labels / Interactions Area */}
-        <div className="flex-1 w-full max-w-lg flex flex-col gap-6 lg:max-w-none">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 lg:p-6">
+        <div className="flex-1 w-full flex flex-col gap-6 lg:max-w-none px-4 md:px-0">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 lg:p-6 h-full flex flex-col">
             <h2 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
                 Part Names
                 <span className="text-xs font-normal text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
@@ -588,8 +588,8 @@ function AnatomyPuzzle() {
             </h2>
 
             {/* Labels Grid */}
-            <ScrollArea className="w-full md:w-auto">
-                <div className="flex space-x-3 pb-4 md:grid md:grid-cols-2 md:gap-3 md:space-x-0">
+            <ScrollArea className="w-full md:w-auto flex-1">
+                <div className="flex space-x-3 pb-4 md:grid md:grid-cols-2 md:gap-3 md:space-x-0 h-full">
                   {shuffledLabels.map((part) => (
                     <button
                       key={part.id}
