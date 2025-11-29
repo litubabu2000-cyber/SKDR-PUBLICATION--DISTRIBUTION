@@ -13,7 +13,7 @@ import { Whiteboard } from "@/components/whiteboard";
 
 const mcqData = [
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "1",
         question: "From which stage does the development of the child begin?",
         options: ["(A) Pre-natal", "(B) Post-natal", "(C) Infancy", "(D) Childhood"],
@@ -21,7 +21,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "2",
         question: "Which one is correct?",
         options: ["(A) Growth is a mental process", "(B) Development is a physical process", "(C) Growth is a qualitative process", "(D) Development is a psycho-logical process"],
@@ -29,7 +29,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "3",
         question: "“Growth is the multiplication of cells, as growth in height and weight, while development refers to the change in organism as a whole.” Who said this?",
         options: ["(A) E.B. Hurlock", "(B) Frank", "(C) Crow and Crow", "(D) Allport"],
@@ -37,7 +37,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "4",
         question: "At adolescence, the head of the child is about:",
         options: ["(A) 1/4 th of the body", "(B) 1/8 th of the body", "(C) 1/5 th of the body", "(D) 1/6 th of the body"],
@@ -45,7 +45,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "5",
         question: "Which of the following the radial (cognitive) constructivism does not depend on?",
         options: ["(A) Experience of the child", "(B) inquisitiveness of the child", "(C) environment of the child", "(D) Concept (idea) of the child"],
@@ -53,7 +53,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "6",
         question: "At what stage of intellectual development of the child does ego-centric thinking develop?",
         options: ["(A) sensory motor", "(B) pre operational", "(C) concrete operational", "(D) formal operational"],
@@ -61,7 +61,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "7",
         question: "At what stage of intellectual development does ego-centric thinking of the child develop?",
         options: ["(A) Sensory motor", "(B) Pre-operational", "(C) Concrete operational", "(D) Formal operational"],
@@ -69,7 +69,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "8",
         question: "According to Piaget what is the average age limit of the child during concrete operational period of cognitive development?",
         options: ["(A) 2 to 7 years", "(B) 7 to 12 years", "(C) 12 to 17 years", "(D) 18 years and above"],
@@ -77,7 +77,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "9",
         question: "Which is true in case of 'Semantic Memory'?",
         options: ["(A) Memory necessary for the use of mathematical formula", "(B) Memory necessary for the use of language", "(C) Memory necessary for the use of space relation", "(D) None of these"],
@@ -85,7 +85,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "10",
         question: "The activities that people perform on objects are known as:",
         options: ["(A) Schemas", "(B) Assimilation", "(C) Accommodation", "(D) Equilibrium"],
@@ -93,7 +93,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "11",
         question: "Which of the following stages is called as 'Concrete Operational Stage' according to Piaget?",
         options: ["(A) Infancy", "(B) Childhood", "(C) Late childhood", "(D) Adolescence"],
@@ -101,7 +101,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "12",
         question: "What will be the shape of a graph between intellectual development and chronological age from birth to adolescence?",
         options: ["(A) J - shaped", "(B) S - shaped", "(C) Zigzag", "(D) Hyperbola shaped"],
@@ -109,7 +109,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "13",
         question: "Which one is not an element of intellectual development?",
         options: ["(A) Creativity", "(B) Tolerance", "(C) Thinking", "(D) Imagination"],
@@ -117,7 +117,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "14",
         question: "Who is the founding father of cognitive constructivist approach?",
         options: ["(A) Piaget", "(B) Vygotsky", "(C) Bruner", "(D) Dewey"],
@@ -125,7 +125,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "15",
         question: "At what stage of development, team-spirit of children changes?",
         options: ["(A) Childhood", "(B) Pre-adolescence", "(C) Adolescence", "(D) Pre-adulthood"],
@@ -133,7 +133,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "16",
         question: "Which of the following is a social change during adolescence?",
         options: ["(A) Fear and Shame", "(B) Adult-like-behaviour", "(C) Restlessness", "(D) Imagination"],
@@ -141,7 +141,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "17",
         question: "At which age does a child begin to be an active member of a peer group and tries to be independent of his parents?",
         options: ["(A) 4 - 5 yrs. of age", "(B) 5 - 8 yrs. of age", "(C) 11 - 12 yrs. of age", "(D) 15 - 16 yrs. of age"],
@@ -149,7 +149,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "18",
         question: "Which basic emotions do develop during infancy?",
         options: ["(A) fear, apathy, joy", "(B) fear, anger, jealousy", "(C) fear, anger, irritation", "(D) fear, anger, affection"],
@@ -157,7 +157,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "19",
         question: "Which is not found in the symptoms of emotional disturbances of adolescents?",
         options: ["(A) Nail-biting", "(B) Thumb-sucking", "(C) Wearing well-fitted dress", "(D) Pulling the hair"],
@@ -165,7 +165,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "20",
         question: "Emotion is originated through ______________",
         options: ["(A) Habits", "(B) Instincts", "(C) Physical development", "(D) Formation of concepts"],
@@ -173,7 +173,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "21",
         question: "“Stealing would be judged wrong because it is considered wrong by the society.” — To which level of moral development does it belong?",
         options: ["(A) Pre-moral", "(B) Conventional morality", "(C) Self-accepted moral principle", "(D) All of these"],
@@ -181,7 +181,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "22",
         question: "W. Kay (1970) asserted that moral maturity involves:",
         options: ["(A) Altruism and rationality", "(B) Autonomy and heteronomy", "(C) Punishment and obedience", "(D) Social and interpersonal"],
@@ -189,7 +189,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "23",
         question: "Which pair is not correctly matched?",
         options: ["(A) Environment → Physical development", "(B) Maturation → Cognitive development", "(C) Surroundings → Social development", "(D) Maturation → Emotional development"],
@@ -197,7 +197,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "24",
         question: "Maturation is a:",
         options: ["(A) Psychological process", "(B) Mental process", "(C) Learning process", "(D) Biological process"],
@@ -205,7 +205,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "25",
         question: "Which statement is correct?",
         options: ["(A) Development is not based on the influence of heredity and environment", "(B) Development does not proceed in specific direction", "(C) Development of each individual is unique", "(D) Development of each individual is not continuous"],
@@ -213,7 +213,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "26",
         question: "Which is not a characteristic of pre-adolescence?",
         options: ["(A) moodiness", "(B) instant cry", "(C) tolerance", "(D) instant anger"],
@@ -221,7 +221,7 @@ const mcqData = [
         source: "Exam: OTET 2016 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "27",
         question: "At which stage of development the child becomes imaginative?",
         options: ["(A) Infancy", "(B) Pre-childhood", "(C) Adolescence", "(D) Late childhood"],
@@ -229,7 +229,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "28",
         question: "Which is the social need of adolescents?",
         options: ["(A) Oxygen", "(B) Sex", "(C) Hunger", "(D) Security"],
@@ -237,7 +237,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "29",
         question: "Which one of the following groups is not a problem of the adolescents?",
         options: ["(A) Cheating, stealing, truancy", "(B) Truancy, excessive day dreaming, excessive thoughtful", "(C) Cheating, jealousy, stealing", "(D) Excessive carelessness, cheating, getting disappointed over silly matters"],
@@ -245,7 +245,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "30",
         question: "Which of the following is not a developmental task of adolescents according to Havighurst?",
         options: ["(A) Accepting one's physique", "(B) Developing socially acceptable behaviour", "(C) Preparing for marriage and family life", "(D) Learning sex differences"],
@@ -253,7 +253,7 @@ const mcqData = [
         source: "Exam: OTET 2021 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "31",
         question: "From which Latin word the term 'Personality' has been derived?",
         options: ["(A) Person", "(B) Personal", "(C) Persona", "(D) Personnel"],
@@ -261,7 +261,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "32",
         question: "If the mental age is less than the chronological age of an individual, then to what category does he belong?",
         options: ["(A) Below average intelligence", "(B) Exceptional intelligence", "(C) High intelligence", "(D) Superior intelligence"],
@@ -269,7 +269,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "33",
         question: "Knowledge in which subject helps the teacher to identify the individual differences among the learners?",
         options: ["(A) Educational Sociology", "(B) Educational Psychology", "(C) Educational Philosophy", "(D) Pedagogy"],
@@ -277,7 +277,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "34",
         question: "“Whose attitude is conservative, his personality is conservative and whose attitude is positive, his personality is also positive.” Who stated it?",
         options: ["(A) Morton prince", "(B) Met Feasal", "(C) Eysenik", "(D) Mac Clasky"],
@@ -285,7 +285,7 @@ const mcqData = [
         source: "Exam: OTET 2017 (Set C)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "35",
         question: "The difference that exists between two or more abilities within the individual is known as:",
         options: ["(A) Inter-individual differences", "(B) Intra-individual differences", "(C) Multi-area individual differences", "(D) None of these"],
@@ -293,7 +293,7 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     },
     {
-        type: "Unit I: Child Development",
+        type: "Unit I: Child Development (Focus on Upper Primary School Children)",
         questionNumber: "36",
         question: "Backward, dull and retarded children are generally to have an IQ between",
         options: ["(A) 60 - 70", "(B) 70 - 90", "(C) 90 - 100", "(D) 100 - 120"],
@@ -973,5 +973,3 @@ const mcqData = [
         source: "Exam: OTET 2018 (Set D)"
     }
 ]
-
-```
