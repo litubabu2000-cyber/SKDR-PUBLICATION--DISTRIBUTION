@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -100,21 +99,20 @@ export default function Home() {
                     <ul className="space-y-1 text-sm text-background/70">
                         <li><Link href="/" className="hover:text-background">Home</Link></li>
                         <li><Link href="/categories" className="hover:text-background">Class Books</Link></li>
-                        <li><Link href="/categories/railway-books" className="hover:text-background">Railway Exams</Link></li>
-                        <li><Link href="/categories/ssc-books" className="hover:text-background">SSC Exams</Link></li>
-                        <li><Link href="/categories/ossc-books" className="hover:text-background">OSSC Exams</Link></li>
-                        <li><Link href="/categories/tgt-books" className="hover:text-background">TGT/PGT Exams</Link></li>
+                        <li><Link href="/pyq" className="hover:text-background">Previous Year Papers</Link></li>
+                        <li><Link href="/mock-tests" className="hover:text-background">Mock Tests</Link></li>
                         <li><Link href="/admin/login" className="hover:text-background">Admin Login</Link></li>
                     </ul>
                 </div>
                  <div className="space-y-2">
-                    <h4 className="font-semibold">Study Materials</h4>
+                    <h4 className="font-semibold">Company</h4>
                     <ul className="space-y-1 text-sm text-background/70">
-                        <li><Link href="/pyq" className="hover:text-background">Previous Year Papers</Link></li>
-                        <li><Link href="/mock-tests" className="hover:text-background">Mock Tests</Link></li>
-                        <li><Link href="/video-hub" className="hover:text-background">Video Lectures</Link></li>
-                        <li><Link href="#" className="hovertext-background">Practice Books</Link></li>
-                        <li><Link href="#" className="hover:text-background">Online Courses</Link></li>
+                        <li><Link href="/about-us" className="hover:text-background">About Us</Link></li>
+                        <li><Link href="/customer-support" className="hover:text-background">Customer Support</Link></li>
+                        <li><Link href="/shipping-options" className="hover:text-background">Shipping Options</Link></li>
+                        <li><Link href="/returns-cancellation" className="hover:text-background">Returns & Cancellation</Link></li>
+                        <li><Link href="/privacy-policy" className="hover:text-background">Privacy Policy</Link></li>
+                        <li><Link href="/terms-of-use" className="hover:text-background">Terms of Use</Link></li>
                     </ul>
                 </div>
                  <div className="space-y-2">
