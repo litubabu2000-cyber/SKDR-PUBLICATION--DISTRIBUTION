@@ -102,49 +102,29 @@ const KIDNEY_PARTS: Part[] = [
 // --- API Logic ---
 
 const callGemini = async (prompt: string, isJson = false): Promise<string> => {
-  const apiKey = ""; // Set by runtime environment
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+  const url = '/api/gemini';
 
-  const payload: any = {
-    contents: [{ parts: [{ text: prompt }] }]
-  };
+  const payload = { prompt, isJson };
 
-  if (isJson) {
-    payload.generationConfig = {
-      responseMimeType: "application/json"
-    };
-  }
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
-  let attempt = 0;
-  const maxRetries = 3;
-  const delays = [1000, 2000, 4000];
-
-  while (attempt <= maxRetries) {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-         if (response.status === 429) throw new Error('Too many requests');
-         throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    } catch (error) {
-      if (attempt === maxRetries) {
-        console.error("Gemini API failed after retries:", error);
-        throw error;
-      }
-      await new Promise(resolve => setTimeout(resolve, delays[attempt]));
-      attempt++;
+    if (!response.ok) {
+       throw new Error(`API Error: ${response.status}`);
     }
+
+    const data = await response.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  } catch (error) {
+    console.error("API call failed:", error);
+    throw error;
   }
-  return "";
 };
+
 
 // --- Main Component ---
 
