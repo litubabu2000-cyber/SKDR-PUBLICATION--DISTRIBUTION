@@ -1,92 +1,21 @@
-
 'use client';
 
-import React, { useEffect } from 'react';
-import Script from 'next/script';
+import React, { useState } from 'react';
+import { DrawingCanvas } from '@/components/drawing-canvas';
+import { WhiteboardToolbar } from '@/components/whiteboard-toolbar';
+import { type Brush } from '@/components/drawing-canvas';
 
 export default function GeminiBoardPage() {
-  useEffect(() => {
-    // We need to ensure that the main script runs after the component is mounted
-    // and all external scripts are loaded. A small delay can help.
-    const timer = setTimeout(() => {
-      const existingScript = document.querySelector('script[src="https://aistudiocdn.com/geminiboard@^1.2.0"]');
-      if (existingScript) {
-        // If script already exists, do nothing or re-init if needed.
-        return;
-      }
-      const script = document.createElement('script');
-      script.type = 'module';
-      script.src = 'https://aistudiocdn.com/geminiboard@^1.2.0';
-      document.body.appendChild(script);
-    }, 100); // 100ms delay to ensure dependencies are loaded
-
-    return () => {
-      clearTimeout(timer);
-      // Clean up script if component unmounts to avoid memory leaks
-      const existingScript = document.querySelector('script[src="https://aistudiocdn.com/geminiboard@^1.2.0"]');
-      if (existingScript) {
-        // Some libraries might not clean up global variables, so manual cleanup might be needed
-        // but for now, just removing the script tag is a good practice.
-        document.body.removeChild(existingScript);
-      }
-    };
-  }, []);
+  const [brush, setBrush] = useState<Brush>({
+    color: '#000000',
+    size: 5,
+    type: 'pen',
+  });
 
   return (
-    <>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" strategy="beforeInteractive" />
-      <Script id="pdf-worker-setup" strategy="afterInteractive">
-        {`
-          if (window.pdfjsLib) {
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-          }
-        `}
-      </Script>
-      <Script type="importmap" id="importmap" strategy="beforeInteractive">
-        {`
-          {
-            "imports": {
-              "react": "https://aistudiocdn.com/react@^19.2.0",
-              "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.0/client",
-              "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-              "uuid": "https://aistudiocdn.com/uuid@^13.0.0",
-              "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
-            }
-          }
-        `}
-      </Script>
-      <style>
-        {`
-          /* Ensure layout takes full height, minus the header */
-          #root {
-            height: calc(100vh - 4rem); 
-            width: 100%;
-            background-color: #f8fafc; /* bg-slate-50 */
-          }
-          /* Custom Scrollbar for a cleaner look */
-          ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-          }
-          ::-webkit-scrollbar-track {
-            background: transparent;
-          }
-          ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-          }
-          ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-          }
-          
-          /* Dot grid background pattern for the board itself */
-          .bg-dot-grid {
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 20px 20px;
-          }
-        `}
-      </style>
-      <div id="root"></div>
-    </>
+    <div className="w-full h-screen bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative overflow-hidden">
+      <DrawingCanvas brush={brush} />
+      <WhiteboardToolbar brush={brush} setBrush={setBrush} />
+    </div>
   );
 }
