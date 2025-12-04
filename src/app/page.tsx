@@ -4,13 +4,12 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, PenSquare } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-
 
 const quickLinks = [
   { href: '/categories', label: 'CHOOSE YOUR BOOK CATEGORY', icon: LayoutGrid },
@@ -21,8 +20,6 @@ const quickLinks = [
   { href: '/all-india-tests', label: 'ALL INDIA TESTS', icon: Globe },
   { href: '/state-level-tests', label: 'STATE LEVEL TESTS', icon: Landmark },
   { href: '/translator', label: 'TRANSLATOR', icon: Languages },
-  { href: '/pdf-watermark-remover', label: 'PDF WATERMARK REMOVER', icon: Eraser },
-  { href: '/geminiboard', label: 'GEMINIBOARD', icon: PenSquare },
   { href: '/for-teachers', label: 'FOR TEACHER', icon: Users },
   { href: '/exam-notification', label: 'EXAM NOTIFICATION', icon: Bell },
   { href: '/games', label: 'GAMES', icon: Gamepad2 },

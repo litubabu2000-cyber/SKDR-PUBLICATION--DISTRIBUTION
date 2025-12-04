@@ -8,7 +8,6 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Whiteboard } from "@/components/whiteboard";
 
 const mcqData = [
     {
