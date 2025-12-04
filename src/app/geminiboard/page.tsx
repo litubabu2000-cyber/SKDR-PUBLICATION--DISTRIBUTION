@@ -1,7 +1,8 @@
+
 'use client';
 
 import React, { useEffect } from 'react';
-import { Script } from 'next/script';
+import Script from 'next/script';
 
 export default function GeminiBoardPage() {
   useEffect(() => {
