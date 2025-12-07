@@ -277,8 +277,8 @@ const mcqData = [
     {
         type: "Letter/Word to Symbol Coding",
         questionNumber: 34,
-        question: "If ARC is coded as $@* and HIT is coded as #&amp;%, then CHAIR will be coded as?",
-        options: ["#* &amp; $@", "#*$&amp;%", "*#$&@", "*#$&amp;%"],
+        question: "If ARC is coded as $@* and HIT is coded as #&% then CHAIR will be coded as?",
+        options: ["#* & $@", "#*$&%", "*#$&@", "*#$&%"],
         source: "RPF SI – 10/01/2019 (Shift-II)",
         answer: "*#$&@"
     },
