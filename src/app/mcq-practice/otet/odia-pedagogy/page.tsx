@@ -5,9 +5,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer, Edit } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { DrawingCanvas } from "@/components/drawing-canvas";
 
 const mcqData = [
     {
@@ -205,7 +206,7 @@ const mcqData = [
     {
         type: "III. Reading Pedagogy",
         questionNumber: "57",
-        question: "ନୀରବ ପଠନର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ କ’ଣ?",
+        question: "ନୀରବ ਪଠନର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ କ’ଣ?",
         options: ["(A) ବ୍ୟାକରଣ ଜ୍ଞାନ", "(B) ଶବ୍ଦଭଣ୍ଡାର ବୃଦ୍ଧି", "(C) ନିରବତାରେ ପଢ଼ିବା", "(D) ବିଷୟ ବସ୍ତୁ ବୁଝିବା"],
         answer: "(D) ବିଷୟ ବସ୍ତୁ ବୁଝିବା",
         source: "Exam: OTET 2018 Paper II"
@@ -237,7 +238,7 @@ const mcqData = [
     {
         type: "III. Reading Pedagogy",
         questionNumber: "60",
-        question: "ସସ୍ୱର ପଠନର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ କ’ଣ ?",
+        question: "ସସ୍ୱର ਪଠନର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ କ’ଣ ?",
         options: ["(A) ଶିକ୍ଷାର୍ଥୀର ଭାବବୋଧର ବିକାଶ", "(B) ଶିକ୍ଷାର୍ଥୀର ନିରବତାରେ ପଠନ", "(C) ଶିକ୍ଷାର୍ଥୀର ସୁସ୍ପଷ୍ଟ ଧ୍ୱନିରେ ପଠନ", "(D) ଶିକ୍ଷାର୍ଥୀର ଶବ୍ଦଜ୍ଞାନ"],
         answer: "(C) ଶିକ୍ଷାର୍ଥୀର ସୁସ୍ପଷ୍ଟ ଧ୍ୱନିରେ ପଠନ",
         source: "Exam: OTET 2021 Paper II"
@@ -357,9 +358,9 @@ const mcqData = [
     {
         type: "V. Grammar and Vocabulary Pedagogy",
         questionNumber: "39",
-        question: "ନିମ୍ନ ମଧ୍ୟରୁ କେଉଁ ପଦ୍ଧତି ପ୍ରାଥମିକ ଶ୍ରେଣୀରେ ବ୍ୟାକରଣ ଶିକ୍ଷା ଦେବା ପାଇଁ ଉପଯୁକ୍ତ?",
-        options: ["(A) ନିୟମ ଶିକ୍ଷଣ ପଦ୍ଧତି", "(B) ଅନୁକରଣ ଶିକ୍ଷଣ ପଦ୍ଧତି", "(C) ପ୍ରୟୋଗାତ୍ମକ ପଦ୍ଧତି", "(D) ସହଜ ପଦ୍ଧତି"],
-        answer: "(C) ପ୍ରୟୋଗାତ୍ମକ ପଦ୍ଧତି",
+        question: "ନିମ୍ନ ମଧ୍ୟରୁ କେଉଁ ਪଦ୍ଧତି ପ୍ରାଥମିକ ଶ୍ରେଣୀରେ ବ୍ୟାକରଣ ଶିକ୍ଷା ଦେବା ପାଇଁ ଉପଯୁକ୍ତ?",
+        options: ["(A) ନିୟମ ଶିକ୍ଷଣ ਪଦ୍ଧତି", "(B) ଅନୁକରଣ ଶିକ୍ଷଣ ਪଦ୍ଧତି", "(C) ପ୍ରୟୋଗାତ୍ମକ ਪଦ୍ଧତି", "(D) ସହଜ ਪଦ୍ଧତି"],
+        answer: "(C) ପ୍ରୟୋଗାତ୍ମକ ਪଦ୍ଧତି",
         source: "Exam: OTET 2021 Paper II"
     },
     {
@@ -398,8 +399,8 @@ const mcqData = [
         type: "VI. Methods, Aids, Planning, and Assessment",
         questionNumber: "51",
         question: "କେଉଁଟି ନିରସତା ଦୂର କରିବାରେ ସହାୟକ ହୁଏ?",
-        options: ["(A) ପୁସ୍ତକାଳୟର ବ୍ୟବହାର", "(B) ଶ୍ରବଣ ଦକ୍ଷତାର ବୃଦ୍ଧି", "(C) ଶିକ୍ଷଣରେ ନୂଆ ପଦ୍ଧତି ଓ ଉପକରଣର ବ୍ୟବହାର", "(D) ଅଧିକ ସମୟ ପର୍ଯ୍ୟନ୍ତ ଶିକ୍ଷଣ"],
-        answer: "(C) ଶିକ୍ଷଣରେ ନୂଆ ପଦ୍ଧତି ଓ ଉପକରଣର ବ୍ୟବହାର",
+        options: ["(A) ପୁସ୍ତକାଳୟର ବ୍ୟବହାର", "(B) ଶ୍ରବଣ ଦକ୍ଷତାର ବୃଦ୍ଧି", "(C) ଶିକ୍ଷଣରେ ନୂଆ ਪଦ୍ଧତି ଓ ଉପକରଣର ବ୍ୟବହାର", "(D) ଅଧିକ ସମୟ ପର୍ଯ୍ୟନ୍ତ ଶିକ୍ଷଣ"],
+        answer: "(C) ଶିକ୍ଷଣରେ ନୂଆ ਪଦ୍ଧତି ଓ ଉପକରଣର ବ୍ୟବହାର",
         source: "Exam: OTET 2018 Paper II"
     },
     {
@@ -413,7 +414,7 @@ const mcqData = [
     {
         type: "VI. Methods, Aids, Planning, and Assessment",
         questionNumber: "40",
-        question: "ଗଦ୍ୟ ପାଠ୍ୟବସ୍ତୁ ଶିକ୍ଷାଦାନର ପ୍ରସ୍ତୁତି କ୍ରମରେ କେଉଁଟି ପ୍ରଥମେ କରାଯିବା ଉଚିତ?",
+        question: "ଗଦ୍ୟ ਪਾଠ୍ୟବସ୍ତୁ ଶିକ୍ଷାଦାନର ପ୍ରସ୍ତୁତି କ୍ରମରେ କେଉଁଟି ପ୍ରଥମେ କରାଯିବା ଉଚିତ?",
         options: ["(A) ସସ୍ୱର ପଠନ", "(B) ଆଲୋଚନା", "(C) ପ୍ରଶ୍ନ ପଚାରିବା", "(D) ପ୍ରାକ ପ୍ରସ୍ତୁତି"],
         answer: "(D) ପ୍ରାକ ପ୍ରସ୍ତୁତି",
         source: "Exam: OTET 2018 Paper II"
@@ -429,9 +430,9 @@ const mcqData = [
     {
         type: "VI. Methods, Aids, Planning, and Assessment",
         questionNumber: "55",
-        question: "ବ୍ୟାକରଣ ଶିକ୍ଷାଦାନର ଉପଯୁକ୍ତ ପଦ୍ଧତି କେଉଁଟି?",
-        options: ["(A) ସମସ୍ୟା ସମାଧାନ ପଦ୍ଧତି", "(B) ବ୍ୟାଖ୍ୟାନ ପଦ୍ଧତି", "(C) ଆରୋହୀ ପଦ୍ଧତି", "(D) ଅନୁବାଦ ପଦ୍ଧତି"],
-        answer: "(C) ଆରୋହୀ ପଦ୍ଧତି",
+        question: "ବ୍ୟାକରଣ ଶିକ୍ଷାଦାନର ଉପଯୁକ୍ତ ਪଦ୍ଧତି କେଉଁଟି?",
+        options: ["(A) ସମସ୍ୟା ସମାଧାନ ਪଦ୍ଧତି", "(B) ବ୍ୟାଖ୍ୟାନ ਪଦ୍ଧତି", "(C) ଆରୋହୀ ਪଦ୍ଧତି", "(D) ଅନୁବାଦ ਪଦ୍ଧତି"],
+        answer: "(C) ଆରୋହୀ ਪଦ୍ଧତି",
         source: "Exam: OTET 2021 Paper II"
     },
     {
@@ -461,7 +462,7 @@ const mcqData = [
     {
         type: "VI. Methods, Aids, Planning, and Assessment",
         questionNumber: "58",
-        question: "କେଉଁଟି ପାଠ ଯୋଜନାର ଅଂଶ ନୁହେଁ ?",
+        question: "କେଉଁଟି ਪାଠ ଯୋଜନାର ଅଂଶ ନୁହେଁ ?",
         options: ["(A) ଆରମ୍ଭ କାର୍ଯ୍ୟ", "(B) ଉଦ୍ଦେଶ୍ୟ", "(C) ବିଷୟବସ୍ତୁର ମାଧ୍ୟମ", "(D) ପ୍ରଶ୍ନର ପ୍ରକାର"],
         answer: "(D) ପ୍ରଶ୍ନର ପ୍ରକାର",
         source: "Exam: OTET 2021 Paper II"
@@ -493,7 +494,7 @@ const mcqData = [
     {
         type: "VI. Methods, Aids, Planning, and Assessment",
         questionNumber: "31",
-        question: "ଗଳ୍ପ କହିବା ପଦ୍ଧତିର ଉଦ୍ଦେଶ୍ୟ କ’ଣ ?",
+        question: "ଗଳ୍ପ କହିବା ਪଦ୍ଧତିର ଉଦ୍ଦେଶ୍ୟ କ’ଣ ?",
         options: ["(A) କଳ୍ପନାଶକ୍ତିର ବିକାଶ", "(B) ଶବ୍ଦଭଣ୍ଡାରର ବୃଦ୍ଧି", "(C) ଶ୍ରବଣ କ୍ଷମତାର ବୃଦ୍ଧି", "(D) ରସାସ୍ୱାଦନର ବୃଦ୍ଧି"],
         answer: "(A) କଳ୍ପନାଶକ୍ତିର ବିକାଶ",
         source: "Exam: OTET 2017 Paper II"
@@ -503,7 +504,7 @@ const mcqData = [
         questionNumber: "51",
         question: "କଥନରେ କେଉଁଟି ବାଧକ ନୁହେଁ?",
         options: ["(A) ଭାଷଣରେ ଭାବର ଅଭାବ", "(B) ଭାଷଣରେ ଶବ୍ଦର ବ୍ୟବହାରର ଅଭାବ", "(C) ଭାଷଣରେ ଅସ୍ପଷ୍ଟ ଧ୍ୱନି", "(D) ଭାଷଣ ଶବ୍ଦର ସମୟ ଅବଧି"],
-        answer: "(D) ଭାଷଣ ଶବ୍ଦର ସମୟ ଅବଧି",
+        answer: "(D) ଭାଷଣ ଶବ୍ਦର ସମୟ ଅବଧି",
         source: "Exam: OTET 2017 Paper II"
     },
     {
@@ -538,6 +539,7 @@ export default function OdiaPedagogyPage() {
     const [showAnswer, setShowAnswer] = useState(false);
     const [quizEnded, setQuizEnded] = useState(false);
     const [time, setTime] = useState(0);
+    const [isWhiteboardOpen, setIsWhiteboardOpen] = useState(false);
 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -638,6 +640,7 @@ export default function OdiaPedagogyPage() {
     if (quizEnded) {
         return (
             <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
+                {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
                         <CardTitle>Quiz Completed!</CardTitle>
@@ -658,14 +661,20 @@ export default function OdiaPedagogyPage() {
 
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
+            {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
             <div className="md:w-1/2 mx-auto">
                 <Card>
                     <CardHeader>
                          <div className="flex justify-between items-center">
                             <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
-                            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                                <Timer className="size-4" />
-                                <span>{formatTime(time)}</span>
+                            <div className="flex items-center gap-2">
+                                <Button variant="outline" size="icon" onClick={() => setIsWhiteboardOpen(true)}>
+                                    <Edit className="h-4 w-4" />
+                                </Button>
+                                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                                    <Timer className="size-4" />
+                                    <span>{formatTime(time)}</span>
+                                </div>
                             </div>
                         </div>
                         <CardDescription>{currentQuestion.source}</CardDescription>

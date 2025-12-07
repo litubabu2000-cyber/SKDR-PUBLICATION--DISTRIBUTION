@@ -5,9 +5,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer, Edit } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { DrawingCanvas } from "@/components/drawing-canvas";
 
 // This is placeholder data. Replace it with your actual quiz data.
 const mcqData = [
@@ -27,6 +28,7 @@ export default function PercentageSscPage() {
     const [showAnswer, setShowAnswer] = useState(false);
     const [quizEnded, setQuizEnded] = useState(false);
     const [time, setTime] = useState(0);
+    const [isWhiteboardOpen, setIsWhiteboardOpen] = useState(false);
 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -116,6 +118,7 @@ export default function PercentageSscPage() {
     if (quizEnded) {
         return (
             <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
+                {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
                         <CardTitle>Quiz Completed!</CardTitle>
@@ -136,14 +139,20 @@ export default function PercentageSscPage() {
 
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
+            {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
             <div className="md:w-1/2 mx-auto">
                 <Card>
                     <CardHeader>
                         <div className="flex justify-between items-center">
                            <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
-                            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                                <Timer className="size-4" />
-                                <span>{formatTime(time)}</span>
+                            <div className="flex items-center gap-2">
+                                <Button variant="outline" size="icon" onClick={() => setIsWhiteboardOpen(true)}>
+                                    <Edit className="h-4 w-4" />
+                                </Button>
+                                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                                    <Timer className="size-4" />
+                                    <span>{formatTime(time)}</span>
+                                </div>
                             </div>
                         </div>
                         <CardDescription>{currentQuestion.source}</CardDescription>
