@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -426,12 +426,21 @@ export default function AnalogyRailwayPage() {
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [showAnswer, setShowAnswer] = useState(false);
     const [quizEnded, setQuizEnded] = useState(false);
+    const [time, setTime] = useState(0);
 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const questionTypes = useMemo(() => [...new Set(mcqData.map(q => q.type))], []);
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+            if (!quizEnded) {
+                setTime(prevTime => prevTime + 1);
+            }
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [quizEnded]);
 
     useEffect(() => {
         if (activeQuestionRef.current && scrollContainerRef.current) {
@@ -451,6 +460,11 @@ export default function AnalogyRailwayPage() {
         }
     }, [currentQuestionIndex]);
 
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    };
 
     const handleNext = () => {
         if (currentQuestionIndex < mcqData.length - 1) {
@@ -486,6 +500,7 @@ export default function AnalogyRailwayPage() {
         setCurrentQuestionIndex(0);
         resetQuestionState();
         setQuizEnded(false);
+        setTime(0);
     };
     
     const handleNextType = () => {
@@ -515,7 +530,7 @@ export default function AnalogyRailwayPage() {
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
                         <CardTitle>Quiz Completed!</CardTitle>
-                        <CardDescription>You have completed the Analogy (Railway) quiz.</CardDescription>
+                        <CardDescription>You have completed the Analogy (Railway) quiz in {formatTime(time)}.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <p className="text-lg">Thank you for participating.</p>
@@ -535,7 +550,13 @@ export default function AnalogyRailwayPage() {
             <div className="md:w-1/2 mx-auto">
                 <Card>
                     <CardHeader>
-                        <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
+                        <div className="flex justify-between items-center">
+                            <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
+                            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                                <Timer className="size-4" />
+                                <span>{formatTime(time)}</span>
+                            </div>
+                        </div>
                         <CardDescription>{currentQuestion.source}</CardDescription>
                         <CardTitle className="font-body text-xl leading-relaxed">
                             Q{currentQuestion.questionNumber}. {currentQuestion.question}
