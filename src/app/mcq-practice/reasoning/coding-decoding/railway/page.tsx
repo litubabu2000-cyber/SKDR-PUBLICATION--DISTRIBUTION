@@ -458,8 +458,8 @@ export default function CodingDecodingRailwayPage() {
                 <Card>
                     <CardHeader>
                         <div className="flex justify-between items-center">
-                           <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
-                           <div className="flex items-center gap-2">
+                            <p className="text-sm font-semibold text-primary mb-2">{currentQuestion.type}</p>
+                            <div className="flex items-center gap-2">
                                 <Button variant="outline" size="icon" onClick={() => setIsWhiteboardOpen(true)}>
                                     <Edit className="h-4 w-4" />
                                 </Button>
