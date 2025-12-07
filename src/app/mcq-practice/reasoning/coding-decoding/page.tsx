@@ -5,10 +5,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer, Train, Building, Banknote, PenTool } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer, Train, Building, Banknote, PenTool, Edit } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { DrawingCanvas } from "@/components/drawing-canvas";
 
 
 const Mix = (props: React.SVGProps<SVGSVGElement>) => (
