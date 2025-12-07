@@ -58,7 +58,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
 
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if(!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const { x, y } = getCoordinates(e.nativeEvent);
@@ -94,8 +94,8 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
   const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative w-full h-full border-2 border-dashed border-slate-600 rounded-lg">
+    <div className="fixed inset-0 z-50 bg-transparent flex items-center justify-center p-4">
+      <div className="relative w-full h-full rounded-lg">
         <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-slate-800/90 border border-slate-600 p-2 rounded-full flex gap-3 items-center shadow-xl z-10 pointer-events-auto whitespace-nowrap">
           <div className="flex items-center gap-2">
             <Palette className="text-white size-5" />
