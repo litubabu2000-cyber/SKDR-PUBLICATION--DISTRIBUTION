@@ -1,6 +1,6 @@
 'use client';
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { Settings, Info, Maximize2, MoveHorizontal, ArrowLeftRight, FlaskConical } from 'lucide-react';
+import { Settings, Info, Maximize2, MoveHorizontal, ArrowLeftRight, FlaskConical, Upload, Image as ImageIcon, Trash2, Zap } from 'lucide-react';
 
 // --- Types ---
 interface OpticalState {
@@ -20,19 +20,52 @@ interface SimulationMetrics {
 interface RayOpticsCanvasProps {
     state: OpticalState;
     onObjectDrag: (u: number) => void;
+    customImageSrc: string | null;
 }
 
-const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }) => {
+const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag, customImageSrc }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [time, setTime] = useState(0);
+    const customImageRef = useRef<HTMLImageElement | null>(null);
     
+    // Background dust particles state
+    const particlesRef = useRef<Array<{x: number, y: number, vx: number, vy: number, size: number}>>([]);
+
+    // Initialize particles once
+    useEffect(() => {
+        if (particlesRef.current.length === 0) {
+            for (let i = 0; i < 40; i++) {
+                particlesRef.current.push({
+                    x: Math.random(), // 0-1 relative position
+                    y: Math.random(),
+                    vx: (Math.random() - 0.5) * 0.0002,
+                    vy: (Math.random() - 0.5) * 0.0002,
+                    size: Math.random() * 2 + 0.5
+                });
+            }
+        }
+    }, []);
+    
+    // Load custom image if provided
+    useEffect(() => {
+        if (customImageSrc) {
+            const img = new Image();
+            img.src = customImageSrc;
+            img.onload = () => {
+                customImageRef.current = img;
+            };
+        } else {
+            customImageRef.current = null;
+        }
+    }, [customImageSrc]);
+
     // Constants for drawing
     const originRatioX = 0.85; // Mirror position (85% of width)
     const originRatioY = 0.55;  // Axis position (Slightly lower to show table depth)
 
-    // Animation Loop for Flame
+    // Animation Loop
     useEffect(() => {
         let animationFrameId: number;
         
@@ -93,13 +126,58 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
         ctx.fillStyle = bgGradient;
         ctx.fillRect(0, 0, width, height);
 
+        // 0. Floating Dust Particles Animation
+        ctx.save();
+        ctx.fillStyle = "rgba(148, 163, 184, 0.15)";
+        particlesRef.current.forEach(p => {
+            // Update position
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            // Wrap around screen
+            if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+            if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+
+            const px = p.x * width;
+            const py = p.y * height;
+            
+            ctx.beginPath();
+            ctx.arc(px, py, p.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        ctx.restore();
+
+        // 0.1 Grid Lines
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.08)";
+        ctx.lineWidth = 1;
+        
+        for (let x = -2000; x <= 1000; x += 100) {
+            const screenX = toCanvas(x, 0).x;
+            if (screenX > 0 && screenX < width) {
+                ctx.moveTo(screenX, 0);
+                ctx.lineTo(screenX, height);
+            }
+        }
+        for (let y = -500; y <= 500; y += 50) {
+            const screenY = toCanvas(0, y).y;
+            if (screenY > 0 && screenY < height) {
+                ctx.moveTo(0, screenY);
+                ctx.lineTo(width, screenY);
+            }
+        }
+        ctx.stroke();
+        ctx.restore();
+
         // Draw Optical Bench (Rail)
         const railY = originY + 2;
-        const railHeight = 20;
+        const railHeight = 24;
         
         // Rail Top Surface
         const railGrad = ctx.createLinearGradient(0, railY, 0, railY + railHeight);
-        railGrad.addColorStop(0, "#475569");
+        railGrad.addColorStop(0, "#334155");
+        railGrad.addColorStop(0.2, "#64748b");
         railGrad.addColorStop(0.5, "#94a3b8");
         railGrad.addColorStop(1, "#475569");
         ctx.fillStyle = railGrad;
@@ -107,7 +185,7 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
         
         // Rail Ticks (Metric)
         ctx.beginPath();
-        ctx.strokeStyle = "#334155";
+        ctx.strokeStyle = "rgba(255,255,255,0.3)";
         ctx.lineWidth = 1;
         ctx.font = "10px monospace";
         ctx.fillStyle = "#cbd5e1";
@@ -118,20 +196,29 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
             if (screenX > 0 && screenX < width) {
                 // Major tick
                 ctx.moveTo(screenX, railY);
-                ctx.lineTo(screenX, railY + (x % 100 === 0 ? 15 : 8));
+                ctx.lineTo(screenX, railY + (x % 100 === 0 ? 12 : 6));
                 
                 if (x % 100 === 0 && x !== 0) {
-                    ctx.fillText(Math.abs(x).toString(), screenX, railY + 28);
+                    ctx.fillText(Math.abs(x).toString(), screenX, railY + 24);
                 }
             }
         }
         ctx.stroke();
 
+        // Principal Axis Line (Dashed)
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+        ctx.setLineDash([10, 10]);
+        ctx.moveTo(0, originY);
+        ctx.lineTo(width, originY);
+        ctx.stroke();
+        ctx.restore();
+
         // --- OPTICAL COMPONENTS ---
 
         // 1. Realistic Mirror
         // Center of Curvature for drawing the arc is at 2*f
-        // IMPORTANT: Drawing arc logic assumes positive radius, we must handle center position manually
         const R_val = 2 * f;
         const R_pixels = Math.abs(R_val);
         const centerPt = toCanvas(R_val, 0); 
@@ -143,80 +230,76 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
 
         ctx.save();
         
-        // Mirror Back (Glass/Support)
-        ctx.beginPath();
-        // The arc method draws relative to the center. 
-        // If f < 0 (Concave), center is at negative X. To face right (towards object), we draw arc from -angle to +angle?
-        // Let's visualize: Center at Left. Arc at Right. 
-        // We need the arc to pass through the Origin (approx).
-        // Actually, strictly speaking, if Center is at 2f, and radius is |2f|, the arc passes through 0.
-        
-        const startAngle = Math.PI - apertureAngle;
-        const endAngle = Math.PI + apertureAngle;
-        
-        // Determine angles based on concavity
-        // If f < 0 (Concave): Center is left (-200). We want arc to be on the right side of center. Angles around 0.
-        // If f > 0 (Convex): Center is right (+200). We want arc to be on the left side of center. Angles around PI.
-        
         const isConcave = f < 0;
         const arcStart = isConcave ? -apertureAngle : Math.PI - apertureAngle;
         const arcEnd = isConcave ? apertureAngle : Math.PI + apertureAngle;
 
+        // Draw Mirror Glass Body
         ctx.beginPath();
-        ctx.arc(centerPt.x, centerPt.y, R_pixels + 6, arcStart, arcEnd);
-        ctx.arc(centerPt.x, centerPt.y, R_pixels, arcEnd, arcStart, true); // Close shape
+        ctx.arc(centerPt.x, centerPt.y, R_pixels + 6, arcStart, arcEnd); // Outer edge
+        ctx.arc(centerPt.x, centerPt.y, R_pixels, arcEnd, arcStart, true); // Inner edge
         ctx.closePath();
         
         const mirrorBackGrad = ctx.createLinearGradient(originX - 20, 0, originX + 20, 0);
-        mirrorBackGrad.addColorStop(0, "#334155");
-        mirrorBackGrad.addColorStop(1, "#1e293b");
+        mirrorBackGrad.addColorStop(0, "#475569");
+        mirrorBackGrad.addColorStop(1, "#334155");
         ctx.fillStyle = mirrorBackGrad;
         ctx.fill();
 
-        // Mirror Surface (Reflective)
+        // Draw Hatching
         ctx.beginPath();
-        ctx.arc(centerPt.x, centerPt.y, R_pixels, arcStart, arcEnd);
-        ctx.lineWidth = 4;
-        const mirrorSurfGrad = ctx.createLinearGradient(originX, originY - apertureHeight/2, originX, originY + apertureHeight/2);
-        mirrorSurfGrad.addColorStop(0, "#94a3b8"); // Slate 400
-        mirrorSurfGrad.addColorStop(0.4, "#e2e8f0"); // Slate 200 (Highlight)
-        mirrorSurfGrad.addColorStop(0.6, "#f1f5f9"); // Slate 100 (Highlight)
-        mirrorSurfGrad.addColorStop(1, "#64748b"); // Slate 500
-        ctx.strokeStyle = mirrorSurfGrad;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+        ctx.lineWidth = 1;
+        
+        const numHatches = 30;
+        for (let i = 0; i <= numHatches; i++) {
+            const angle = arcStart + (arcEnd - arcStart) * (i / numHatches);
+            const px = centerPt.x + Math.cos(angle) * (isConcave ? R_pixels + 6 : R_pixels - 1); 
+            const py = centerPt.y + Math.sin(angle) * (isConcave ? R_pixels + 6 : R_pixels - 1);
+            const hatchLen = 8;
+            let nx = Math.cos(angle);
+            let ny = Math.sin(angle);
+            if (!isConcave) { nx = -nx; ny = -ny; }
+            ctx.moveTo(px, py);
+            ctx.lineTo(px + nx * hatchLen, py + ny * hatchLen);
+        }
         ctx.stroke();
 
-        // Glass sheen effect
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "rgba(255,255,255,0.3)";
+        // Mirror Surface (Reflective Front)
+        ctx.beginPath();
+        ctx.arc(centerPt.x, centerPt.y, R_pixels, arcStart, arcEnd);
+        ctx.lineWidth = 3;
+        const mirrorSurfGrad = ctx.createLinearGradient(originX, originY - apertureHeight/2, originX, originY + apertureHeight/2);
+        mirrorSurfGrad.addColorStop(0, "#94a3b8");
+        mirrorSurfGrad.addColorStop(0.4, "#e2e8f0");
+        mirrorSurfGrad.addColorStop(0.6, "#f1f5f9");
+        mirrorSurfGrad.addColorStop(1, "#64748b");
+        ctx.strokeStyle = mirrorSurfGrad;
         ctx.stroke();
-        
         ctx.restore();
 
         // 2. Points Markers on Rail
         const drawMarker = (x: number, label: string, color: string) => {
             const pt = toCanvas(x, 0);
-            // Don't draw if way off screen
             if (pt.x < -50 || pt.x > width + 50) return;
-
             ctx.save();
             ctx.fillStyle = color;
-            
-            // Triangle marker on rail
             ctx.beginPath();
             ctx.moveTo(pt.x, railY);
-            ctx.lineTo(pt.x - 5, railY + 8);
-            ctx.lineTo(pt.x + 5, railY + 8);
+            ctx.lineTo(pt.x - 6, railY + 10);
+            ctx.lineTo(pt.x + 6, railY + 10);
             ctx.fill();
-            
-            // Label
             ctx.font = "bold 12px Inter, sans-serif";
-            ctx.fillStyle = "#e2e8f0";
-            ctx.fillText(label, pt.x, railY + 20);
+            const textWidth = ctx.measureText(label).width;
+            ctx.fillStyle = "rgba(15, 23, 42, 0.8)";
+            ctx.fillRect(pt.x - textWidth/2 - 4, railY + 14, textWidth + 8, 16);
+            ctx.fillStyle = color;
+            ctx.fillText(label, pt.x, railY + 26);
             ctx.restore();
         };
         drawMarker(f, "F", "#ef4444");
         drawMarker(2 * f, "C", "#3b82f6");
-        drawMarker(0, "P", "#94a3b8");
+        drawMarker(0, "P", "#e2e8f0");
 
         // --- HELPERS FOR OBJECTS & RAYS ---
 
@@ -226,64 +309,91 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
             const w = 16;
             
             ctx.save();
-            if (isVirtual) ctx.globalAlpha = 0.4; // Ghostly for virtual
-            if (isImage && !isVirtual) ctx.globalAlpha = 0.8; // Projected look for real image
+            if (isVirtual) ctx.globalAlpha = 0.5;
+            if (isImage && !isVirtual) ctx.globalAlpha = 0.85;
 
-            // Candle Body (Wax Gradient)
-            // heightVal can be negative (inverted image), so we need min/max for drawing rect
-            const yTop = Math.min(base.y, tip.y);
-            const hAbs = Math.abs(base.y - tip.y);
-            
+            // Check if we have a custom image loaded
+            if (customImageRef.current) {
+                const img = customImageRef.current;
+                const isUpright = heightVal > 0;
+                const hAbs = Math.abs(base.y - tip.y); 
+                const aspectRatio = img.width / img.height;
+                const wAbs = hAbs * aspectRatio;
+
+                ctx.translate(base.x, base.y);
+                if (!isUpright) {
+                    ctx.scale(1, -1);
+                }
+                ctx.drawImage(img, -wAbs / 2, -hAbs, wAbs, hAbs);
+                ctx.restore(); 
+                ctx.save(); 
+                if (!isDragging || isImage) {
+                    ctx.fillStyle = isImage ? "#60a5fa" : "#fca5a5";
+                    ctx.font = "12px Inter, sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText(isImage ? "Image" : "Object", base.x, railY + 40 + (isImage ? 14 : 0));
+                }
+                ctx.restore();
+                return;
+            }
+
+            // --- DEFAULT CANDLE DRAWING ---
+            const holderW = w + 12;
+            const holderH = 6;
+            ctx.fillStyle = isImage ? "#64748b" : "#b45309";
+            ctx.beginPath();
+            ctx.ellipse(base.x, base.y, holderW/2, holderH/2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = isImage ? "#94a3b8" : "#d97706";
+            ctx.beginPath();
+            ctx.ellipse(base.x, base.y - 2, holderW/2, holderH/2, 0, 0, Math.PI * 2);
+            ctx.fill();
+
             const waxGrad = ctx.createLinearGradient(base.x - w/2, 0, base.x + w/2, 0);
             if (isImage) {
-                // Blue-ish wax for Image to distinguish
                 waxGrad.addColorStop(0, "#1e3a8a");
-                waxGrad.addColorStop(0.5, "#3b82f6");
+                waxGrad.addColorStop(0.5, "#60a5fa");
                 waxGrad.addColorStop(1, "#1e3a8a");
             } else {
-                // Red wax for Object
-                waxGrad.addColorStop(0, "#7f1d1d");
-                waxGrad.addColorStop(0.5, "#ef4444");
-                waxGrad.addColorStop(1, "#7f1d1d");
+                waxGrad.addColorStop(0, "#991b1b");
+                waxGrad.addColorStop(0.5, "#f87171");
+                waxGrad.addColorStop(1, "#991b1b");
             }
             
             ctx.fillStyle = waxGrad;
-            // Rounded corners for candle
             ctx.beginPath();
-            ctx.roundRect(base.x - w/2, yTop, w, hAbs, 2);
+            ctx.moveTo(base.x - w/2, base.y - 2);
+            ctx.lineTo(base.x + w/2, base.y - 2);
+            ctx.lineTo(base.x + w/2 - 1, (heightVal > 0 ? tip.y : tip.y));
+            ctx.lineTo(base.x - w/2 + 1, (heightVal > 0 ? tip.y : tip.y));
             ctx.fill();
 
-            // Wick
-            // If heightVal is positive (upright), wick is at tip.y (which is above base.y visually, so lower value in canvas Y? No. toCanvas inverts Y)
-            // Let's use tip.y directly.
             const wickStart = tip.y;
-            // If upright (h>0), wick goes UP (lower Y). If inverted (h<0), wick goes DOWN (higher Y).
             const wickDir = heightVal > 0 ? -1 : 1; 
 
-            ctx.strokeStyle = "#111";
+            ctx.strokeStyle = "#222";
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(base.x, wickStart);
             ctx.lineTo(base.x, wickStart + (6 * wickDir));
             ctx.stroke();
 
-            // Animated Flame
-            // Perturb flame with time
-            const flickerX = Math.sin(time / 100) * 2;
-            const flickerY = Math.cos(time / 80) * 2;
+            const flickerX = Math.sin(time / 100) * 1.5;
+            const flickerY = Math.cos(time / 80) * 1.5;
             const flameBaseY = wickStart + (6 * wickDir);
-            const flameTipY = flameBaseY + (20 * wickDir) + flickerY;
+            const flameTipY = flameBaseY + (22 * wickDir) + flickerY;
             const flameCenter = base.x + flickerX;
 
             const flameGrad = ctx.createRadialGradient(flameCenter, flameBaseY + (10*wickDir), 2, flameCenter, flameBaseY + (10*wickDir), 15);
-            flameGrad.addColorStop(0, "#fef08a"); // Center yellow
-            flameGrad.addColorStop(0.4, "#f59e0b"); // Orange
-            flameGrad.addColorStop(1, "rgba(245, 158, 11, 0)"); // Fade out
+            flameGrad.addColorStop(0, "#fffbeb");
+            flameGrad.addColorStop(0.2, "#fef08a");
+            flameGrad.addColorStop(0.5, "#f97316");
+            flameGrad.addColorStop(1, "rgba(234, 88, 12, 0)");
 
             ctx.fillStyle = flameGrad;
             ctx.beginPath();
             ctx.moveTo(base.x, flameBaseY);
-            // Cubic bezier for flame shape
+            
             const ctrlY1 = flameBaseY + (8 * wickDir);
             const ctrlY2 = flameBaseY + (18 * wickDir);
             
@@ -291,23 +401,19 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
             ctx.bezierCurveTo(base.x - 4 + flickerX, ctrlY2, base.x - 8, ctrlY1, base.x, flameBaseY);
             ctx.fill();
 
-            // Glow around flame
             if (!isImage || !isVirtual) {
-                const glowGrad = ctx.createRadialGradient(base.x, flameBaseY + (10*wickDir), 5, base.x, flameBaseY + (10*wickDir), 40);
-                glowGrad.addColorStop(0, "rgba(255, 200, 0, 0.3)");
-                glowGrad.addColorStop(1, "rgba(255, 200, 0, 0)");
+                const glowGrad = ctx.createRadialGradient(base.x, flameBaseY + (10*wickDir), 5, base.x, flameBaseY + (10*wickDir), 50);
+                glowGrad.addColorStop(0, "rgba(255, 160, 0, 0.2)");
+                glowGrad.addColorStop(1, "rgba(255, 160, 0, 0)");
                 ctx.fillStyle = glowGrad;
-                ctx.beginPath(); ctx.arc(base.x, flameBaseY + (10*wickDir), 40, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(base.x, flameBaseY + (10*wickDir), 50, 0, Math.PI*2); ctx.fill();
             }
 
-            // Label
             if (!isDragging || isImage) {
                 ctx.fillStyle = isImage ? "#60a5fa" : "#fca5a5";
                 ctx.font = "12px Inter, sans-serif";
                 ctx.textAlign = "center";
-                // Place label below base if upright, above base if inverted? 
-                // Just always place it 'below' the candle on the table
-                ctx.fillText(isImage ? "Image" : "Object", base.x, railY + 35 + (isImage ? 15 : 0));
+                ctx.fillText(isImage ? "Image" : "Object", base.x, railY + 40 + (isImage ? 14 : 0));
             }
             
             ctx.restore();
@@ -320,36 +426,69 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
             ctx.save();
             ctx.beginPath();
             ctx.strokeStyle = color;
+            ctx.lineCap = "round";
             
+            // Animation Pulse Factor (0 to 1)
+            const pulse = (Math.sin(time / 200) + 1) / 2;
+
             if (isVirtual) {
-                ctx.lineWidth = 1;
-                ctx.setLineDash([4, 4]);
-                ctx.globalAlpha = 0.5;
+                ctx.lineWidth = 1.5;
+                // Animate dash offset for "flow"
+                ctx.setLineDash([6, 6]);
+                ctx.lineDashOffset = -time / 40; 
+                ctx.globalAlpha = 0.6;
             } else {
-                ctx.lineWidth = 2;
-                ctx.shadowBlur = 8;
+                // Pulse the width and shadow slightly
+                ctx.lineWidth = 2 + 0.5 * pulse;
+                ctx.shadowBlur = 10 + 5 * pulse;
                 ctx.shadowColor = color;
-                ctx.globalAlpha = 0.9;
+                ctx.globalAlpha = 0.9 + 0.1 * pulse;
             }
             
             ctx.moveTo(start.x, start.y);
             ctx.lineTo(end.x, end.y);
             ctx.stroke();
 
-            // Directional Arrow
+            // Arrow Head
             if (!isVirtual) {
                 const midX = (start.x + end.x) / 2;
                 const midY = (start.y + end.y) / 2;
                 const angle = Math.atan2(end.y - start.y, end.x - start.x);
-                const headLen = 8;
+                const headLen = 10;
                 
-                ctx.shadowBlur = 0; // No blur for crisp arrow
+                ctx.shadowBlur = 0; 
                 ctx.fillStyle = color;
                 ctx.beginPath();
                 ctx.moveTo(midX, midY);
-                ctx.lineTo(midX - headLen * Math.cos(angle - Math.PI/6), midY - headLen * Math.sin(angle - Math.PI/6));
-                ctx.lineTo(midX - headLen * Math.cos(angle + Math.PI/6), midY - headLen * Math.sin(angle + Math.PI/6));
+                ctx.lineTo(midX - headLen * Math.cos(angle - Math.PI/7), midY - headLen * Math.sin(angle - Math.PI/7));
+                ctx.lineTo(midX - headLen * Math.cos(angle + Math.PI/7), midY - headLen * Math.sin(angle + Math.PI/7));
                 ctx.fill();
+
+                // **NEW: Moving Photons Animation**
+                // Draw small particles moving along the ray
+                const dx = end.x - start.x;
+                const dy = end.y - start.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                const speed = 0.15; // Speed of photons
+                const spacing = 60; // Distance between photons
+                
+                // Calculate offset based on time
+                const offset = (time * speed) % spacing;
+                
+                ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+                ctx.shadowBlur = 4;
+                ctx.shadowColor = "white";
+
+                for (let d = offset; d < dist; d += spacing) {
+                    // Interpolate position
+                    const t = d / dist;
+                    const px = start.x + dx * t;
+                    const py = start.y + dy * t;
+                    
+                    ctx.beginPath();
+                    ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             }
             ctx.restore();
         };
@@ -360,63 +499,56 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
         // --- 4. DRAW IMAGE ---
         // Filter out extreme values that crash canvas
         if (v !== -Infinity && Math.abs(v) < 50000 && !isNaN(v)) {
-            // Determine if virtual.
-            // For mirrors: Real images are on the same side as object (negative v in this coord system? No.)
-            // Standard convention: Light travels left->right? No, here Object is at negative X. Mirror at 0.
-            // Real image forms at negative X. Virtual image forms at positive X (behind mirror).
             const isVirtual = v > 0;
             drawRealisticCandle(v, h_i, true, isVirtual);
+            
+            // **NEW: Pulsing Image Marker**
+            // Highlight where the rays converge
+            if (!isVirtual) {
+                const imageTip = toCanvas(v, h_i);
+                const glowSize = 5 + Math.sin(time / 150) * 2;
+                
+                ctx.save();
+                ctx.globalCompositeOperation = "screen"; // Make it glowy
+                const convGrad = ctx.createRadialGradient(imageTip.x, imageTip.y, 0, imageTip.x, imageTip.y, glowSize * 3);
+                convGrad.addColorStop(0, "rgba(74, 222, 128, 1)"); // Bright Green center
+                convGrad.addColorStop(1, "rgba(74, 222, 128, 0)");
+                
+                ctx.fillStyle = convGrad;
+                ctx.beginPath();
+                ctx.arc(imageTip.x, imageTip.y, glowSize * 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
         }
 
         // --- 5. DRAW RAYS (LASER BEAMS) ---
-        // Green lasers for physics
         const rayColor = "#4ade80"; // green-400
-        const virtColor = "#fbbf24"; // amber-400
+        const virtColor = "#f59e0b"; // amber-500
 
         // Ray 1: Parallel -> Focus
-        // From (u, h) to (0, h) on mirror plane
         drawLaserRay(u, h, 0, h, rayColor, false);
         
-        // Reflection: passes through Focus (f, 0)
-        // Equation of line through (0, h) and (f, 0).
-        // Slope m1 = (0 - h) / (f - 0) = -h/f
         const slope1 = -h / f;
-        
-        // Draw extended reflected ray
-        // If concave (f<0), reflected ray goes to left (-width).
-        // If convex (f>0), reflected ray diverges. Appears to come from F (behind mirror).
-        // Actually the formula handles both if we extend to -width correctly.
         const x_end_1 = -width;
         const y_end_1 = h + slope1 * (x_end_1 - 0);
         drawLaserRay(0, h, x_end_1, y_end_1, rayColor, false);
         
-        // Virtual extension (behind mirror)
         const x_virt_1 = width;
         const y_virt_1 = h + slope1 * (x_virt_1 - 0);
         drawLaserRay(0, h, x_virt_1, y_virt_1, virtColor, true);
 
         // Ray 2: Through Focus -> Parallel
-        // Incident ray aiming at Focus (or passing through it)
-        // From (u, h) towards (f, 0).
-        // Equation: Slope m2 = (0 - h) / (f - u).
-        // Hits mirror at x=0. y_int = h + m2 * (0 - u).
-        // Check if object is at focus to avoid div/0
         if (Math.abs(u - f) > 1) {
             const slope2 = (0 - h) / (f - u);
             const y_int_2 = h + slope2 * (0 - u);
 
             drawLaserRay(u, h, 0, y_int_2, rayColor, false);
-            
-            // Reflection is Parallel to axis (y = constant = y_int_2)
             drawLaserRay(0, y_int_2, -width, y_int_2, rayColor, false);
-
-            // Virtual extension
             drawLaserRay(0, y_int_2, width, y_int_2, virtColor, true);
         }
 
         // Ray 3: Center of Curvature
-        // Passes through C (2f, 0). Hits mirror normally. Reflects back on itself.
-        // Slope m3 = (0 - h) / (2f - u)
         if (Math.abs(2*f - u) > 1) {
             const slope3 = (0 - h) / ((2 * f) - u);
             const y_int_3 = h + slope3 * (0 - u);
@@ -425,14 +557,14 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
             
             const x_end_3 = -width;
             const y_end_3 = y_int_3 + slope3 * (x_end_3 - 0);
-            drawLaserRay(0, y_int_3, x_end_3, y_end_3, rayColor, false); // Reflected back same path
+            drawLaserRay(0, y_int_3, x_end_3, y_end_3, rayColor, false); 
             
-             const x_virt_3 = width;
+            const x_virt_3 = width;
             const y_virt_3 = y_int_3 + slope3 * (x_virt_3 - 0);
             drawLaserRay(0, y_int_3, x_virt_3, y_virt_3, virtColor, true);
         }
 
-    }, [state, time, getTransform]); // Depend on time for animation
+    }, [state, time, getTransform, customImageRef.current]); 
 
     // Resize Handler
     useEffect(() => {
@@ -472,7 +604,6 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
 
         if (isDragging) {
             let newU = toWorldX(x);
-            // Limit U to stay on the rail and not pass the mirror too much
             if (newU > -5) newU = -5; 
             if (newU < -1500) newU = -1500;
             onObjectDrag(Math.round(newU));
@@ -488,7 +619,7 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
     };
 
     return (
-        <div ref={containerRef} className="w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900">
+        <div ref={containerRef} className="w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 relative">
             <canvas
                 ref={canvasRef}
                 className="block w-full h-full touch-none cursor-crosshair"
@@ -501,8 +632,13 @@ const RayOpticsCanvas: React.FC<RayOpticsCanvasProps> = ({ state, onObjectDrag }
             <div className="absolute top-4 left-4 pointer-events-none text-slate-400 text-xs md:text-sm">
                 <div className="flex items-center gap-2">
                     <MoveHorizontal size={14} />
-                    <span>Drag candle to move</span>
+                    <span>Drag object to move</span>
                 </div>
+            </div>
+            {/* Animated Badge */}
+            <div className="absolute top-4 right-4 pointer-events-none text-emerald-400 text-xs flex items-center gap-1 animate-pulse">
+                <Zap size={12} fill="currentColor" />
+                <span>Live Rays</span>
             </div>
         </div>
     );
@@ -605,9 +741,21 @@ const App: React.FC = () => {
     });
 
     const [showMath, setShowMath] = useState(false);
+    const [customImage, setCustomImage] = useState<string | null>(null);
 
     const handleObjectDrag = (newU: number) => {
         setOpticalState(prev => ({ ...prev, u: newU }));
+    };
+
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setCustomImage(e.target?.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     // Derived values for display (Kept for Physics Panel)
@@ -650,7 +798,11 @@ const App: React.FC = () => {
                 
                 {/* Canvas Area */}
                 <div className="lg:col-span-2 h-[500px] lg:h-[600px] flex flex-col gap-4">
-                    <RayOpticsCanvas state={opticalState} onObjectDrag={handleObjectDrag} />
+                    <RayOpticsCanvas 
+                        state={opticalState} 
+                        onObjectDrag={handleObjectDrag} 
+                        customImageSrc={customImage}
+                    />
                     
                     {/* New Data Display Component */}
                     <DataDisplay state={opticalState} />
@@ -721,6 +873,38 @@ const App: React.FC = () => {
                                     onChange={(e) => setOpticalState(prev => ({ ...prev, h: Number(e.target.value) }))}
                                     className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
                                 />
+                            </div>
+
+                            {/* Custom Object Image Upload */}
+                            <div className="pt-4 border-t border-slate-800 space-y-3">
+                                <label className="text-sm font-medium text-slate-400 flex items-center gap-2">
+                                    <ImageIcon size={16} />
+                                    Custom Object Image
+                                </label>
+                                <div className="flex gap-2">
+                                    <label className="flex-1 cursor-pointer bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors py-2 px-3 rounded-lg flex items-center justify-center gap-2 text-sm border border-slate-700 border-dashed">
+                                        <Upload size={14} />
+                                        <span>Upload PNG</span>
+                                        <input 
+                                            type="file" 
+                                            accept="image/png, image/jpeg, image/webp" 
+                                            className="hidden"
+                                            onChange={handleImageUpload}
+                                        />
+                                    </label>
+                                    {customImage && (
+                                        <button 
+                                            onClick={() => setCustomImage(null)}
+                                            className="bg-red-900/30 hover:bg-red-900/50 text-red-400 p-2 rounded-lg border border-red-900/30 transition-colors"
+                                            title="Remove Image"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    )}
+                                </div>
+                                <p className="text-[10px] text-slate-500">
+                                    Tip: Use a transparent background PNG for best results.
+                                </p>
                             </div>
 
                             <div className="pt-4 border-t border-slate-800">
