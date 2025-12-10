@@ -1407,7 +1407,7 @@ export default function SeatingArrangementPage() {
 
     if (quizEnded) {
         return (
-            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
+            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-screen">
                  {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
