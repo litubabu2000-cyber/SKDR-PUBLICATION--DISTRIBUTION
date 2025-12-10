@@ -14,7 +14,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const parent = canvas.parentElement;
+    const parent = document.body; // Use body to cover the whole screen
     if (!parent) return;
     
     const resizeCanvas = () => {
@@ -94,11 +94,9 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
   const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
 
   return (
-    <div className="fixed inset-0 z-50 bg-transparent flex items-center justify-center p-4">
-      <div className="relative w-full h-full rounded-lg">
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-slate-800/90 border border-slate-600 p-2 rounded-full flex gap-3 items-center shadow-xl z-10 pointer-events-auto whitespace-nowrap">
-          <div className="flex items-center gap-2">
-            <Palette className="text-white size-5" />
+    <div className="fixed inset-0 z-50 pointer-events-none">
+      <div className="absolute top-4 right-4 z-20 pointer-events-auto flex flex-col gap-2">
+        <div className="bg-slate-800/90 border border-slate-600 p-2 rounded-full flex flex-col gap-2 shadow-xl">
             {colors.map((c) => (
               <button
                 key={c}
@@ -107,15 +105,14 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
                 style={{ backgroundColor: c }}
               />
             ))}
-          </div>
-          <div className="w-px h-6 bg-slate-600" />
-          <Button onClick={clearCanvas} variant="ghost" size="icon" className="text-slate-300 hover:text-white">
-            <Trash2 className="size-5" />
-          </Button>
-          <Button onClick={onClose} variant="destructive" size="icon">
-            <X className="size-5" />
-          </Button>
         </div>
+         <Button onClick={clearCanvas} variant="ghost" size="icon" className="text-white bg-slate-800/90 border border-slate-600 hover:bg-slate-700 shadow-xl">
+            <Trash2 className="size-5" />
+        </Button>
+        <Button onClick={onClose} variant="destructive" size="icon" className="shadow-xl">
+            <X className="size-5" />
+        </Button>
+      </div>
         <canvas
           ref={canvasRef}
           onMouseDown={startDrawing}
@@ -125,9 +122,8 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={endDrawing}
-          className="w-full h-full cursor-crosshair"
+          className="w-full h-full cursor-crosshair pointer-events-auto"
         />
-      </div>
     </div>
   );
 }
