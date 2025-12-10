@@ -646,7 +646,7 @@ const mcqData = [
     },
     {
         questionNumber: 85,
-        question: "Pointing to an old man, Kamal said, \"His son is my son's uncle.\" How is that old man related to Kamal?",
+        question: "Pointing to an old man, Kamal said, \"His son is my son's uncle.\" How is the old man related to Kamal?",
         options: ["Brother", "Uncle", "Father", "Grandfather"],
         source: "RRB NTPC – 30.04.2016 Shift-I",
         answer: "Father",
@@ -1530,3 +1530,4 @@ export default function SeatingArrangementPage() {
         </div>
     );
 }
+```
