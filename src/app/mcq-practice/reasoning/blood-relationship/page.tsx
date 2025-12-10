@@ -1309,55 +1309,10 @@ export default function SeatingArrangementPage() {
     const [time, setTime] = useState(0);
     const [isWhiteboardOpen, setIsWhiteboardOpen] = useState(false);
 
-    // AI State
-    const [aiResponse, setAiResponse] = useState<string | null>(null);
-    const [isAiLoading, setIsAiLoading] = useState(false);
-
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const questionTypes = useMemo(() => [...new Set(mcqData.map(q => q.type))], []);
-
-    const callGemini = async (prompt: string): Promise<string> => {
-        try {
-            const response = await fetch('/api/gemini', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get a response.";
-        } catch (error) {
-            console.error("Gemini API call failed:", error);
-            return "Sorry, I'm having trouble connecting to the AI assistant right now.";
-        }
-    };
-    
-    const handleAiAction = async (action: 'explain' | 'hint' | 'solution') => {
-        setIsAiLoading(true);
-        setAiResponse(null);
-
-        const question = mcqData[currentQuestionIndex];
-        let prompt = '';
-
-        if (action === 'explain') {
-            prompt = `Explain the following blood relationship question in simple terms, without giving away the answer: "${question.question}"`;
-        } else if (action === 'hint') {
-            prompt = `Give me a small hint to solve this blood relationship puzzle, but don't give the direct answer. The question is: "${question.question}"`;
-        } else if (action === 'solution') {
-            prompt = `Explain the step-by-step solution to this blood relationship question: "${question.question}". The correct answer is "${question.answer}". Explain how to arrive at this answer.`;
-        }
-
-        const response = await callGemini(prompt);
-        setAiResponse(response);
-        setIsAiLoading(false);
-    };
-
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -1367,7 +1322,6 @@ export default function SeatingArrangementPage() {
         }, 1000);
         return () => clearInterval(timer);
     }, [quizEnded]);
-
 
     useEffect(() => {
         if (activeQuestionRef.current && scrollContainerRef.current) {
@@ -1417,7 +1371,6 @@ export default function SeatingArrangementPage() {
     const resetQuestionState = () => {
         setSelectedAnswer(null);
         setShowAnswer(false);
-        setAiResponse(null);
     }
 
     const handleEndQuiz = () => {
@@ -1477,7 +1430,7 @@ export default function SeatingArrangementPage() {
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
             {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
-            <div className="md:w-3/4 lg:w-1/2 mx-auto space-y-6">
+            <div className="md:w-1/2 mx-auto">
                 <Card>
                     <CardHeader>
                         <div className="flex justify-between items-center">
@@ -1573,40 +1526,141 @@ export default function SeatingArrangementPage() {
 
                     </CardFooter>
                 </Card>
-                 <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/50 dark:to-purple-950/50">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-indigo-900 dark:text-indigo-200">
-                            <Sparkles className="text-indigo-500" />
-                            AI Assistant
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <Button variant="outline" onClick={() => handleAiAction('explain')} disabled={isAiLoading}>
-                                <HelpCircle className="mr-2 size-4" /> Explain Question
-                            </Button>
-                            <Button variant="outline" onClick={() => handleAiAction('hint')} disabled={isAiLoading}>
-                                <Lightbulb className="mr-2 size-4" /> Give a Hint
-                            </Button>
-                            <Button variant="outline" onClick={() => handleAiAction('solution')} disabled={!showAnswer || isAiLoading}>
-                                <Wand2 className="mr-2 size-4" /> Explain Answer
-                            </Button>
-                        </div>
-                        {(isAiLoading || aiResponse) && (
-                            <div className="p-4 bg-background/50 rounded-md border min-h-[80px]">
-                                {isAiLoading ? (
-                                    <div className="flex items-center gap-2 text-muted-foreground">
-                                        <Loader2 className="size-4 animate-spin" />
-                                        <span>Thinking...</span>
-                                    </div>
-                                ) : (
-                                    <p className="text-sm">{aiResponse}</p>
-                                )}
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
             </div>
         </div>
     );
 }
+
+```
+- src/components/drawing-canvas.tsx
+- ```tsx
+'use client';
+
+import React, { useRef, useEffect, useState } from 'react';
+import { Button } from './ui/button';
+import { X, Trash2 } from 'lucide-react';
+
+export function DrawingCanvas({ onClose }: { onClose: () => void }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [color, setColor] = useState('#ffffff');
+  const [lineWidth, setLineWidth] = useState(3);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const parent = document.body;
+    if (!parent) return;
+    
+    const resizeCanvas = () => {
+        canvas.width = parent.clientWidth;
+        canvas.height = parent.clientHeight;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+        }
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    return () => window.removeEventListener('resize', resizeCanvas);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+    }
+  }, [color, lineWidth]);
+
+  const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top,
+    };
+  };
+
+  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    const canvas = canvasRef.current;
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const { x, y } = getCoordinates(e.nativeEvent);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    setIsDrawing(true);
+  };
+
+  const draw = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const { x, y } = getCoordinates(e.nativeEvent);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const endDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  };
+
+  const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
+
+  return (
+    <div className="fixed inset-0 z-50 pointer-events-none bg-black/30 backdrop-blur-sm">
+      <div className="absolute top-4 right-4 z-20 pointer-events-auto flex flex-col gap-2">
+        <div className="bg-slate-800/90 border border-slate-600 p-2 rounded-full flex flex-col gap-2 shadow-xl">
+            {colors.map((c) => (
+              <button
+                key={c}
+                onClick={() => setColor(c)}
+                className={`w-6 h-6 rounded-full border-2 transition-transform ${color === c ? 'border-white scale-110' : 'border-transparent'}`}
+                style={{ backgroundColor: c }}
+              />
+            ))}
+        </div>
+         <Button onClick={clearCanvas} variant="ghost" size="icon" className="text-white bg-slate-800/90 border border-slate-600 hover:bg-slate-700 shadow-xl">
+            <Trash2 className="size-5" />
+        </Button>
+        <Button onClick={onClose} variant="destructive" size="icon" className="shadow-xl">
+            <X className="size-5" />
+        </Button>
+      </div>
+        <canvas
+          ref={canvasRef}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={endDrawing}
+          onMouseLeave={endDrawing}
+          onTouchStart={startDrawing}
+          onTouchMove={draw}
+          onTouchEnd={endDrawing}
+          className="w-full h-full cursor-crosshair pointer-events-auto opacity-70"
+        />
+    </div>
+  );
+}
+```
