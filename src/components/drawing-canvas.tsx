@@ -94,7 +94,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
   const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none bg-black/30 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 pointer-events-none bg-black/30">
       <div className="absolute top-4 right-4 z-20 pointer-events-auto flex flex-col gap-2">
         <div className="bg-slate-800/90 border border-slate-600 p-2 rounded-full flex flex-col gap-2 shadow-xl">
             {colors.map((c) => (
