@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer, Edit } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, Lightbulb, XCircle, Timer, Edit, Sparkles, Wand2, HelpCircle, Loader2 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { DrawingCanvas } from "@/components/drawing-canvas";
@@ -1309,10 +1309,55 @@ export default function SeatingArrangementPage() {
     const [time, setTime] = useState(0);
     const [isWhiteboardOpen, setIsWhiteboardOpen] = useState(false);
 
+    // AI State
+    const [aiResponse, setAiResponse] = useState<string | null>(null);
+    const [isAiLoading, setIsAiLoading] = useState(false);
+
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const questionTypes = useMemo(() => [...new Set(mcqData.map(q => q.type))], []);
+
+    const callGemini = async (prompt: string): Promise<string> => {
+        try {
+            const response = await fetch('/api/gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get a response.";
+        } catch (error) {
+            console.error("Gemini API call failed:", error);
+            return "Sorry, I'm having trouble connecting to the AI assistant right now.";
+        }
+    };
+    
+    const handleAiAction = async (action: 'explain' | 'hint' | 'solution') => {
+        setIsAiLoading(true);
+        setAiResponse(null);
+
+        const question = mcqData[currentQuestionIndex];
+        let prompt = '';
+
+        if (action === 'explain') {
+            prompt = `Explain the following blood relationship question in simple terms, without giving away the answer: "${question.question}"`;
+        } else if (action === 'hint') {
+            prompt = `Give me a small hint to solve this blood relationship puzzle, but don't give the direct answer. The question is: "${question.question}"`;
+        } else if (action === 'solution') {
+            prompt = `Explain the step-by-step solution to this blood relationship question: "${question.question}". The correct answer is "${question.answer}". Explain how to arrive at this answer.`;
+        }
+
+        const response = await callGemini(prompt);
+        setAiResponse(response);
+        setIsAiLoading(false);
+    };
+
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -1372,6 +1417,7 @@ export default function SeatingArrangementPage() {
     const resetQuestionState = () => {
         setSelectedAnswer(null);
         setShowAnswer(false);
+        setAiResponse(null);
     }
 
     const handleEndQuiz = () => {
@@ -1431,7 +1477,7 @@ export default function SeatingArrangementPage() {
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
             {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
-            <div className="md:w-1/2 mx-auto">
+            <div className="md:w-3/4 lg:w-1/2 mx-auto space-y-6">
                 <Card>
                     <CardHeader>
                         <div className="flex justify-between items-center">
@@ -1526,6 +1572,39 @@ export default function SeatingArrangementPage() {
                         </div>
 
                     </CardFooter>
+                </Card>
+                 <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/50 dark:to-purple-950/50">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-indigo-900 dark:text-indigo-200">
+                            <Sparkles className="text-indigo-500" />
+                            AI Assistant
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <Button variant="outline" onClick={() => handleAiAction('explain')} disabled={isAiLoading}>
+                                <HelpCircle className="mr-2 size-4" /> Explain Question
+                            </Button>
+                            <Button variant="outline" onClick={() => handleAiAction('hint')} disabled={isAiLoading}>
+                                <Lightbulb className="mr-2 size-4" /> Give a Hint
+                            </Button>
+                            <Button variant="outline" onClick={() => handleAiAction('solution')} disabled={!showAnswer || isAiLoading}>
+                                <Wand2 className="mr-2 size-4" /> Explain Answer
+                            </Button>
+                        </div>
+                        {(isAiLoading || aiResponse) && (
+                            <div className="p-4 bg-background/50 rounded-md border min-h-[80px]">
+                                {isAiLoading ? (
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <Loader2 className="size-4 animate-spin" />
+                                        <span>Thinking...</span>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm">{aiResponse}</p>
+                                )}
+                            </div>
+                        )}
+                    </CardContent>
                 </Card>
             </div>
         </div>
