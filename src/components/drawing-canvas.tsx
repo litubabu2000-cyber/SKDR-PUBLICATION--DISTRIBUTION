@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from './ui/button';
-import { X, Trash2, Palette } from 'lucide-react';
+import { X, Trash2 } from 'lucide-react';
 
 export function DrawingCanvas({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -14,7 +14,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const parent = document.body; // Use body to cover the whole screen
+    const parent = document.body;
     if (!parent) return;
     
     const resizeCanvas = () => {
@@ -48,8 +48,8 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
     const canvas = canvasRef.current;
     if (!canvas) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const clientX = 'touches' in e.nativeEvent ? (e.nativeEvent as TouchEvent).touches[0].clientX : (e.nativeEvent as MouseEvent).clientX;
+    const clientY = 'touches' in e.nativeEvent ? (e.nativeEvent as TouchEvent).touches[0].clientY : (e.nativeEvent as MouseEvent).clientY;
     return {
       x: clientX - rect.left,
       y: clientY - rect.top,
@@ -61,7 +61,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const { x, y } = getCoordinates(e.nativeEvent);
+    const { x, y } = getCoordinates(e);
     ctx.beginPath();
     ctx.moveTo(x, y);
     setIsDrawing(true);
@@ -73,7 +73,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const { x, y } = getCoordinates(e.nativeEvent);
+    const { x, y } = getCoordinates(e);
     ctx.lineTo(x, y);
     ctx.stroke();
   };
@@ -94,7 +94,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
   const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="fixed inset-0 z-50 pointer-events-none bg-black/30 backdrop-blur-sm">
       <div className="absolute top-4 right-4 z-20 pointer-events-auto flex flex-col gap-2">
         <div className="bg-slate-800/90 border border-slate-600 p-2 rounded-full flex flex-col gap-2 shadow-xl">
             {colors.map((c) => (
@@ -122,7 +122,7 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={endDrawing}
-          className="w-full h-full cursor-crosshair pointer-events-auto"
+          className="w-full h-full cursor-crosshair pointer-events-auto opacity-70"
         />
     </div>
   );

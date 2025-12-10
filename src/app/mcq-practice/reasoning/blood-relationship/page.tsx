@@ -1308,11 +1308,50 @@ export default function SeatingArrangementPage() {
     const [quizEnded, setQuizEnded] = useState(false);
     const [time, setTime] = useState(0);
     const [isWhiteboardOpen, setIsWhiteboardOpen] = useState(false);
+    const [aiResponse, setAiResponse] = useState<string | null>(null);
+    const [aiAction, setAiAction] = useState<string | null>(null);
+    const [isAiLoading, setIsAiLoading] = useState(false);
 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const questionTypes = useMemo(() => [...new Set(mcqData.map(q => q.type))], []);
+
+    const callGemini = async (prompt: string) => {
+        setIsAiLoading(true);
+        setAiResponse(null);
+        try {
+            const response = await fetch('/api/gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, isJson: false }),
+            });
+            const data = await response.json();
+            const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
+            setAiResponse(text);
+        } catch (error) {
+            console.error("Gemini API call failed:", error);
+            setAiResponse("An error occurred while fetching the response.");
+        } finally {
+            setIsAiLoading(false);
+        }
+    };
+
+    const handleAiAction = (action: 'explain' | 'hint' | 'answer') => {
+        const currentQ = mcqData[currentQuestionIndex];
+        setAiAction(action);
+
+        let prompt = "";
+        if (action === 'explain') {
+            prompt = `Explain the following blood relationship question in simpler terms, without giving away the answer: "${currentQ.question}"`;
+        } else if (action === 'hint') {
+            prompt = `Provide a small, one-sentence hint to help solve this blood relationship question. Do not reveal the final answer. Question: "${currentQ.question}"`;
+        } else if (action === 'answer') {
+            prompt = `Explain the step-by-step reasoning to arrive at the correct answer for the following question. The question is: "${currentQ.question}". The options are: ${currentQ.options.join(", ")}. The correct answer is: "${currentQ.answer}".`;
+        }
+        callGemini(prompt);
+    };
+
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -1371,6 +1410,8 @@ export default function SeatingArrangementPage() {
     const resetQuestionState = () => {
         setSelectedAnswer(null);
         setShowAnswer(false);
+        setAiResponse(null);
+        setAiAction(null);
     }
 
     const handleEndQuiz = () => {
@@ -1407,7 +1448,7 @@ export default function SeatingArrangementPage() {
 
     if (quizEnded) {
         return (
-            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-screen">
+            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
                  {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
@@ -1525,6 +1566,47 @@ export default function SeatingArrangementPage() {
                         </div>
 
                     </CardFooter>
+                </Card>
+                
+                 {/* AI Assistant Card */}
+                <Card className="mt-6">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Sparkles className="text-primary" />
+                            AI Assistant
+                        </CardTitle>
+                        <CardDescription>
+                            Stuck? Get help from our AI tutor.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                             <Button variant="outline" onClick={() => handleAiAction('explain')} disabled={isAiLoading}>
+                                {isAiLoading && aiAction === 'explain' ? <Loader2 className="animate-spin mr-2" /> : <HelpCircle className="mr-2" />}
+                                Explain Question
+                            </Button>
+                             <Button variant="outline" onClick={() => handleAiAction('hint')} disabled={isAiLoading}>
+                                {isAiLoading && aiAction === 'hint' ? <Loader2 className="animate-spin mr-2" /> : <Wand2 className="mr-2" />}
+                                Give me a Hint
+                            </Button>
+                             <Button variant="outline" onClick={() => handleAiAction('answer')} disabled={!showAnswer || isAiLoading}>
+                               {isAiLoading && aiAction === 'answer' ? <Loader2 className="animate-spin mr-2" /> : <Lightbulb className="mr-2" />}
+                                Explain Answer
+                            </Button>
+                        </div>
+                        
+                        {(isAiLoading || aiResponse) && (
+                             <div className="p-4 bg-muted/50 border rounded-md min-h-[80px]">
+                                {isAiLoading ? (
+                                    <div className="flex items-center justify-center h-full">
+                                        <Loader2 className="animate-spin text-primary" />
+                                    </div>
+                                ) : (
+                                    <p className="text-sm">{aiResponse}</p>
+                                )}
+                            </div>
+                        )}
+                    </CardContent>
                 </Card>
             </div>
         </div>
