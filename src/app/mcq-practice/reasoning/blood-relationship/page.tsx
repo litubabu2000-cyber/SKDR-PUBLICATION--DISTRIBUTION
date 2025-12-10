@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -646,7 +647,7 @@ const mcqData = [
     },
     {
         questionNumber: 85,
-        question: "Pointing to an old man, Kamal said, \"His son is my son's uncle.\" How is the old man related to Kamal?",
+        question: "Pointing to an old man, Kamal said, \"His son is my son's uncle.\" How is that old man related to Kamal?",
         options: ["Brother", "Uncle", "Father", "Grandfather"],
         source: "RRB NTPC – 30.04.2016 Shift-I",
         answer: "Father",
@@ -1407,7 +1408,7 @@ export default function SeatingArrangementPage() {
 
     if (quizEnded) {
         return (
-            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
+            <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-screen">
                  {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
@@ -1430,7 +1431,7 @@ export default function SeatingArrangementPage() {
     return (
         <div className="container mx-auto py-12 px-4 md:px-6">
             {isWhiteboardOpen && <DrawingCanvas onClose={() => setIsWhiteboardOpen(false)} />}
-            <div className="md:w-1/2 mx-auto">
+            <div className="w-full lg:w-3/4 xl:w-1/2 mx-auto">
                 <Card>
                     <CardHeader>
                         <div className="flex justify-between items-center">
