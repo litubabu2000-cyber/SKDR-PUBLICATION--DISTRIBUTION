@@ -1530,4 +1530,3 @@ export default function SeatingArrangementPage() {
         </div>
     );
 }
-```
