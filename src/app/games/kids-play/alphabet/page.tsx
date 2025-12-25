@@ -45,7 +45,6 @@ export default function AlphabetPracticePage() {
       <div className="absolute top-20 right-20 w-48 h-48 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
       <div className="absolute bottom-10 left-20 w-24 h-24 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
-      {/* The visible, dotted letter for tracing guide. It is behind the canvas. */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <span 
           className="text-[40rem] md:text-[45rem] font-black text-transparent select-none"
@@ -64,17 +63,16 @@ export default function AlphabetPracticePage() {
         </span>
       </div>
 
-      {/* The drawing canvas is layered on top of everything. */}
       <DrawingCanvas ref={canvasRef} lineColor={drawingColor} />
 
-      {/* Toolbar is on top of the canvas (z-index 20) */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-2xl shadow-lg flex items-center gap-2">
+      {/* Toolbar top-right */}
+      <div className="absolute top-5 right-5 z-20 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-2xl shadow-lg flex flex-col items-center gap-2">
         {colors.map(color => (
           <button
             key={color.name}
             onClick={() => setDrawingColor(color.value)}
             className={cn(
-              "w-10 h-10 rounded-full border-2 transition-transform duration-150",
+              "w-8 h-8 md:w-10 md:h-10 rounded-full border-2 transition-transform duration-150",
               drawingColor === color.value ? 'border-gray-900 dark:border-white scale-110' : 'border-transparent'
             )}
             style={{ backgroundColor: color.value }}
@@ -82,24 +80,24 @@ export default function AlphabetPracticePage() {
           />
         ))}
         <button onClick={clearCanvas} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Clear drawing">
-            <Eraser className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            <Eraser className="w-5 h-5 md:w-6 md:h-6 text-gray-700 dark:text-gray-300" />
         </button>
       </div>
 
-      {/* Navigation Controls are also on top (z-index 20) */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
-        <Button onClick={handlePrevious} size="lg" className="rounded-full h-20 w-20 p-0 shadow-lg bg-white/50 hover:bg-white/80 text-gray-800 backdrop-blur-md">
-          <ChevronLeft className="h-10 w-10" />
-          <span className="sr-only">Previous Letter</span>
-        </Button>
-        <div className="text-4xl font-bold text-white bg-black/20 px-6 py-2 rounded-full shadow-lg select-none">
+      {/* Letter Indicator top-left */}
+       <div className="absolute top-5 left-5 z-20 text-4xl font-bold text-white bg-black/20 px-6 py-2 rounded-full shadow-lg select-none">
           {currentLetter}
         </div>
-        <Button onClick={handleNext} size="lg" className="rounded-full h-20 w-20 p-0 shadow-lg bg-white/50 hover:bg-white/80 text-gray-800 backdrop-blur-md">
-          <ChevronRight className="h-10 w-10" />
-          <span className="sr-only">Next Letter</span>
-        </Button>
-      </div>
+
+      {/* Navigation Controls left and right */}
+      <Button onClick={handlePrevious} size="lg" className="absolute left-5 top-1/2 -translate-y-1/2 z-20 rounded-full h-16 w-16 md:h-20 md:w-20 p-0 shadow-lg bg-white/50 hover:bg-white/80 text-gray-800 backdrop-blur-md">
+        <ChevronLeft className="h-8 w-8 md:h-10 md:w-10" />
+        <span className="sr-only">Previous Letter</span>
+      </Button>
+      <Button onClick={handleNext} size="lg" className="absolute right-5 top-1/2 -translate-y-1/2 z-20 rounded-full h-16 w-16 md:h-20 md:w-20 p-0 shadow-lg bg-white/50 hover:bg-white/80 text-gray-800 backdrop-blur-md">
+        <ChevronRight className="h-8 w-8 md:h-10 md:w-10" />
+        <span className="sr-only">Next Letter</span>
+      </Button>
       
       <style jsx>{`
         @keyframes blob {
