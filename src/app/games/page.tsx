@@ -5,6 +5,12 @@ import Link from "next/link";
 
 const games = [
   {
+    title: "Kids Play",
+    description: "Fun and educational games for children.",
+    href: "/games/kids-play",
+    icon: ToyBrick
+  },
+  {
     title: "Digestive System Puzzle",
     description: "Learn the parts of the digestive system.",
     href: "/games/anatomy-puzzle?system=digestive",
@@ -46,12 +52,6 @@ const games = [
     href: "/games/ray-optics",
     icon: Lightbulb
   },
-  {
-    title: "Kids Play",
-    description: "Fun and educational games for children.",
-    href: "/games/kids-play",
-    icon: ToyBrick
-  }
 ];
 
 export default function GamesPage() {
