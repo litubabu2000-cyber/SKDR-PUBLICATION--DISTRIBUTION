@@ -45,8 +45,9 @@ export default function AlphabetPracticePage() {
       <div className="absolute top-20 right-20 w-48 h-48 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
       <div className="absolute bottom-10 left-20 w-24 h-24 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
+      {/* The drawing canvas is in front (z-index 10) but clipped by the SVG path */}
       <div 
-        className="absolute inset-0 flex items-center justify-center"
+        className="absolute inset-0 flex items-center justify-center z-10"
         style={{
           clipPath: `url(#letter-clip-${currentLetter})`,
         }}
@@ -54,7 +55,7 @@ export default function AlphabetPracticePage() {
         <DrawingCanvas ref={canvasRef} lineColor={drawingColor} />
       </div>
 
-      {/* The SVG is used to create a clipping path from the text letter */}
+      {/* The SVG is used to create a clipping path from the text letter. It's not visible. */}
       <svg className="absolute w-0 h-0">
         <defs>
           <clipPath id={`letter-clip-${currentLetter}`} clipPathUnits="objectBoundingBox">
@@ -74,7 +75,7 @@ export default function AlphabetPracticePage() {
         </defs>
       </svg>
       
-      {/* The visible, dotted letter for tracing guide */}
+      {/* The visible, dotted letter for tracing guide. It is behind the canvas. */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <span 
           className="text-[40rem] md:text-[45rem] font-black text-transparent select-none"
@@ -93,7 +94,7 @@ export default function AlphabetPracticePage() {
         </span>
       </div>
 
-      {/* Toolbar */}
+      {/* Toolbar is on top of everything (z-index 20) */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-2xl shadow-lg flex items-center gap-2">
         {colors.map(color => (
           <button
@@ -112,7 +113,7 @@ export default function AlphabetPracticePage() {
         </button>
       </div>
 
-      {/* Navigation Controls */}
+      {/* Navigation Controls are also on top (z-index 20) */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
         <Button onClick={handlePrevious} size="lg" className="rounded-full h-20 w-20 p-0 shadow-lg bg-white/50 hover:bg-white/80 text-gray-800 backdrop-blur-md">
           <ChevronLeft className="h-10 w-10" />
