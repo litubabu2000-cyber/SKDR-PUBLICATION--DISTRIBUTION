@@ -10,26 +10,18 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
 
 export default function AlphabetPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDrawing, setIsDrawing] = useState(false);
   const [key, setKey] = useState(0); // Used to force re-render of DrawingCanvas
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % alphabet.length);
-    clearAndToggleDrawing();
+    setKey(prevKey => prevKey + 1); // Reset the canvas by changing its key
   };
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + alphabet.length) % alphabet.length);
-    clearAndToggleDrawing();
+    setKey(prevKey => prevKey + 1); // Reset the canvas by changing its key
   };
-  
-  const clearAndToggleDrawing = () => {
-      setIsDrawing(false); // Turn off drawing
-      setTimeout(() => setIsDrawing(true), 50); // Turn it back on after a short delay
-  }
 
-  // A simple way to force the canvas to clear is to unmount and remount it.
-  // We can do this by changing its key.
   const forceClearCanvas = () => {
       setKey(prevKey => prevKey + 1);
   }
