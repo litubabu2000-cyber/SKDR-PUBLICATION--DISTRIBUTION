@@ -41,20 +41,52 @@ export default function AlphabetPracticePage() {
   return (
     <div className="relative w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-900 dark:to-purple-900 overflow-hidden">
       
-      {/* Background shapes for fun */}
       <div className="absolute top-10 left-10 w-32 h-32 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
       <div className="absolute top-20 right-20 w-48 h-48 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
       <div className="absolute bottom-10 left-20 w-24 h-24 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
-      <DrawingCanvas ref={canvasRef} lineColor={drawingColor} />
+      <div 
+        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          clipPath: `url(#letter-clip-${currentLetter})`,
+        }}
+      >
+        <DrawingCanvas ref={canvasRef} lineColor={drawingColor} />
+      </div>
 
-      {/* The Letter Display */}
+      {/* The SVG is used to create a clipping path from the text letter */}
+      <svg className="absolute w-0 h-0">
+        <defs>
+          <clipPath id={`letter-clip-${currentLetter}`} clipPathUnits="objectBoundingBox">
+            <text
+              x="0.5"
+              y="0.5"
+              dy="0.35em" 
+              textAnchor="middle"
+              className="text-[40rem] md:text-[45rem] font-black"
+              style={{
+                fontSize: 'min(90vw, 45rem)', 
+              }}
+            >
+              {currentLetter}
+            </text>
+          </clipPath>
+        </defs>
+      </svg>
+      
+      {/* The visible, dotted letter for tracing guide */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <span 
-          className="text-[35rem] md:text-[40rem] font-black text-white/20 dark:text-black/20 select-none"
+          className="text-[40rem] md:text-[45rem] font-black text-transparent select-none"
           style={{
+            fontSize: 'min(90vw, 45rem)',
             WebkitTextStroke: '8px hsla(0, 0%, 100%, 0.5)',
-            textShadow: '10px 10px 0px rgba(0,0,0,0.1)'
+            textStroke: '8px hsla(0, 0%, 100%, 0.5)',
+            textShadow: '10px 10px 0px rgba(0,0,0,0.1)',
+            paintOrder: 'stroke fill',
+            strokeDasharray: '40, 20',
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
           }}
         >
           {currentLetter}
