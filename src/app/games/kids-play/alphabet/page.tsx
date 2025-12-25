@@ -34,7 +34,7 @@ export default function AlphabetPracticePage() {
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex < alphabet.length - 1 ? prevIndex - 1 : 0));
+    setCurrentIndex((prevIndex) => (prevIndex < alphabet.length - 1 ? prevIndex + 1 : 0));
     clearCanvas();
   };
 
