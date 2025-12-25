@@ -45,38 +45,8 @@ export default function AlphabetPracticePage() {
       <div className="absolute top-20 right-20 w-48 h-48 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
       <div className="absolute bottom-10 left-20 w-24 h-24 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
-      {/* The drawing canvas is in front (z-index 10) but clipped by the SVG path */}
-      <div 
-        className="absolute inset-0 flex items-center justify-center z-10"
-        style={{
-          clipPath: `url(#letter-clip-${currentLetter})`,
-        }}
-      >
-        <DrawingCanvas ref={canvasRef} lineColor={drawingColor} />
-      </div>
-
-      {/* The SVG is used to create a clipping path from the text letter. It's not visible. */}
-      <svg className="absolute w-0 h-0">
-        <defs>
-          <clipPath id={`letter-clip-${currentLetter}`} clipPathUnits="objectBoundingBox">
-            <text
-              x="0.5"
-              y="0.5"
-              dy="0.35em" 
-              textAnchor="middle"
-              className="text-[40rem] md:text-[45rem] font-black"
-              style={{
-                fontSize: 'min(90vw, 45rem)', 
-              }}
-            >
-              {currentLetter}
-            </text>
-          </clipPath>
-        </defs>
-      </svg>
-      
       {/* The visible, dotted letter for tracing guide. It is behind the canvas. */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <span 
           className="text-[40rem] md:text-[45rem] font-black text-transparent select-none"
           style={{
@@ -94,7 +64,10 @@ export default function AlphabetPracticePage() {
         </span>
       </div>
 
-      {/* Toolbar is on top of everything (z-index 20) */}
+      {/* The drawing canvas is layered on top of everything. */}
+      <DrawingCanvas ref={canvasRef} lineColor={drawingColor} />
+
+      {/* Toolbar is on top of the canvas (z-index 20) */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-2xl shadow-lg flex items-center gap-2">
         {colors.map(color => (
           <button
