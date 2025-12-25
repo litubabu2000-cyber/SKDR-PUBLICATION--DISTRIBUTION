@@ -1,14 +1,15 @@
+
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from './ui/button';
-import { X, Trash2 } from 'lucide-react';
+import { X, Trash2, Eraser } from 'lucide-react';
 
 export function DrawingCanvas({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [color, setColor] = useState('#ffffff');
-  const [lineWidth, setLineWidth] = useState(3);
+  const [lineWidth, setLineWidth] = useState(5); // Increased line width
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -82,33 +83,21 @@ export function DrawingCanvas({ onClose }: { onClose: () => void }) {
     setIsDrawing(false);
   };
 
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  };
-
   const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none bg-black/30">
-      <div className="absolute top-4 right-4 z-20 pointer-events-auto flex flex-col gap-2">
+    <div className="fixed inset-0 z-50 pointer-events-none bg-transparent">
+      <div className="absolute top-4 right-4 z-50 pointer-events-auto flex flex-col gap-2">
         <div className="bg-slate-800/90 border border-slate-600 p-2 rounded-full flex flex-col gap-2 shadow-xl">
             {colors.map((c) => (
               <button
                 key={c}
                 onClick={() => setColor(c)}
-                className={`w-6 h-6 rounded-full border-2 transition-transform ${color === c ? 'border-white scale-110' : 'border-transparent'}`}
+                className={`w-8 h-8 rounded-full border-2 transition-transform ${color === c ? 'border-white scale-110' : 'border-transparent'}`}
                 style={{ backgroundColor: c }}
               />
             ))}
         </div>
-         <Button onClick={clearCanvas} variant="ghost" size="icon" className="text-white bg-slate-800/90 border border-slate-600 hover:bg-slate-700 shadow-xl">
-            <Trash2 className="size-5" />
-        </Button>
         <Button onClick={onClose} variant="destructive" size="icon" className="shadow-xl">
             <X className="size-5" />
         </Button>
