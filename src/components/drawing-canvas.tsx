@@ -1,118 +1,127 @@
 
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
-import { Button } from './ui/button';
-import { X, Trash2, Eraser } from 'lucide-react';
+import React, { useRef, useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 
-export function DrawingCanvas({ onClose }: { onClose: () => void }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState('#ffffff');
-  const [lineWidth, setLineWidth] = useState(5); // Increased line width
+type DrawingCanvasProps = {
+  lineColor?: string;
+  lineWidth?: number;
+};
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+export type DrawingCanvasRef = {
+  clear: () => void;
+};
 
-    const parent = document.body;
-    if (!parent) return;
-    
-    const resizeCanvas = () => {
+export const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
+  ({ lineColor = '#ffffff', lineWidth = 8 }, ref) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [isDrawing, setIsDrawing] = useState(false);
+
+    // Expose a 'clear' function via the ref
+    useImperativeHandle(ref, () => ({
+      clear() {
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }
+      },
+    }));
+
+    useEffect(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const parent = document.body;
+      if (!parent) return;
+
+      const resizeCanvas = () => {
+        const tempCtx = canvas.getContext('2d');
+        const imageData = tempCtx?.getImageData(0, 0, canvas.width, canvas.height);
+        
         canvas.width = parent.clientWidth;
         canvas.height = parent.clientHeight;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.strokeStyle = color;
-            ctx.lineWidth = lineWidth;
+        
+        const newCtx = canvas.getContext('2d');
+        if (newCtx) {
+          if (imageData) {
+            newCtx.putImageData(imageData, 0, 0);
+          }
+          newCtx.lineCap = 'round';
+          newCtx.lineJoin = 'round';
+          newCtx.strokeStyle = lineColor;
+          newCtx.lineWidth = lineWidth;
         }
+      };
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      return () => window.removeEventListener('resize', resizeCanvas);
+    }, []);
+
+    useEffect(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = lineWidth;
+      }
+    }, [lineColor, lineWidth]);
+
+    const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return { x: 0, y: 0 };
+      const rect = canvas.getBoundingClientRect();
+      const clientX = 'touches' in e ? (e as React.TouchEvent).touches[0].clientX : (e as React.MouseEvent).clientX;
+      const clientY = 'touches' in e ? (e as React.TouchEvent).touches[0].clientY : (e as React.MouseEvent).clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top,
+      };
     };
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    return () => window.removeEventListener('resize', resizeCanvas);
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
-    }
-  }, [color, lineWidth]);
-
-  const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e.nativeEvent ? (e.nativeEvent as TouchEvent).touches[0].clientX : (e.nativeEvent as MouseEvent).clientX;
-    const clientY = 'touches' in e.nativeEvent ? (e.nativeEvent as TouchEvent).touches[0].clientY : (e.nativeEvent as MouseEvent).clientY;
-    return {
-      x: clientX - rect.left,
-      y: clientY - rect.top,
+    const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const { x, y } = getCoordinates(e);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      setIsDrawing(true);
     };
-  };
 
-  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
-    const canvas = canvasRef.current;
-    if(!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const { x, y } = getCoordinates(e);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    setIsDrawing(true);
-  };
+    const draw = (e: React.MouseEvent | React.TouchEvent) => {
+      if (!isDrawing) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const { x, y } = getCoordinates(e);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    };
 
-  const draw = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDrawing) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const { x, y } = getCoordinates(e);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  };
+    const endDrawing = () => {
+      setIsDrawing(false);
+    };
 
-  const endDrawing = () => {
-    setIsDrawing(false);
-  };
+    return (
+      <canvas
+        ref={canvasRef}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={endDrawing}
+        onMouseLeave={endDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={endDrawing}
+        className="absolute inset-0 w-full h-full cursor-crosshair touch-none z-10"
+      />
+    );
+  }
+);
 
-  const colors = ['#ffffff', '#ef4444', '#22d3ee', '#fbbf24', '#8b5cf6'];
-
-  return (
-    <div className="fixed inset-0 z-50 pointer-events-none bg-transparent">
-      <div className="absolute top-4 right-4 z-50 pointer-events-auto flex flex-col gap-2">
-        <div className="bg-slate-800/90 border border-slate-600 p-2 rounded-full flex flex-col gap-2 shadow-xl">
-            {colors.map((c) => (
-              <button
-                key={c}
-                onClick={() => setColor(c)}
-                className={`w-8 h-8 rounded-full border-2 transition-transform ${color === c ? 'border-white scale-110' : 'border-transparent'}`}
-                style={{ backgroundColor: c }}
-              />
-            ))}
-        </div>
-        <Button onClick={onClose} variant="destructive" size="icon" className="shadow-xl">
-            <X className="size-5" />
-        </Button>
-      </div>
-        <canvas
-          ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={endDrawing}
-          onMouseLeave={endDrawing}
-          onTouchStart={startDrawing}
-          onTouchMove={draw}
-          onTouchEnd={endDrawing}
-          className="w-full h-full cursor-crosshair pointer-events-auto opacity-70"
-        />
-    </div>
-  );
-}
+DrawingCanvas.displayName = 'DrawingCanvas';
