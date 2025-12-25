@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -43,7 +42,7 @@ export default function AlphabetPage() {
         <DrawingCanvas key={key} onClose={() => {}} />
 
         {/* Drawing Controls */}
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 right-4 z-[60]">
              <Button onClick={forceClearCanvas} variant="destructive" size="icon" className="shadow-lg">
                 <Eraser className="h-5 w-5" />
                 <span className="sr-only">Clear Drawing</span>
