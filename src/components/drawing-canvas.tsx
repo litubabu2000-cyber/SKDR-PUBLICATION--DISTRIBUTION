@@ -33,7 +33,7 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
     useEffect(() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const parent = document.body;
+      const parent = canvas.parentElement;
       if (!parent) return;
 
       const resizeCanvas = () => {
@@ -58,7 +58,7 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       resizeCanvas();
       window.addEventListener('resize', resizeCanvas);
       return () => window.removeEventListener('resize', resizeCanvas);
-    }, []);
+    }, [lineColor, lineWidth]);
 
     useEffect(() => {
       const canvas = canvasRef.current;
@@ -97,6 +97,7 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       if (!isDrawing) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
+      e.preventDefault(); // Prevents scrolling while drawing on touch devices
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       const { x, y } = getCoordinates(e);
@@ -125,3 +126,4 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
 );
 
 DrawingCanvas.displayName = 'DrawingCanvas';
+
