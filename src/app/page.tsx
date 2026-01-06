@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, ToyBrick } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, ToyBrick, ListChecks } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -17,6 +17,7 @@ const quickLinks = [
   { href: '/categories', label: 'CHOOSE YOUR BOOK CATEGORY', icon: LayoutGrid },
   { href: '/video-hub', label: 'VIDEO LEARNING HUB', icon: PlayCircle },
   { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS', icon: FileQuestion },
+  { href: '/syllabus', label: 'SYLLABUS', icon: ListChecks },
   { href: '/mock-tests', label: 'MOCK TEST SERIES', icon: Laptop },
   { href: '/mcq-practice', label: 'SUBJECT-WISE MCQ PRACTICE', icon: Target },
   { href: '/all-india-tests', label: 'ALL INDIA TESTS', icon: Globe },
