@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { BookCheck, Building, GraduationCap, Landmark, Shield, User, HeartPulse, FlaskConical, Train, Scale, School, Map, FileText, Briefcase } from 'lucide-react';
+import { Landmark, School, Building, User, Shield, HeartPulse, FlaskConical, Train, Scale, GraduationCap, Briefcase } from 'lucide-react';
 
 const nationalExams = [
     {
