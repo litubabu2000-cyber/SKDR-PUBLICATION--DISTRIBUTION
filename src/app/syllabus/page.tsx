@@ -89,7 +89,7 @@ export default function SyllabusPage() {
                 <AccordionTrigger className="text-2xl font-bold font-headline bg-card p-6 rounded-t-lg">
                     <span className="flex items-center gap-3">🇮🇳 National-Level Exams</span>
                 </AccordionTrigger>
-                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 md:grid-cols-2">
+                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 grid-cols-2">
                     {nationalExams.map((category) => (
                         <Card key={category.category} className="bg-background/50">
                             <CardHeader className="flex-row gap-4 items-center">
@@ -109,7 +109,7 @@ export default function SyllabusPage() {
                 <AccordionTrigger className="text-2xl font-bold font-headline bg-card p-6 rounded-t-lg mt-8">
                      <span className="flex items-center gap-3">🏫 State-Level Exams</span>
                 </AccordionTrigger>
-                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 md:grid-cols-2">
+                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 grid-cols-2">
                      {stateExams.map((category) => (
                         <Card key={category.category} className="bg-background/50">
                             <CardHeader className="flex-row gap-4 items-center">
