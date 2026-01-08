@@ -1,7 +1,12 @@
 
+'use client';
+
+import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Landmark, School, Building, User, Shield, HeartPulse, FlaskConical, Train, Scale, GraduationCap, Briefcase } from 'lucide-react';
+import { Landmark, School, Building, User, Shield, HeartPulse, FlaskConical, Train, Scale, GraduationCap, Briefcase, LucideIcon, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 
 const nationalExams = [
     {
@@ -74,23 +79,71 @@ const stateExams = [
     }
 ];
 
+type ExamCategory = {
+    category: string;
+    icon: LucideIcon;
+    exams: string[];
+};
 
 export default function SyllabusPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filterExams = (examList: ExamCategory[], query: string) => {
+    if (!query) {
+      return examList;
+    }
+    const lowerCaseQuery = query.toLowerCase();
+    
+    return examList.map(category => {
+      const filteredExams = category.exams.filter(exam => 
+        exam.toLowerCase().includes(lowerCaseQuery)
+      );
+      
+      // If the category name itself matches, include all its exams
+      if (category.category.toLowerCase().includes(lowerCaseQuery)) {
+        return category;
+      }
+      
+      // If some exams within the category match, return the category with only those exams
+      if (filteredExams.length > 0) {
+        return { ...category, exams: filteredExams };
+      }
+      
+      return null;
+    }).filter((category): category is ExamCategory => category !== null);
+  };
+
+  const filteredNationalExams = filterExams(nationalExams, searchTerm);
+  const filteredStateExams = filterExams(stateExams, searchTerm);
+
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
-      <div className="space-y-4 text-center mb-12">
+      <div className="space-y-4 text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold font-headline">Exam Syllabus</h1>
         <p className="text-muted-foreground md:text-xl">A complete list of major competitive exams in India.</p>
       </div>
+
+      <div className="max-w-4xl mx-auto mb-8">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search for an exam or category..."
+            className="w-full pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
       
       <div className="max-w-4xl mx-auto space-y-8">
-        <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
+        <Accordion type="multiple" defaultValue={['item-1', 'item-2']} className="w-full">
             <AccordionItem value="item-1">
                 <AccordionTrigger className="text-2xl font-bold font-headline bg-card p-6 rounded-t-lg">
                     <span className="flex items-center gap-3">🇮🇳 National-Level Exams</span>
                 </AccordionTrigger>
-                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 grid-cols-2">
-                    {nationalExams.map((category) => (
+                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 grid-cols-1 sm:grid-cols-2">
+                    {filteredNationalExams.length > 0 ? filteredNationalExams.map((category) => (
                         <Card key={category.category} className="bg-background/50">
                             <CardHeader className="flex-row gap-4 items-center">
                                 <category.icon className="size-8 text-primary" />
@@ -102,15 +155,15 @@ export default function SyllabusPage() {
                                 </ul>
                             </CardContent>
                         </Card>
-                    ))}
+                    )) : <p className="text-muted-foreground col-span-full text-center">No national exams found matching your search.</p>}
                 </AccordionContent>
             </AccordionItem>
              <AccordionItem value="item-2">
                 <AccordionTrigger className="text-2xl font-bold font-headline bg-card p-6 rounded-t-lg mt-8">
                      <span className="flex items-center gap-3">🏫 State-Level Exams</span>
                 </AccordionTrigger>
-                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 grid-cols-2">
-                     {stateExams.map((category) => (
+                <AccordionContent className="bg-card p-6 rounded-b-lg grid gap-6 grid-cols-1 sm:grid-cols-2">
+                     {filteredStateExams.length > 0 ? filteredStateExams.map((category) => (
                         <Card key={category.category} className="bg-background/50">
                             <CardHeader className="flex-row gap-4 items-center">
                                 <category.icon className="size-8 text-primary" />
@@ -122,7 +175,7 @@ export default function SyllabusPage() {
                                 </ul>
                             </CardContent>
                         </Card>
-                    ))}
+                    )) : <p className="text-muted-foreground col-span-full text-center">No state-level exams found matching your search.</p>}
                 </AccordionContent>
             </AccordionItem>
         </Accordion>
