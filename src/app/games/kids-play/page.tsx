@@ -57,16 +57,16 @@ export default function KidsPlayPage() {
         <p className="text-muted-foreground md:text-xl">Fun and educational games for children.</p>
       </div>
       
-      <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="max-w-4xl mx-auto grid grid-cols-3 gap-4">
         {kidsGames.map((game) => (
             <Link href={game.href} key={game.title}>
                 <Card className="bg-card hover:bg-card/80 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 h-full">
-                    <CardHeader className="flex flex-col items-center justify-center text-center gap-4 p-6">
-                        <game.icon className="size-12 text-primary"/>
-                        <CardTitle className="text-xl font-headline">{game.title}</CardTitle>
+                    <CardHeader className="flex flex-col items-center justify-center text-center gap-2 p-4">
+                        <game.icon className="size-8 text-primary"/>
+                        <CardTitle className="text-sm font-headline">{game.title}</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-6 pt-0 text-center">
-                        <p className="text-muted-foreground text-sm">
+                    <CardContent className="p-4 pt-0 text-center">
+                        <p className="text-muted-foreground text-xs">
                             {game.description}
                         </p>
                     </CardContent>
