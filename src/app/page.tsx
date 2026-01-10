@@ -14,7 +14,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const quickLinks = [
   { href: '/games/kids-play', label: 'KIDS PLAY', icon: ToyBrick },
-  { href: '/categories', label: 'CHOOSE YOUR BOOK CATEGORY', icon: LayoutGrid },
+  { href: '/categories', label: 'BUY SKDR BOOKS', icon: LayoutGrid },
   { href: '/current-affairs', label: 'CURRENT AFFAIRS SHORTS', icon: Newspaper },
   { href: '/video-hub', label: 'VIDEO LEARNING HUB', icon: PlayCircle },
   { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS', icon: FileQuestion },
