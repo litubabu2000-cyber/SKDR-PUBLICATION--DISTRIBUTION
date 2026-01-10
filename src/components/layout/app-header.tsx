@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { SkdrLogo } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ChevronDown } from 'lucide-react';
+import { Menu, ShoppingCart, ChevronDown, Newspaper } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
@@ -21,6 +21,7 @@ const navLinks = [
   { href: '/pyq', label: 'Previous Year Papers' },
   { href: '/mock-tests', label: 'Mock Tests' },
   { href: '/video-hub', label: 'Video Lectures' },
+  { href: '/current-affairs', label: 'Current Affairs' },
 ];
 
 const categoryLinks = [
