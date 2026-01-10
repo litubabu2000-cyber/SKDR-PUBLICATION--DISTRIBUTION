@@ -29,12 +29,12 @@ export default function CategoriesPage() {
     <section id="categories" className="w-full py-12 md:py-24">
         <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Choose Your Book Category u want</h2>
+                <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Choose Your Book Category</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                     Select from our comprehensive educational categories
                 </p>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-2 md:grid-cols-3">
                 {categories.map((category, index) => (
                     <Link key={index} href={category.href} className="group">
                       <div className={`bg-gradient-to-br ${category.gradient} rounded-xl p-6 flex flex-col justify-between text-white transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-2 h-full`}>
