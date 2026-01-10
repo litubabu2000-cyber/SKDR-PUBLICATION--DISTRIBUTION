@@ -59,17 +59,7 @@ export default function KidsPlayPage() {
       </div>
       
       <Card className="max-w-4xl mx-auto overflow-hidden">
-        <CardContent className="p-0">
-          <Image
-            src="https://storage.googleapis.com/app-prototyper.appspot.com/a7c067a9-83a3-455b-80a5-f8601620a229.png"
-            alt="Kids playing with cartoon characters"
-            width={1024}
-            height={400}
-            className="w-full h-auto object-cover"
-            data-ai-hint="cartoon kids"
-          />
-        </CardContent>
-        <CardHeader className="p-6">
+        <CardContent className="p-6">
            <div className="grid grid-cols-3 gap-4">
             {kidsGames.map((game) => (
                 <Link href={game.href} key={game.title}>
@@ -87,7 +77,7 @@ export default function KidsPlayPage() {
                 </Link>
             ))}
           </div>
-        </CardHeader>
+        </CardContent>
       </Card>
     </div>
   );
