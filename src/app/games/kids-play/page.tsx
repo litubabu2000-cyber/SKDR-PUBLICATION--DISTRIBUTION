@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToyBrick, SpellCheck, CaseUpper, Hash, HelpCircle, Puzzle, Gamepad2, LucideIcon } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 type KidGame = {
   title: string;
@@ -57,23 +58,37 @@ export default function KidsPlayPage() {
         <p className="text-muted-foreground md:text-xl">Fun and educational games for children.</p>
       </div>
       
-      <div className="max-w-4xl mx-auto grid grid-cols-3 gap-4">
-        {kidsGames.map((game) => (
-            <Link href={game.href} key={game.title}>
-                <Card className="bg-card hover:bg-card/80 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 h-full">
-                    <CardHeader className="flex flex-col items-center justify-center text-center gap-2 p-4">
-                        <game.icon className="size-8 text-primary"/>
-                        <CardTitle className="text-sm font-headline">{game.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0 text-center">
-                        <p className="text-muted-foreground text-xs">
-                            {game.description}
-                        </p>
-                    </CardContent>
-                </Card>
-            </Link>
-        ))}
-      </div>
+      <Card className="max-w-4xl mx-auto overflow-hidden">
+        <CardContent className="p-0">
+          <Image
+            src="https://storage.googleapis.com/app-prototyper.appspot.com/a7c067a9-83a3-455b-80a5-f8601620a229.png"
+            alt="Kids playing with cartoon characters"
+            width={1024}
+            height={400}
+            className="w-full h-auto object-cover"
+            data-ai-hint="cartoon kids"
+          />
+        </CardContent>
+        <CardHeader className="p-6">
+           <div className="grid grid-cols-3 gap-4">
+            {kidsGames.map((game) => (
+                <Link href={game.href} key={game.title}>
+                    <Card className="bg-card hover:bg-card/80 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 h-full">
+                        <CardHeader className="flex flex-col items-center justify-center text-center gap-2 p-4">
+                            <game.icon className="size-6 text-primary"/>
+                            <CardTitle className="text-xs font-headline">{game.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-0 text-center">
+                            <p className="text-muted-foreground text-[10px]">
+                                {game.description}
+                            </p>
+                        </CardContent>
+                    </Card>
+                </Link>
+            ))}
+          </div>
+        </CardHeader>
+      </Card>
     </div>
   );
 }
