@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, ToyBrick, ListChecks, Newspaper } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, ToyBrick, ListChecks, Newspaper, Speech } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -16,6 +16,7 @@ const quickLinks = [
   { href: '/games/kids-play', label: 'KIDS PLAY', icon: ToyBrick },
   { href: '/categories', label: 'BUY SKDR BOOKS', icon: LayoutGrid },
   { href: '/current-affairs', label: 'CURRENT AFFAIRS SHORTS', icon: Newspaper },
+  { href: '/english-talking-with-ai', label: 'ENGLISH TALKING WITH AI', icon: Speech },
   { href: '/video-hub', label: 'VIDEO LEARNING HUB', icon: PlayCircle },
   { href: '/pyq', label: 'PREVIOUS YEAR QUESTION PAPERS', icon: FileQuestion },
   { href: '/syllabus', label: 'SYLLABUS', icon: ListChecks },
