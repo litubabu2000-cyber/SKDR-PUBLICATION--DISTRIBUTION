@@ -94,23 +94,34 @@ export default function Home() {
                 A glimpse into the world of learning and knowledge.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              {galleryImages.map((image) => (
-                <div key={image.id} className="group relative overflow-hidden rounded-xl">
-                  <Image
-                    src={image.imageUrl}
-                    alt={image.description}
-                    width={400}
-                    height={400}
-                    className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    data-ai-hint={image.imageHint}
-                  />
-                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-white text-center p-4">{image.description}</p>
-                   </div>
-                </div>
-              ))}
-            </div>
+             <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {galleryImages.map((image, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="p-1">
+                      <Card className="overflow-hidden">
+                        <CardContent className="flex aspect-square items-center justify-center p-0">
+                           <Image
+                            src={image.imageUrl}
+                            alt={image.description}
+                            width={400}
+                            height={400}
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                            data-ai-hint={image.imageHint}
+                          />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         </section>
 
