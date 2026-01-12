@@ -86,6 +86,34 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="w-full py-12 md:py-24 bg-muted/20">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+              <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">Our Gallery</h2>
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                A glimpse into the world of learning and knowledge.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {galleryImages.map((image) => (
+                <div key={image.id} className="group relative overflow-hidden rounded-xl">
+                  <Image
+                    src={image.imageUrl}
+                    alt={image.description}
+                    width={400}
+                    height={400}
+                    className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={image.imageHint}
+                  />
+                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white text-center p-4">{image.description}</p>
+                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <footer className="bg-foreground text-background">
