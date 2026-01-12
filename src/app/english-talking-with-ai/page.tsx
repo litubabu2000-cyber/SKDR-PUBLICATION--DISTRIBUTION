@@ -25,11 +25,11 @@ export default function EnglishTalkingWithAiPage() {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       console.warn('Web Speech API is not supported in this browser.');
+      alert('Speech recognition is not supported by your browser.');
       return;
     }
 
-    recognitionRef.current = new SpeechRecognition();
-    const recognition = recognitionRef.current;
+    const recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
@@ -45,9 +45,9 @@ export default function EnglishTalkingWithAiPage() {
           interimTranscript += event.results[i][0].transcript;
         }
       }
-
-      setTranscript(interimTranscript);
-
+      
+      setTranscript(finalTranscript || interimTranscript);
+      
       if (finalTranscript) {
         handleUserSpeech(finalTranscript);
       }
@@ -62,7 +62,8 @@ export default function EnglishTalkingWithAiPage() {
       setIsListening(false);
     };
 
-    // Cleanup function
+    recognitionRef.current = recognition;
+
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
@@ -107,13 +108,11 @@ export default function EnglishTalkingWithAiPage() {
 
   const toggleListening = () => {
     if (!recognitionRef.current) {
-      alert('Speech recognition is not supported by your browser.');
       return;
     }
 
     if (isListening) {
       recognitionRef.current.stop();
-      setIsListening(false);
     } else {
       try {
         recognitionRef.current.start();
