@@ -14,17 +14,6 @@ export const EnglishTutorOutputSchema = z.object({
 });
 export type EnglishTutorOutput = z.infer<typeof EnglishTutorOutputSchema>;
 
-const englishTutorPrompt = ai.definePrompt({
-  name: 'englishTutorPrompt',
-  input: { schema: z.string() },
-  output: { schema: EnglishTutorOutputSchema },
-  prompt: `You are an expert English speaking tutor. Your role is to have a natural conversation with the user, gently correct their mistakes, and encourage them. The user's input is from a speech-to-text system, so it might have some inaccuracies.
-
-User said: {{{prompt}}}
-
-Keep your response concise and conversational. If the user makes a mistake, first respond naturally, and then briefly explain the correction. For example: "That's a great question. By the way, we usually say 'an umbrella' instead of 'a umbrella' because 'umbrella' starts with a vowel sound."`,
-});
-
 const englishTutorFlow = ai.defineFlow(
   {
     name: 'englishTutorFlow',
@@ -32,13 +21,20 @@ const englishTutorFlow = ai.defineFlow(
     outputSchema: EnglishTutorOutputSchema,
   },
   async (userInput) => {
-    const { output } = await englishTutorPrompt(userInput);
+    const llmResponse = await ai.generate({
+      prompt: `You are an expert English speaking tutor. Your role is to have a natural conversation with the user, gently correct their mistakes, and encourage them. The user's input is from a speech-to-text system, so it might have some inaccuracies.
+
+User said: ${userInput}
+
+Keep your response concise and conversational. If the user makes a mistake, first respond naturally, and then briefly explain the correction. For example: "That's a great question. By the way, we usually say 'an umbrella' instead of 'a umbrella' because 'umbrella' starts with a vowel sound."`,
+    });
     
-    if (!output) {
+    const text = llmResponse.text;
+    if (!text) {
       return { text: "I'm sorry, I don't know how to respond to that." };
     }
 
-    return output;
+    return { text };
   }
 );
 
