@@ -31,14 +31,6 @@ const quickLinks = [
   { href: '/games', label: 'GAMES', icon: Gamepad2 },
 ];
 
-const impactStats = [
-  { value: "100K+", label: "Free Videos", color: "bg-indigo-500" },
-  { value: "2B+", label: "Views", color: "bg-yellow-600" },
-  { value: "10M+", label: "Application Downloaded", color: "bg-green-500" },
-  { value: "5M+", label: "Registered Users", color: "bg-orange-500" },
-  { value: "250+", label: "Active Courses", color: "bg-rose-500" },
-];
-
 
 export default function Home() {
 
@@ -95,36 +87,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <section className="w-full py-12 md:py-24 bg-card/5">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <h2 className="text-3xl font-bold font-headline tracking-tighter sm:text-4xl md:text-5xl">
-                Our Impact
-              </h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Reaching millions of students across the nation.
-              </p>
-            </div>
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
-              {impactStats.map((stat) => (
-                <div key={stat.label} className="relative flex h-32 w-full max-w-xs mx-auto sm:w-36 items-center justify-center text-center text-white">
-                  <svg
-                    className={`absolute inset-0 h-full w-full ${stat.color} fill-current`}
-                    viewBox="0 0 140 160"
-                  >
-                    <path d="M70 0 L140 40 L140 120 L70 160 L0 120 L0 40 Z" />
-                  </svg>
-                  <div className="relative z-10 flex flex-col p-2">
-                    <span className="text-2xl font-bold">{stat.value}</span>
-                    <span className="text-xs">{stat.label}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
 
       </main>
 
