@@ -46,7 +46,6 @@ async function toWav(
 const englishTutorPrompt = ai.definePrompt({
   name: 'englishTutorPrompt',
   input: { schema: z.string() },
-  output: { schema: z.object({ response: z.string() }) },
   prompt: `You are an expert English speaking tutor. Your role is to have a natural conversation with the user, gently correct their mistakes, and encourage them. The user's input is from a speech-to-text system, so it might have some inaccuracies.
 
 User said: {{{prompt}}}
@@ -62,7 +61,7 @@ const englishTutorFlow = ai.defineFlow(
   },
   async (userInput) => {
     const llmResponse = await englishTutorPrompt(userInput);
-    const textToSpeak = llmResponse.output?.response || "I'm sorry, I don't know how to respond to that.";
+    const textToSpeak = llmResponse.text || "I'm sorry, I don't know how to respond to that.";
 
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',
