@@ -35,20 +35,17 @@ export default function EnglishTalkingWithAiPage() {
     recognition.lang = 'en-US';
 
     recognition.onresult = (event: any) => {
-      let interimTranscript = '';
       let finalTranscript = '';
-
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
           finalTranscript += event.results[i][0].transcript;
         } else {
-          interimTranscript += event.results[i][0].transcript;
+          setTranscript(event.results[i][0].transcript);
         }
       }
       
-      setTranscript(finalTranscript || interimTranscript);
-      
       if (finalTranscript) {
+        setTranscript(finalTranscript);
         handleUserSpeech(finalTranscript);
       }
     };
@@ -64,11 +61,17 @@ export default function EnglishTalkingWithAiPage() {
 
     recognitionRef.current = recognition;
 
+    // Start with a greeting
+    const initialGreeting = "Hello! I'm your AI English tutor. Let's practice speaking. Click the microphone to start.";
+    setConversation([{ speaker: 'ai', text: initialGreeting }]);
+    speak(initialGreeting);
+
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
     };
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const speak = (text: string) => {
@@ -115,6 +118,7 @@ export default function EnglishTalkingWithAiPage() {
       recognitionRef.current.stop();
     } else {
       try {
+        setTranscript('');
         recognitionRef.current.start();
         setIsListening(true);
       } catch (error) {

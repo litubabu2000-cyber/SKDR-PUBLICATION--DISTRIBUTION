@@ -17,6 +17,7 @@ export type EnglishTutorOutput = z.infer<typeof EnglishTutorOutputSchema>;
 const englishTutorPrompt = ai.definePrompt({
   name: 'englishTutorPrompt',
   input: { schema: z.string() },
+  output: { schema: EnglishTutorOutputSchema },
   prompt: `You are an expert English speaking tutor. Your role is to have a natural conversation with the user, gently correct their mistakes, and encourage them. The user's input is from a speech-to-text system, so it might have some inaccuracies.
 
 User said: {{{prompt}}}
@@ -31,12 +32,13 @@ const englishTutorFlow = ai.defineFlow(
     outputSchema: EnglishTutorOutputSchema,
   },
   async (userInput) => {
-    const llmResponse = await englishTutorPrompt(userInput);
-    const textToSpeak = llmResponse.text;
+    const { output } = await englishTutorPrompt(userInput);
+    
+    if (!output) {
+      return { text: "I'm sorry, I don't know how to respond to that." };
+    }
 
-    return {
-      text: textToSpeak || "I'm sorry, I don't know how to respond to that.",
-    };
+    return output;
   }
 );
 
