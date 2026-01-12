@@ -61,7 +61,7 @@ const englishTutorFlow = ai.defineFlow(
   },
   async (userInput) => {
     const llmResponse = await englishTutorPrompt(userInput);
-    const textToSpeak = llmResponse.text || "I'm sorry, I don't know how to respond to that.";
+    const textToSpeak = llmResponse.text;
 
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',
