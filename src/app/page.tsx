@@ -106,26 +106,21 @@ export default function Home() {
                 Reaching millions of students across the nation.
               </p>
             </div>
-            <div className="mt-12">
-               <ScrollArea className="w-full">
-                <div className="flex w-max space-x-8 pb-4 justify-center">
-                  {impactStats.map((stat) => (
-                    <div key={stat.label} className="relative flex h-32 w-36 items-center justify-center text-center text-white shrink-0">
-                      <svg
-                        className={`absolute inset-0 h-full w-full ${stat.color} fill-current`}
-                        viewBox="0 0 140 160"
-                      >
-                        <path d="M70 0 L140 40 L140 120 L70 160 L0 120 L0 40 Z" />
-                      </svg>
-                      <div className="relative z-10 flex flex-col p-2">
-                        <span className="text-2xl font-bold">{stat.value}</span>
-                        <span className="text-xs">{stat.label}</span>
-                      </div>
-                    </div>
-                  ))}
-                 </div>
-                 <ScrollBar orientation="horizontal" className="md:hidden" />
-              </ScrollArea>
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
+              {impactStats.map((stat) => (
+                <div key={stat.label} className="relative flex h-32 w-full max-w-xs mx-auto sm:w-36 items-center justify-center text-center text-white">
+                  <svg
+                    className={`absolute inset-0 h-full w-full ${stat.color} fill-current`}
+                    viewBox="0 0 140 160"
+                  >
+                    <path d="M70 0 L140 40 L140 120 L70 160 L0 120 L0 40 Z" />
+                  </svg>
+                  <div className="relative z-10 flex flex-col p-2">
+                    <span className="text-2xl font-bold">{stat.value}</span>
+                    <span className="text-xs">{stat.label}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
