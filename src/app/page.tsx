@@ -94,34 +94,26 @@ export default function Home() {
                 A glimpse into the world of learning and knowledge.
               </p>
             </div>
-             <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent>
-                {galleryImages.map((image, index) => (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                    <div className="p-1">
-                      <Card className="overflow-hidden">
-                        <CardContent className="flex aspect-square items-center justify-center p-0">
-                           <Image
-                            src={image.imageUrl}
-                            alt={image.description}
-                            width={400}
-                            height={400}
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                            data-ai-hint={image.imageHint}
-                          />
-                        </CardContent>
-                      </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {galleryImages.map((item) => (
+                <Card key={item.id} className="bg-card/50 hover:bg-card/90 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1">
+                  <CardContent className="p-4 flex items-center gap-4">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.description}
+                      width={80}
+                      height={80}
+                      className="rounded-full aspect-square object-cover border-2 border-primary/50"
+                      data-ai-hint={item.imageHint}
+                    />
+                    <div className="space-y-1">
+                      <h3 className="font-bold">{item.imageHint.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</h3>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </section>
 
