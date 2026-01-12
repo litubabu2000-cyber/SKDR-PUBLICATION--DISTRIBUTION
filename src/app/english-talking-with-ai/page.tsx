@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mic, MicOff, Volume2, Loader2, Bot, User } from 'lucide-react';
+import { Mic, MicOff, Loader2, Bot, User } from 'lucide-react';
 import { speakToTutor } from '@/ai/flows/english-tutor-flow';
 
 type Message = {
@@ -20,35 +20,48 @@ export default function EnglishTalkingWithAiPage() {
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+    // Ensure this code runs only on the client
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition =
+        (window as any).SpeechRecognition ||
+        (window as any).webkitSpeechRecognition;
 
-    if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'en-US';
+      if (SpeechRecognition) {
+        recognitionRef.current = new SpeechRecognition();
+        const recognition = recognitionRef.current;
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
 
-      recognitionRef.current.onresult = (event: any) => {
-        const currentTranscript =
-          event.results[event.results.length - 1][0].transcript;
-        setTranscript(currentTranscript);
-        if (event.results[event.results.length - 1].isFinal) {
-          handleUserSpeech(currentTranscript);
-        }
-      };
+        recognition.onresult = (event: any) => {
+          let finalTranscript = '';
+          let interimTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              finalTranscript += event.results[i][0].transcript;
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+            }
+          }
+          setTranscript(interimTranscript);
+          if (finalTranscript) {
+            handleUserSpeech(finalTranscript);
+          }
+        };
 
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-    }
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+        
+        recognition.onerror = (event: any) => {
+          console.error('Speech recognition error', event.error);
+          setIsListening(false);
+        };
 
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
+      } else {
+        console.warn('Web Speech API is not supported in this browser.');
       }
-    };
+    }
   }, []);
 
   const handleUserSpeech = async (text: string) => {
@@ -83,10 +96,11 @@ export default function EnglishTalkingWithAiPage() {
 
     if (isListening) {
       recognitionRef.current.stop();
+      setIsListening(false);
     } else {
       recognitionRef.current.start();
+      setIsListening(true);
     }
-    setIsListening(!isListening);
   };
 
   return (
@@ -150,6 +164,12 @@ export default function EnglishTalkingWithAiPage() {
                     <Loader2 className="size-4 animate-spin" />
                     <span>Thinking...</span>
                     </div>
+                </div>
+              )}
+               {conversation.length === 0 && !isListening && !isLoading && (
+                <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
+                  <Mic className="size-10 mb-4" />
+                  <p>Click the microphone button to start a conversation with the AI tutor.</p>
                 </div>
               )}
             </div>
