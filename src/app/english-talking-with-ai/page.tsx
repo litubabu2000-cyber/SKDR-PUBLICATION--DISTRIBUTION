@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mic, MicOff, Loader2, Bot, User } from 'lucide-react';
-import { speakToTutor } from '@/ai/flows/english-tutor-flow';
+import { speakToTutor, EnglishTutorOutput } from '@/ai/flows/english-tutor-flow';
 
 type Message = {
   speaker: 'user' | 'ai';
@@ -20,48 +20,54 @@ export default function EnglishTalkingWithAiPage() {
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    // Ensure this code runs only on the client
-    if (typeof window !== 'undefined') {
-      const SpeechRecognition =
-        (window as any).SpeechRecognition ||
-        (window as any).webkitSpeechRecognition;
+    if (typeof window === 'undefined') return;
 
-      if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition();
-        const recognition = recognitionRef.current;
-        recognition.continuous = false;
-        recognition.interimResults = true;
-        recognition.lang = 'en-US';
-
-        recognition.onresult = (event: any) => {
-          let finalTranscript = '';
-          let interimTranscript = '';
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            if (event.results[i].isFinal) {
-              finalTranscript += event.results[i][0].transcript;
-            } else {
-              interimTranscript += event.results[i][0].transcript;
-            }
-          }
-          setTranscript(interimTranscript);
-          if (finalTranscript) {
-            handleUserSpeech(finalTranscript);
-          }
-        };
-
-        recognition.onend = () => {
-          setIsListening(false);
-        };
-        
-        recognition.onerror = (event: any) => {
-          console.error('Speech recognition error', event.error);
-          setIsListening(false);
-        };
-
-      } else {
-        console.warn('Web Speech API is not supported in this browser.');
-      }
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.warn('Web Speech API is not supported in this browser.');
+      return;
     }
+
+    recognitionRef.current = new SpeechRecognition();
+    const recognition = recognitionRef.current;
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event: any) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+
+      setTranscript(interimTranscript);
+
+      if (finalTranscript) {
+        handleUserSpeech(finalTranscript);
+      }
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error', event.error);
+      setIsListening(false);
+    };
+
+    // Cleanup function
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
   }, []);
 
   const handleUserSpeech = async (text: string) => {
@@ -72,17 +78,18 @@ export default function EnglishTalkingWithAiPage() {
     setIsLoading(true);
 
     try {
-      const response = await speakToTutor(text);
+      const response: EnglishTutorOutput = await speakToTutor(text);
       if (response && response.audioUrl) {
         setConversation((prev) => [...prev, { speaker: 'ai', text: response.text || '' }]);
         const audio = new Audio(response.audioUrl);
-        audio.play();
+        audio.play().catch(e => console.error("Error playing audio:", e));
       } else {
-         setConversation((prev) => [...prev, { speaker: 'ai', text: "Sorry, I didn't get a response. Please try again." }]);
+        console.error("AI response is missing audioUrl:", response);
+        setConversation((prev) => [...prev, { speaker: 'ai', text: "Sorry, I didn't get a valid response. Please try again." }]);
       }
     } catch (error) {
       console.error('Error with AI tutor:', error);
-       setConversation((prev) => [...prev, { speaker: 'ai', text: 'An error occurred. Please check the console.' }]);
+      setConversation((prev) => [...prev, { speaker: 'ai', text: 'An error occurred while talking to the tutor. Please check the console.' }]);
     } finally {
       setIsLoading(false);
     }
@@ -98,8 +105,14 @@ export default function EnglishTalkingWithAiPage() {
       recognitionRef.current.stop();
       setIsListening(false);
     } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error("Could not start speech recognition:", error);
+        // This can happen if it's already running.
+        setIsListening(false);
+      }
     }
   };
 
