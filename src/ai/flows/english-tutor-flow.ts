@@ -8,40 +8,11 @@
  */
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import wav from 'wav';
 
 export const EnglishTutorOutputSchema = z.object({
-  text: z.string().describe('The AI tutor\'s response text.'),
-  audioUrl: z.string().describe('A data URI of the AI tutor\'s spoken response in WAV format.'),
+  text: z.string().describe("The AI tutor's response text."),
 });
 export type EnglishTutorOutput = z.infer<typeof EnglishTutorOutputSchema>;
-
-async function toWav(
-  pcmData: Buffer,
-  channels = 1,
-  rate = 24000,
-  sampleWidth = 2
-): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const writer = new wav.Writer({
-      channels,
-      sampleRate: rate,
-      bitDepth: sampleWidth * 8,
-    });
-
-    const bufs: any[] = [];
-    writer.on('error', reject);
-    writer.on('data', function (d) {
-      bufs.push(d);
-    });
-    writer.on('end', function () {
-      resolve(Buffer.concat(bufs).toString('base64'));
-    });
-
-    writer.write(pcmData);
-    writer.end();
-  });
-}
 
 const englishTutorPrompt = ai.definePrompt({
   name: 'englishTutorPrompt',
@@ -63,33 +34,8 @@ const englishTutorFlow = ai.defineFlow(
     const llmResponse = await englishTutorPrompt(userInput);
     const textToSpeak = llmResponse.text;
 
-    const { media } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-preview-tts',
-      config: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: 'Algenib' },
-          },
-        },
-      },
-      prompt: textToSpeak,
-    });
-
-    if (!media) {
-      throw new Error('No audio media was generated.');
-    }
-
-    const audioBuffer = Buffer.from(
-      media.url.substring(media.url.indexOf(',') + 1),
-      'base64'
-    );
-
-    const wavBase64 = await toWav(audioBuffer);
-
     return {
-      text: textToSpeak,
-      audioUrl: `data:audio/wav;base64,${wavBase64}`,
+      text: textToSpeak || "I'm sorry, I don't know how to respond to that.",
     };
   }
 );

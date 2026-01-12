@@ -70,6 +70,14 @@ export default function EnglishTalkingWithAiPage() {
     };
   }, []);
 
+  const speak = (text: string) => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        window.speechSynthesis.speak(utterance);
+    }
+  };
+
   const handleUserSpeech = async (text: string) => {
     if (!text.trim()) return;
 
@@ -79,17 +87,19 @@ export default function EnglishTalkingWithAiPage() {
 
     try {
       const response: EnglishTutorOutput = await speakToTutor(text);
-      if (response && response.audioUrl) {
-        setConversation((prev) => [...prev, { speaker: 'ai', text: response.text || '' }]);
-        const audio = new Audio(response.audioUrl);
-        audio.play().catch(e => console.error("Error playing audio:", e));
+      if (response && response.text) {
+        setConversation((prev) => [...prev, { speaker: 'ai', text: response.text }]);
+        speak(response.text);
       } else {
-        console.error("AI response is missing audioUrl:", response);
-        setConversation((prev) => [...prev, { speaker: 'ai', text: "Sorry, I didn't get a valid response. Please try again." }]);
+        const errorMessage = "Sorry, I didn't get a valid response. Please try again.";
+        setConversation((prev) => [...prev, { speaker: 'ai', text: errorMessage }]);
+        speak(errorMessage);
       }
     } catch (error) {
       console.error('Error with AI tutor:', error);
-      setConversation((prev) => [...prev, { speaker: 'ai', text: 'An error occurred while talking to the tutor. Please check the console.' }]);
+      const errorMessage = 'An error occurred while talking to the tutor. Please check the console.';
+      setConversation((prev) => [...prev, { speaker: 'ai', text: errorMessage }]);
+      speak(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -110,7 +120,6 @@ export default function EnglishTalkingWithAiPage() {
         setIsListening(true);
       } catch (error) {
         console.error("Could not start speech recognition:", error);
-        // This can happen if it's already running.
         setIsListening(false);
       }
     }
