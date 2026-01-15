@@ -181,13 +181,6 @@ export default function FlashcardApp() {
     }
   };
   
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-      resetCard();
-    }
-  };
-
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
     if (isAnswerRevealed && offset.y < -50 && velocity.y < -500) {
       handleNext();
@@ -362,14 +355,7 @@ export default function FlashcardApp() {
             </div>
 
             {isAnswerRevealed && (
-              <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-between items-center gap-4">
-                 <button 
-                  onClick={handlePrevious}
-                  disabled={currentQuestionIndex === 0}
-                  className="bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl hover:bg-slate-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                >
-                  <ChevronLeft size={18}/> Previous
-                </button>
+              <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end items-center gap-4">
                 <button 
                   onClick={handleNext}
                   className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl hover:bg-black transition-all flex items-center gap-2"
@@ -392,4 +378,5 @@ export default function FlashcardApp() {
     </div>
   );
 }
+
 
