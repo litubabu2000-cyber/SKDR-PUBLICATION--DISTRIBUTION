@@ -1,7 +1,8 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock } from 'lucide-react';
+import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -179,6 +180,13 @@ export default function FlashcardApp() {
       setGameState('end');
     }
   };
+  
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+      resetCard();
+    }
+  };
 
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
     if (isAnswerRevealed && offset.y < -50 && velocity.y < -500) {
@@ -297,7 +305,12 @@ export default function FlashcardApp() {
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
            <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
         </div>
-        <div className="font-bold text-blue-600 px-4 py-1 bg-blue-100 rounded-full">Score: {score}</div>
+        <div className="flex items-center gap-4">
+           <button onClick={() => setGameState('end')} className="p-2 hover:bg-white rounded-lg text-red-500 flex items-center gap-1 text-sm font-bold">
+               <LogOut size={16}/> End Quiz
+            </button>
+           <div className="font-bold text-blue-600 px-4 py-1 bg-blue-100 rounded-full">Score: {score}</div>
+        </div>
       </div>
         
       <AnimatePresence mode="wait">
@@ -349,12 +362,20 @@ export default function FlashcardApp() {
             </div>
 
             {isAnswerRevealed && (
-              <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end">
+              <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-between items-center gap-4">
+                 <button 
+                  onClick={handlePrevious}
+                  disabled={currentQuestionIndex === 0}
+                  className="bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl hover:bg-slate-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  <ChevronLeft size={18}/> Previous
+                </button>
                 <button 
                   onClick={handleNext}
-                  className="bg-slate-900 text-white font-bold py-3 px-10 rounded-xl hover:bg-black transition-all"
+                  className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl hover:bg-black transition-all flex items-center gap-2"
                 >
-                  {currentQuestionIndex === questions.length - 1 ? "Show Results" : "Next Question →"}
+                  {currentQuestionIndex === questions.length - 1 ? "Show Results" : "Next Question"}
+                  <ChevronRight size={18}/>
                 </button>
               </div>
             )}
@@ -371,3 +392,4 @@ export default function FlashcardApp() {
     </div>
   );
 }
+
