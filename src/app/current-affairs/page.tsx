@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, ChevronRight } from 'lucide-react';
+import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 /**
@@ -10,7 +10,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
  * 1. Multi-tier filtering: Specific Date, Month, or Year.
  * 2. Smart column detection for Questions, Answers, and Dates.
  * 3. Automatic distractor generation for MCQs.
- * 4. Swipe up for next question.
+ * 4. Swipe up for next question, swipe down for previous.
  */
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxRx6jx4bmKcybd_uFaVWZP9Oh3bwXP-4GmAqBMSr7LmUnarozWsRjqYzbWa8J82fgrzQ/exec";
@@ -184,13 +184,21 @@ export default function FlashcardApp() {
       setGameState('end');
     }
   };
-  
-  const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
-    if (isAnswerRevealed && offset.y < -50 && velocity.y < -500) {
-      handleNext();
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+      resetCard();
     }
   };
-
+  
+  const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
+    if (offset.y < -50 && velocity.y < -500) {
+        if (isAnswerRevealed) handleNext();
+    } else if (offset.y > 50 && velocity.y > 500) {
+        handlePrevious();
+    }
+  };
 
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
@@ -383,7 +391,3 @@ export default function FlashcardApp() {
     </div>
   );
 }
-
-
-
-
