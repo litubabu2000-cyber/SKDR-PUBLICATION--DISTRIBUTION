@@ -1,7 +1,8 @@
+
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 /**
@@ -379,21 +380,13 @@ export default function FlashcardApp() {
               })}
             </div>
 
-            {isAnswerRevealed && (
+            {isAnswerRevealed && !questions[currentQuestionIndex + 1] && (
               <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end items-center gap-4">
                  <button 
-                  onClick={handlePrevious}
-                  className="bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl hover:bg-slate-300 transition-all flex items-center gap-2"
-                >
-                  <ChevronLeft size={18}/>
-                  Previous
-                </button>
-                <button 
                   onClick={handleNext}
                   className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl hover:bg-black transition-all flex items-center gap-2"
                 >
-                  {currentQuestionIndex === questions.length - 1 ? "Show Results" : "Next Question"}
-                  <ChevronRight size={18}/>
+                  Show Results
                 </button>
               </div>
             )}
