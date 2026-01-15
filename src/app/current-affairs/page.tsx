@@ -1,9 +1,8 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 /**
  * Flashcard MCQ App - Current Affairs Edition
@@ -42,6 +41,11 @@ export default function FlashcardApp() {
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
+
+  // 3D card effect
+  const motionY = useMotionValue(0);
+  const rotateX = useTransform(motionY, [-150, 150], [10, -10]);
+  const cardOpacity = useTransform(motionY, [0, -100], [1, 0]);
 
   useEffect(() => {
     fetchData();
@@ -292,7 +296,7 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8 overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8 overflow-hidden" style={{ perspective: '1000px' }}>
       <div className="w-full max-w-2xl flex justify-between items-center mb-6">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
@@ -310,16 +314,17 @@ export default function FlashcardApp() {
         <motion.div
           key={currentQuestionIndex}
           className="w-full max-w-2xl"
+          style={{ y: motionY, rotateX, transformStyle: 'preserve-3d' }}
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
-          dragElastic={0.1}
+          dragElastic={0.2}
           onDragEnd={(e, { offset, velocity }) => handleSwipe(offset, velocity)}
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -50, opacity: 0 }}
-          transition={{ ease: "easeInOut", duration: 0.3 }}
+          exit={{ y: -150, opacity: 0, transition: { duration: 0.2 } }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col min-h-[500px]">
+          <div className="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col min-h-[500px]" style={{ transform: 'translateZ(0)' }}>
             <div className="p-8 md:p-12 bg-blue-600 text-white text-center min-h-[200px] flex flex-col justify-center items-center">
               <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-4">{q.date} • {q.month}</span>
               <h2 className="text-2xl md:text-3xl font-bold leading-snug">{q.question}</h2>
@@ -378,6 +383,7 @@ export default function FlashcardApp() {
     </div>
   );
 }
+
 
 
 
