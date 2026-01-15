@@ -29,12 +29,14 @@ User said: ${userInput}
 Keep your response concise and conversational. If the user makes a mistake, first respond naturally, and then briefly explain the correction. For example: "That's a great question. By the way, we usually say 'an umbrella' instead of 'a umbrella' because 'umbrella' starts with a vowel sound."`,
     });
     
-    const text = llmResponse.text;
-    if (!text) {
+    // The `text` property holds the string response from the AI model.
+    const responseText = llmResponse.text;
+    if (!responseText) {
       return { text: "I'm sorry, I don't know how to respond to that." };
     }
 
-    return { text };
+    // The flow must return an object that matches EnglishTutorOutputSchema.
+    return { text: responseText };
   }
 );
 
