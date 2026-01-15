@@ -24,7 +24,6 @@ const quickLinks = [
   { href: '/mock-tests', label: 'MOCK TEST SERIES', icon: Laptop },
   { href: '/mcq-practice', label: 'SUBJECT-WISE MCQ PRACTICE', icon: Target },
   { href: '/all-india-tests', label: 'ALL INDIA TESTS', icon: Globe },
-  { href: '/state-level-tests', label: 'STATE LEVEL TESTS', icon: Landmark },
   { href: '/translator', label: 'TRANSLATOR', icon: Languages },
   { href: '/for-teachers', label: 'FOR TEACHER', icon: Users },
   { href: '/exam-notification', label: 'EXAM NOTIFICATION', icon: Bell },
