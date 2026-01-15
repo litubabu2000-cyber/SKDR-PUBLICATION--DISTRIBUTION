@@ -1,8 +1,8 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * Flashcard MCQ App - Current Affairs Edition
@@ -10,6 +10,7 @@ import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, 
  * 1. Multi-tier filtering: Specific Date, Month, or Year.
  * 2. Smart column detection for Questions, Answers, and Dates.
  * 3. Automatic distractor generation for MCQs.
+ * 4. Swipe up for next question.
  */
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxRx6jx4bmKcybd_uFaVWZP9Oh3bwXP-4GmAqBMSr7LmUnarozWsRjqYzbWa8J82fgrzQ/exec";
@@ -74,7 +75,7 @@ export default function FlashcardApp() {
     const months = new Set<string>();
     const years = new Set<string>();
 
-    const questions = data.map(item => {
+    const questions = data.map((item: any) => {
       const keys = Object.keys(item);
       const qKey = keys.find(k => /question|q\b|term|text/i.test(k)) || keys[0];
       const aKey = keys.find(k => /answer|ans|correct|back/i.test(k)) || keys[1];
@@ -115,10 +116,10 @@ export default function FlashcardApp() {
     }).filter(Boolean);
 
     // Finalize MCQ options
-    const finalQuestions = questions.map(q => {
+    const finalQuestions = (questions as any[]).map(q => {
       if (!q) return null;
       let options = q.explicitOptions.length > 0 ? [...new Set([...q.explicitOptions, q.correctAnswer])] : null;
-      if (!options) {
+      if (!options || options.length < 2) {
         const distractors = shuffleArray(allAnswers.filter(a => a !== q.correctAnswer)).slice(0, 3);
         options = [q.correctAnswer, ...distractors];
       }
@@ -178,6 +179,13 @@ export default function FlashcardApp() {
       setGameState('end');
     }
   };
+
+  const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
+    if (isAnswerRevealed && offset.y < -50 && velocity.y < -500) {
+      handleNext();
+    }
+  };
+
 
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
@@ -254,7 +262,7 @@ export default function FlashcardApp() {
   }
 
   if (gameState === 'end') {
-    const pct = Math.round((score / questions.length) * 100);
+    const pct = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="bg-white p-10 rounded-3xl shadow-xl max-w-md w-full text-center">
@@ -272,8 +280,18 @@ export default function FlashcardApp() {
   }
 
   const q = questions[currentQuestionIndex];
+  
+  if (!q) {
+      return (
+          <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
+            <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
+            <p className="text-slate-600 font-medium">Loading question...</p>
+          </div>
+      )
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8 overflow-hidden">
       <div className="w-full max-w-2xl flex justify-between items-center mb-6">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
@@ -281,53 +299,69 @@ export default function FlashcardApp() {
         </div>
         <div className="font-bold text-blue-600 px-4 py-1 bg-blue-100 rounded-full">Score: {score}</div>
       </div>
+        
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentQuestionIndex}
+          className="w-full max-w-2xl"
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 0 }}
+          dragElastic={0.1}
+          onDragEnd={(e, { offset, velocity }) => handleSwipe(offset, velocity)}
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -50, opacity: 0 }}
+          transition={{ ease: "easeInOut", duration: 0.3 }}
+        >
+          <div className="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col min-h-[500px]">
+            <div className="p-8 md:p-12 bg-blue-600 text-white text-center min-h-[200px] flex flex-col justify-center items-center">
+              <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-4">{q.date} • {q.month}</span>
+              <h2 className="text-2xl md:text-3xl font-bold leading-snug">{q.question}</h2>
+            </div>
 
-      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col min-h-[500px]">
-        <div className="p-8 md:p-12 bg-blue-600 text-white text-center min-h-[200px] flex flex-col justify-center items-center">
-          <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-4">{q.date} • {q.month}</span>
-          <h2 className="text-2xl md:text-3xl font-bold leading-snug">{q.question}</h2>
-        </div>
+            <div className="p-6 md:p-10 space-y-4 flex-grow">
+              {q.options.map((opt: string, i: number) => {
+                const isCorrect = opt === q.correctAnswer;
+                const isSelected = selectedOption === opt;
+                let styles = "border-2 border-slate-100 hover:border-blue-200 hover:bg-blue-50 text-slate-700";
+                
+                if (isAnswerRevealed) {
+                  if (isCorrect) styles = "bg-green-100 border-green-500 text-green-800";
+                  else if (isSelected) styles = "bg-red-100 border-red-500 text-red-800";
+                  else styles = "opacity-40 border-slate-50";
+                } else if (isSelected) {
+                  styles = "border-blue-500 bg-blue-50 text-blue-700";
+                }
 
-        <div className="p-6 md:p-10 space-y-4 flex-grow">
-          {q.options.map((opt: string, i: number) => {
-            const isCorrect = opt === q.correctAnswer;
-            const isSelected = selectedOption === opt;
-            let styles = "border-2 border-slate-100 hover:border-blue-200 hover:bg-blue-50 text-slate-700";
-            
-            if (isAnswerRevealed) {
-              if (isCorrect) styles = "bg-green-100 border-green-500 text-green-800";
-              else if (isSelected) styles = "bg-red-100 border-red-500 text-red-800";
-              else styles = "opacity-40 border-slate-50";
-            } else if (isSelected) {
-              styles = "border-blue-500 bg-blue-50 text-blue-700";
-            }
+                return (
+                  <button 
+                    key={i} 
+                    onClick={() => handleOptionClick(opt)}
+                    disabled={isAnswerRevealed}
+                    className={`w-full p-4 rounded-xl text-left font-semibold transition-all flex justify-between items-center ${styles}`}
+                  >
+                    <span>{opt}</span>
+                    {isAnswerRevealed && isCorrect && <CheckCircle size={20} className="text-green-600 flex-shrink-0" />}
+                    {isAnswerRevealed && isSelected && !isCorrect && <XCircle size={20} className="text-red-600 flex-shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
 
-            return (
-              <button 
-                key={i} 
-                onClick={() => handleOptionClick(opt)}
-                disabled={isAnswerRevealed}
-                className={`w-full p-4 rounded-xl text-left font-semibold transition-all flex justify-between items-center ${styles}`}
-              >
-                <span>{opt}</span>
-                {isAnswerRevealed && isCorrect && <CheckCircle size={20} className="text-green-600 flex-shrink-0" />}
-                {isAnswerRevealed && isSelected && !isCorrect && <XCircle size={20} className="text-red-600 flex-shrink-0" />}
-              </button>
-            );
-          })}
-        </div>
-
-        {isAnswerRevealed && (
-          <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end">
-            <button 
-              onClick={handleNext}
-              className="bg-slate-900 text-white font-bold py-3 px-10 rounded-xl hover:bg-black transition-all"
-            >
-              {currentQuestionIndex === questions.length - 1 ? "Show Results" : "Next Question →"}
-            </button>
+            {isAnswerRevealed && (
+              <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button 
+                  onClick={handleNext}
+                  className="bg-slate-900 text-white font-bold py-3 px-10 rounded-xl hover:bg-black transition-all"
+                >
+                  {currentQuestionIndex === questions.length - 1 ? "Show Results" : "Next Question →"}
+                </button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </motion.div>
+      </AnimatePresence>
+
       <div className="mt-8 w-full max-w-2xl h-1 bg-slate-200 rounded-full overflow-hidden">
         <div 
           className="h-full bg-blue-600 transition-all duration-300" 
