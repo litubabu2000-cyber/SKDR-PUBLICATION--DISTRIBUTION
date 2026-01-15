@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
@@ -47,8 +47,16 @@ export default function FlashcardApp() {
   const rotateX = useTransform(motionY, [-150, 150], [10, -10]);
   const cardOpacity = useTransform(motionY, [0, -100], [1, 0]);
 
+  // Sound effect ref
+  const swipeSoundRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
     fetchData();
+    // Initialize audio on the client side
+    if (typeof window !== 'undefined') {
+        swipeSoundRef.current = new Audio('https://cdn.jsdelivr.net/gh/k-next/sounds@main/sounds/swipe.mp3');
+        swipeSoundRef.current.volume = 0.5; // Adjust volume
+    }
   }, []);
 
   const fetchData = async () => {
@@ -194,8 +202,12 @@ export default function FlashcardApp() {
   
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
     if (offset.y < -50 && velocity.y < -500) {
-        if (isAnswerRevealed) handleNext();
+        if (isAnswerRevealed) {
+            swipeSoundRef.current?.play();
+            handleNext();
+        }
     } else if (offset.y > 50 && velocity.y > 500) {
+        swipeSoundRef.current?.play();
         handlePrevious();
     }
   };
@@ -369,6 +381,13 @@ export default function FlashcardApp() {
 
             {isAnswerRevealed && (
               <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end items-center gap-4">
+                 <button 
+                  onClick={handlePrevious}
+                  className="bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl hover:bg-slate-300 transition-all flex items-center gap-2"
+                >
+                  <ChevronLeft size={18}/>
+                  Previous
+                </button>
                 <button 
                   onClick={handleNext}
                   className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl hover:bg-black transition-all flex items-center gap-2"
