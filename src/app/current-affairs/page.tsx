@@ -201,10 +201,8 @@ export default function FlashcardApp() {
   
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
     if (offset.y < -50 && velocity.y < -200) {
-        if (isAnswerRevealed) {
-            swipeSoundRef.current?.play();
-            handleNext();
-        }
+        swipeSoundRef.current?.play();
+        handleNext();
     } else if (offset.y > 50 && velocity.y > 200) {
         swipeSoundRef.current?.play();
         handlePrevious();
