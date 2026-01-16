@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -260,79 +259,81 @@ export default function CurrentAffairsPage() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-neutral-900 flex items-center justify-center">
+    <div className="h-screen w-screen overflow-hidden bg-neutral-900">
         <div className="absolute top-0 left-0 right-0 p-4 z-20">
             <Progress value={(currentIndex / questions.length) * 100} className="bg-neutral-700 h-2" />
         </div>
 
-        <div className="relative w-full h-full max-w-md my-auto">
-          {questions.slice(currentIndex, currentIndex + 2).reverse().map((q, i) => {
-            const indexInStack = 1 - i;
-            const isCurrent = indexInStack === 0;
+        <div className="relative w-full h-full flex items-center justify-center p-4">
+          <div className="relative w-full h-full max-w-md">
+            {questions.slice(currentIndex, currentIndex + 2).reverse().map((q, i) => {
+              const indexInStack = 1 - i;
+              const isCurrent = indexInStack === 0;
 
-            return (
-              <motion.div
-                key={q.id}
-                className="absolute inset-0 p-4"
-                style={{
-                  transformOrigin: 'bottom center',
-                  zIndex: 10 - indexInStack,
-                }}
-                animate={cardControls}
-                drag={isCurrent ? "y" : false}
-                dragConstraints={{ top: 0, bottom: 0 }}
-                dragElastic={0.2}
-                onDragEnd={handleDragEnd}
-                initial={{
-                  y: isCurrent ? 0 : '120%',
-                  scale: 1 - indexInStack * 0.1,
-                  opacity: 1 - indexInStack * 0.3
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                <div className="bg-card text-foreground rounded-2xl h-full w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                  <div className='relative w-full h-48'>
-                    <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority={isCurrent} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-                  </div>
-                  <div className="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
-                      <h3 className="font-bold text-lg mb-4">{q.question}</h3>
+              return (
+                <motion.div
+                  key={q.id}
+                  className="absolute inset-0"
+                  style={{
+                    transformOrigin: 'bottom center',
+                    zIndex: 10 - indexInStack,
+                  }}
+                  animate={cardControls}
+                  drag={isCurrent ? "y" : false}
+                  dragConstraints={{ top: 0, bottom: 0 }}
+                  dragElastic={0.2}
+                  onDragEnd={handleDragEnd}
+                  initial={{
+                    y: isCurrent ? 0 : '120%',
+                    scale: 1 - indexInStack * 0.1,
+                    opacity: 1 - indexInStack * 0.3
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <div className="bg-card text-foreground rounded-2xl h-full w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
+                    <div className='relative w-full h-48'>
+                      <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority={isCurrent} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                     </div>
-                    <div className="space-y-2 mt-auto">
-                      {q.options.map((opt: string) => {
-                        const isSelected = answers[currentIndex]?.selection === opt;
-                        const isCorrect = q.correctAnswer === opt;
-                        const isRevealed = !!answers[currentIndex];
-                        
-                        return (
-                          <button
-                            key={opt}
-                            onClick={() => handleAnswerSelect(opt)}
-                            disabled={isRevealed}
-                            className={cn(
-                              "w-full text-left p-3 rounded-lg border text-sm font-medium transition-all duration-300",
-                              "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
-                              isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
-                              isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
-                              isRevealed && !isSelected && !isCorrect && "opacity-50"
-                            )}
-                          >
-                            <span className="flex items-center justify-between">
-                              {opt}
-                              {isRevealed && isCorrect && <Check size={16} />}
-                              {isRevealed && isSelected && !isCorrect && <X size={16} />}
-                            </span>
-                          </button>
-                        );
-                      })}
+                    <div className="p-5 flex-1 flex flex-col justify-between overflow-y-auto">
+                      <div>
+                        <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
+                        <h3 className="font-bold text-lg mb-4">{q.question}</h3>
+                      </div>
+                      <div className="space-y-2 mt-auto">
+                        {q.options.map((opt: string) => {
+                          const isSelected = answers[currentIndex]?.selection === opt;
+                          const isCorrect = q.correctAnswer === opt;
+                          const isRevealed = !!answers[currentIndex];
+                          
+                          return (
+                            <button
+                              key={opt}
+                              onClick={() => handleAnswerSelect(opt)}
+                              disabled={isRevealed}
+                              className={cn(
+                                "w-full text-left p-3 rounded-lg border text-sm font-medium transition-all duration-300",
+                                "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
+                                isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
+                                isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
+                                isRevealed && !isSelected && !isCorrect && "opacity-50"
+                              )}
+                            >
+                              <span className="flex items-center justify-between">
+                                {opt}
+                                {isRevealed && isCorrect && <Check size={16} />}
+                                {isRevealed && isSelected && !isCorrect && <X size={16} />}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
         {answers[currentIndex] && (
