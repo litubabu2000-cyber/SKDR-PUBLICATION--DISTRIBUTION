@@ -317,7 +317,7 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8 overflow-hidden" style={{ perspective: '1000px' }}>
+    <div className="h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8 overflow-hidden" style={{ perspective: '1000px' }}>
       <div className="w-full max-w-2xl flex justify-between items-center mb-6">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
