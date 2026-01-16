@@ -2,14 +2,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut } from 'lucide-react';
+import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, Tag } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 /**
  * Flashcard MCQ App - Current Affairs Edition
  * Features:
- * 1. Multi-tier filtering: Specific Date, Month, or Year.
- * 2. Smart column detection for Questions, Answers, and Dates.
+ * 1. Multi-tier filtering: Specific Date, Month, Year, or Category.
+ * 2. Smart column detection for Questions, Answers, Dates, and Categories.
  * 3. Automatic distractor generation for MCQs.
  * 4. Swipe up for next question, swipe down for previous.
  */
@@ -33,8 +33,8 @@ export default function FlashcardApp() {
   const [error, setError] = useState<string | null>(null);
 
   // Filter States
-  const [filterType, setFilterType] = useState('month'); // 'date', 'month', 'year'
-  const [filterOptions, setFilterOptions] = useState<{ dates: string[], months: string[], years: string[] }>({ dates: [], months: [], years: [] });
+  const [filterType, setFilterType] = useState('month'); // 'date', 'month', 'year', 'category'
+  const [filterOptions, setFilterOptions] = useState<{ dates: string[], months: string[], years: string[], categories: string[] }>({ dates: [], months: [], years: [], categories: [] });
   const [selectedValue, setSelectedValue] = useState('All');
 
   // Quiz play state
@@ -87,12 +87,14 @@ export default function FlashcardApp() {
     const dates = new Set<string>();
     const months = new Set<string>();
     const years = new Set<string>();
+    const categories = new Set<string>();
 
     const questions = data.map((item: any) => {
       const keys = Object.keys(item);
       const qKey = keys.find(k => /question|q\b|term|text/i.test(k)) || keys[0];
       const aKey = keys.find(k => /answer|ans|correct|back/i.test(k)) || keys[1];
       const dKey = keys.find(k => /date|timestamp|time|created/i.test(k));
+      const cKey = keys.find(k => /category|topic/i.test(k));
 
       const qText = String(item[qKey] || "");
       const aText = String(item[aKey] || "");
@@ -116,6 +118,10 @@ export default function FlashcardApp() {
         years.add(yearStr);
       }
 
+      const categoryStr = cKey && item[cKey] ? String(item[cKey]) : "Uncategorized";
+      if(categoryStr) categories.add(categoryStr);
+
+
       const optKeys = keys.filter(k => /option|choice|opt/i.test(k));
 
       return {
@@ -124,7 +130,8 @@ export default function FlashcardApp() {
         explicitOptions: optKeys.map(k => String(item[k])).filter(v => v && v !== "undefined"),
         date: dateStr,
         month: monthStr,
-        year: yearStr
+        year: yearStr,
+        category: categoryStr
       };
     }).filter(Boolean);
 
@@ -144,7 +151,8 @@ export default function FlashcardApp() {
       filters: {
         dates: Array.from(dates).sort((a, b) => new Date(b.split('/').reverse().join('-')).getTime() - new Date(a.split('/').reverse().join('-')).getTime()),
         months: Array.from(months).sort((a, b) => new Date(b).getTime() - new Date(a).getTime()),
-        years: Array.from(years).sort((a, b) => parseInt(b) - parseInt(a))
+        years: Array.from(years).sort((a, b) => parseInt(b) - parseInt(a)),
+        categories: Array.from(categories).sort()
       }
     };
   };
@@ -201,7 +209,6 @@ export default function FlashcardApp() {
   };
   
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
-    // A lower velocity threshold makes it easier to trigger
     if (offset.y < -50 && velocity.y < -200) { 
         swipeSoundRef.current?.play();
         handleNext();
@@ -259,6 +266,12 @@ export default function FlashcardApp() {
             >
               <Filter size={16} className="mb-1" /> YEAR
             </button>
+            <button 
+              onClick={() => { setFilterType('category'); setSelectedValue('All'); }}
+              className={`flex-1 flex flex-col items-center py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'category' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}
+            >
+              <Tag size={16} className="mb-1" /> CATEGORY
+            </button>
           </div>
 
           <div className="mb-8">
@@ -272,6 +285,7 @@ export default function FlashcardApp() {
               {filterType === 'date' && filterOptions.dates.map(d => <option key={d} value={d}>{d}</option>)}
               {filterType === 'month' && filterOptions.months.map(m => <option key={m} value={m}>{m}</option>)}
               {filterType === 'year' && filterOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
+              {filterType === 'category' && filterOptions.categories.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
 
