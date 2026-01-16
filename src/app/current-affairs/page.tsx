@@ -172,7 +172,7 @@ export default function CurrentAffairsPage() {
   };
 
   const handleDragEnd = (event: any, info: any) => {
-    if (answers[currentIndex] && info.offset.y < -50) {
+    if (info.offset.y < -50) {
       cardControls.start({ y: "-120%", transition: { duration: 0.5 } }).then(() => {
           handleNext();
           cardControls.start({ y: "120%", transition: { duration: 0 } }).then(() => {
@@ -279,7 +279,7 @@ export default function CurrentAffairsPage() {
                     zIndex: 10 - indexInStack,
                   }}
                   animate={cardControls}
-                  drag={isCurrent ? "y" : false}
+                  drag="y"
                   dragConstraints={{ top: 0, bottom: 0 }}
                   dragElastic={0.2}
                   onDragEnd={handleDragEnd}
