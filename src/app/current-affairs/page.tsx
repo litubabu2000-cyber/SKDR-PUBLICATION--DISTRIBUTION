@@ -209,12 +209,14 @@ export default function FlashcardApp() {
   };
   
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
-    if (offset.y < -50 && velocity.y < -200) { 
-        swipeSoundRef.current?.play();
-        handleNext();
-    } else if (offset.y > 50 && velocity.y > 200) {
-        swipeSoundRef.current?.play();
-        handlePrevious();
+    if (isAnswerRevealed) {
+      if (offset.y < -10 && velocity.y < -50) { 
+          swipeSoundRef.current?.play();
+          handleNext();
+      } else if (offset.y > 10 && velocity.y > 50) {
+          swipeSoundRef.current?.play();
+          handlePrevious();
+      }
     }
   };
 
