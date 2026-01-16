@@ -45,7 +45,6 @@ export default function FlashcardApp() {
   // 3D card effect
   const motionY = useMotionValue(0);
   const rotateX = useTransform(motionY, [-150, 150], [10, -10]);
-  const cardOpacity = useTransform(motionY, [0, -100], [1, 0]);
 
   // Sound effect ref
   const swipeSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -316,8 +315,8 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden py-4" style={{ perspective: '1000px' }}>
-      <div className="w-full max-w-2xl flex justify-between items-center px-4 mb-4">
+    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden" style={{ perspective: '1000px' }}>
+      <div className="w-full max-w-2xl flex justify-between items-center px-4 pt-4 mb-4">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
            <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
@@ -393,7 +392,7 @@ export default function FlashcardApp() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="w-full max-w-2xl mt-4 px-4">
+      <div className="w-full max-w-2xl mt-4 px-4 pb-4">
         <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
             <div 
             className="h-full bg-blue-600 transition-all duration-300" 
