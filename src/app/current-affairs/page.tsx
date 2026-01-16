@@ -316,8 +316,8 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col items-center p-4 md:p-8 overflow-hidden" style={{ perspective: '1000px' }}>
-      <div className="w-full max-w-2xl flex justify-between items-center mb-6">
+    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden py-4" style={{ perspective: '1000px' }}>
+      <div className="w-full max-w-2xl flex justify-between items-center px-4 mb-4">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
            <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
@@ -333,7 +333,7 @@ export default function FlashcardApp() {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentQuestionIndex}
-          className="w-full max-w-2xl flex-1 flex flex-col min-h-0"
+          className="w-full max-w-2xl flex-1 flex flex-col min-h-0 px-4"
           style={{ y: motionY, rotateX, transformStyle: 'preserve-3d' }}
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
@@ -393,11 +393,13 @@ export default function FlashcardApp() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="mt-8 w-full max-w-2xl h-1 bg-slate-200 rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-blue-600 transition-all duration-300" 
-          style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-        />
+      <div className="w-full max-w-2xl mt-4 px-4">
+        <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+            <div 
+            className="h-full bg-blue-600 transition-all duration-300" 
+            style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+            />
+        </div>
       </div>
     </div>
   );
