@@ -172,7 +172,7 @@ export default function CurrentAffairsPage() {
   };
 
   const handleDragEnd = (event: any, info: any) => {
-    if (info.offset.y < -50) {
+    if (answers[currentIndex] && info.offset.y < -50) {
       cardControls.start({ y: "-120%", transition: { duration: 0.5 } }).then(() => {
           handleNext();
           cardControls.start({ y: "120%", transition: { duration: 0 } }).then(() => {
@@ -279,7 +279,7 @@ export default function CurrentAffairsPage() {
                     zIndex: 10 - indexInStack,
                   }}
                   animate={cardControls}
-                  drag="y"
+                  drag={answers[currentIndex] ? "y" : false}
                   dragConstraints={{ top: 0, bottom: 0 }}
                   dragElastic={0.2}
                   onDragEnd={handleDragEnd}
@@ -295,12 +295,12 @@ export default function CurrentAffairsPage() {
                       <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority={isCurrent} />
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                     </div>
-                    <div className="p-5 flex-1 flex flex-col justify-between overflow-y-auto">
+                    <div className="p-5 flex-1 flex flex-col overflow-y-auto">
                       <div>
                         <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
                         <h3 className="font-bold text-lg mb-4">{q.question}</h3>
                       </div>
-                      <div className="space-y-2 mt-auto">
+                      <div className="space-y-2">
                         {q.options.map((opt: string) => {
                           const isSelected = answers[currentIndex]?.selection === opt;
                           const isCorrect = q.correctAnswer === opt;
