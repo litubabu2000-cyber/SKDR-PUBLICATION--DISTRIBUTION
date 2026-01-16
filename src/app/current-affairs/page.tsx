@@ -26,22 +26,22 @@ const shuffleArray = (array: any[]) => {
 };
 
 export default function FlashcardApp() {
-  const [gameState, setGameState('start'); 
-  const [masterQuestions, setMasterQuestions<any[]>([]);
-  const [questions, setQuestions<any[]>([]);
-  const [loading, setLoading(false);
-  const [error, setError<string | null>(null);
+  const [gameState, setGameState] = useState('start'); 
+  const [masterQuestions, setMasterQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Filter States
-  const [filterType, setFilterType('month'); // 'date', 'month', 'year'
-  const [filterOptions, setFilterOptions<{ dates: string[], months: string[], years: string[] }>({ dates: [], months: [], years: [] });
-  const [selectedValue, setSelectedValue('All');
+  const [filterType, setFilterType] = useState('month'); // 'date', 'month', 'year'
+  const [filterOptions, setFilterOptions] = useState<{ dates: string[], months: string[], years: string[] }>({ dates: [], months: [], years: [] });
+  const [selectedValue, setSelectedValue] = useState('All');
 
   // Quiz play state
-  const [currentQuestionIndex, setCurrentQuestionIndex(0);
-  const [score, setScore(0);
-  const [selectedOption, setSelectedOption<string | null>(null);
-  const [isAnswerRevealed, setIsAnswerRevealed(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
   // 3D card effect
   const motionY = useMotionValue(0);
@@ -201,7 +201,8 @@ export default function FlashcardApp() {
   };
   
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
-    if (offset.y < -50 && velocity.y < -200) {
+    // A lower velocity threshold makes it easier to trigger
+    if (offset.y < -50 && velocity.y < -200) { 
         swipeSoundRef.current?.play();
         handleNext();
     } else if (offset.y > 50 && velocity.y > 200) {
@@ -209,6 +210,7 @@ export default function FlashcardApp() {
         handlePrevious();
     }
   };
+
 
   if (loading) return (
     <div className="h-screen flex flex-col items-center justify-center bg-slate-50">
@@ -314,8 +316,8 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden px-4" style={{ perspective: '1000px' }}>
-      <div className="w-full max-w-2xl flex justify-between items-center shrink-0 pt-4">
+    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden" style={{ perspective: '1000px' }}>
+       <div className="w-full max-w-2xl flex justify-between items-center shrink-0 pt-4 px-4">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
            <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
@@ -381,7 +383,7 @@ export default function FlashcardApp() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="w-full max-w-2xl shrink-0 pb-4">
+      <div className="w-full max-w-2xl shrink-0 pb-4 px-4">
         <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
             <div 
             className="h-full bg-blue-600 transition-all duration-300" 
@@ -392,4 +394,3 @@ export default function FlashcardApp() {
     </div>
   );
 }
-
