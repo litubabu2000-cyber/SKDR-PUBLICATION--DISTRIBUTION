@@ -1,7 +1,8 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -34,8 +35,6 @@ export default function CurrentAffairsPage() {
   const [answers, setAnswers] = useState<Record<number, { selection: string; isCorrect: boolean }>>({});
   
   const score = Object.values(answers).filter(a => a.isCorrect).length;
-
-  const cardControls = useAnimation();
 
   useEffect(() => {
     fetchData();
@@ -170,19 +169,6 @@ export default function CurrentAffairsPage() {
         setGameState('end');
     }
   };
-
-  const handleDragEnd = (event: any, info: any) => {
-    if (answers[currentIndex] && info.offset.y < -50) {
-      cardControls.start({ y: "-120%", transition: { duration: 0.5 } }).then(() => {
-          handleNext();
-          cardControls.start({ y: "120%", transition: { duration: 0 } }).then(() => {
-              cardControls.start({ y: 0, transition: { duration: 0.5 } });
-          });
-      });
-    } else {
-        cardControls.start({ y: 0 });
-    }
-  };
   
   const resetQuiz = () => {
       setGameState('start');
@@ -223,7 +209,7 @@ export default function CurrentAffairsPage() {
 
             <div className="mb-8">
               <label className="block text-sm font-semibold text-neutral-300 mb-2">Select {filterType}</label>
-              <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} className="w-full p-4 bg-neutral-700 border-2 border-neutral-600 rounded-xl outline-none appearance-none text-white focus:border-blue-500">
+              <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} className="w-full p-4 bg-neutral-700 border-2 border-neutral-600 rounded-xl outline-none appearance-none text-black focus:border-blue-500">
                 <option value="All">All {filterType}s ({masterQuestions.length})</option>
                 {filterType === 'date' && filterOptions.dates.map(d => <option key={d} value={d}>{d}</option>)}
                 {filterType === 'month' && filterOptions.months.map(m => <option key={m} value={m}>{m}</option>)}
@@ -259,89 +245,81 @@ export default function CurrentAffairsPage() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-neutral-900">
-        <div className="absolute top-0 left-0 right-0 p-4 z-20">
-            <Progress value={(currentIndex / questions.length) * 100} className="bg-neutral-700 h-2" />
-        </div>
+    <div className="h-screen w-screen overflow-hidden bg-neutral-900 flex flex-col">
+      <div className="p-4 z-20">
+        <Progress value={(currentIndex / questions.length) * 100} className="bg-neutral-700 h-2" />
+      </div>
 
-        <div className="relative w-full h-full flex items-center justify-center p-4">
-          <div className="relative w-full h-full max-w-md">
-            {questions.slice(currentIndex, currentIndex + 2).reverse().map((q, i) => {
-              const indexInStack = 1 - i;
-              const isCurrent = indexInStack === 0;
-
-              return (
-                <motion.div
-                  key={q.id}
-                  className="absolute inset-0"
-                  style={{
-                    transformOrigin: 'bottom center',
-                    zIndex: 10 - indexInStack,
-                  }}
-                  animate={cardControls}
-                  drag={answers[currentIndex] ? "y" : false}
-                  dragConstraints={{ top: 0, bottom: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={handleDragEnd}
-                  initial={{
-                    y: isCurrent ? 0 : '120%',
-                    scale: 1 - indexInStack * 0.1,
-                    opacity: 1 - indexInStack * 0.3
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  <div className="bg-card text-foreground rounded-2xl h-full w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                    <div className='relative w-full h-48'>
-                      <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority={isCurrent} />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-                    </div>
-                    <div className="p-5 flex-1 flex flex-col overflow-y-auto">
-                      <div>
-                        <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
-                        <h3 className="font-bold text-lg mb-4">{q.question}</h3>
-                      </div>
-                      <div className="space-y-2">
-                        {q.options.map((opt: string) => {
-                          const isSelected = answers[currentIndex]?.selection === opt;
-                          const isCorrect = q.correctAnswer === opt;
-                          const isRevealed = !!answers[currentIndex];
-                          
-                          return (
-                            <button
-                              key={opt}
-                              onClick={() => handleAnswerSelect(opt)}
-                              disabled={isRevealed}
-                              className={cn(
-                                "w-full text-left p-3 rounded-lg border text-sm font-medium transition-all duration-300",
-                                "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
-                                isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
-                                isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
-                                isRevealed && !isSelected && !isCorrect && "opacity-50"
-                              )}
-                            >
-                              <span className="flex items-center justify-between">
-                                {opt}
-                                {isRevealed && isCorrect && <Check size={16} />}
-                                {isRevealed && isSelected && !isCorrect && <X size={16} />}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
+      <div className="relative flex-1 w-full flex items-center justify-center p-4">
+        <AnimatePresence initial={false}>
+          {questions.slice(currentIndex, currentIndex + 1).map(q => (
+            <motion.div
+              key={q.id}
+              className="absolute w-full h-full max-w-md"
+              drag={answers[currentIndex] ? "y" : false}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.1}
+              onDragEnd={(event, info) => {
+                if (answers[currentIndex] && info.offset.y < -50) {
+                  handleNext();
+                }
+              }}
+              initial={{ y: 300, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            >
+              <div className="bg-card text-foreground rounded-2xl h-full w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
+                <div className='relative w-full h-48'>
+                  <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                </div>
+                <div className="p-5 flex-1 flex flex-col overflow-y-auto">
+                  <div>
+                    <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
+                    <h3 className="font-bold text-lg mb-4">{q.question}</h3>
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
+                  <div className="space-y-2">
+                    {q.options.map((opt: string) => {
+                      const isSelected = answers[currentIndex]?.selection === opt;
+                      const isCorrect = q.correctAnswer === opt;
+                      const isRevealed = !!answers[currentIndex];
+                      
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => handleAnswerSelect(opt)}
+                          disabled={isRevealed}
+                          className={cn(
+                            "w-full text-left p-3 rounded-lg border text-sm font-medium transition-all duration-300",
+                            "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
+                            isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
+                            isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
+                            isRevealed && !isSelected && !isCorrect && "opacity-50"
+                          )}
+                        >
+                          <span className="flex items-center justify-between">
+                            {opt}
+                            {isRevealed && isCorrect && <Check size={16} />}
+                            {isRevealed && isSelected && !isCorrect && <X size={16} />}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
 
-        {answers[currentIndex] && (
-             <div className="absolute bottom-6 left-0 right-0 z-30 text-center text-white/50 animate-pulse pointer-events-none">
-                <ArrowUp className="inline-block" />
-                <p className="text-xs font-semibold">Swipe up for next</p>
-            </div>
-        )}
+      {answers[currentIndex] && (
+        <div className="absolute bottom-6 left-0 right-0 z-30 text-center text-white/50 animate-pulse pointer-events-none">
+          <ArrowUp className="inline-block" />
+          <p className="text-xs font-semibold">Swipe up for next</p>
+        </div>
+      )}
     </div>
   );
 }
