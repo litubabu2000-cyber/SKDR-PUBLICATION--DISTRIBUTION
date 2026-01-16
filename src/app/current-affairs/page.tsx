@@ -212,14 +212,14 @@ export default function FlashcardApp() {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
+    <div className="h-screen flex flex-col items-center justify-center bg-slate-50">
       <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
       <p className="text-slate-600 font-medium">Syncing with Database...</p>
     </div>
   );
 
   if (error) return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
+    <div className="h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
       <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
       <h2 className="text-xl font-bold mb-2">Error</h2>
       <p className="text-slate-600 text-center mb-6">{error}</p>
@@ -229,7 +229,7 @@ export default function FlashcardApp() {
 
   if (gameState === 'start') {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+      <div className="h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full">
           <div className="flex justify-center mb-6">
             <div className="p-4 bg-blue-100 rounded-2xl text-blue-600">
@@ -288,7 +288,7 @@ export default function FlashcardApp() {
   if (gameState === 'end') {
     const pct = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+      <div className="h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="bg-white p-10 rounded-3xl shadow-xl max-w-md w-full text-center">
           <Trophy size={80} className="mx-auto text-yellow-500 mb-6" />
           <h2 className="text-3xl font-bold mb-2">Quiz Finished!</h2>
@@ -307,7 +307,7 @@ export default function FlashcardApp() {
   
   if (!q) {
       return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
+          <div className="h-screen flex flex-col items-center justify-center bg-slate-50">
             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
             <p className="text-slate-600 font-medium">Loading question...</p>
           </div>
@@ -315,8 +315,8 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden" style={{ perspective: '1000px' }}>
-      <div className="w-full max-w-2xl flex justify-between items-center px-4 pt-4 mb-4">
+    <div className="h-screen bg-slate-50 flex flex-col items-center p-4 gap-4 overflow-hidden" style={{ perspective: '1000px' }}>
+      <div className="w-full max-w-2xl flex justify-between items-center shrink-0">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
            <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
@@ -332,7 +332,7 @@ export default function FlashcardApp() {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentQuestionIndex}
-          className="w-full max-w-2xl flex-1 flex flex-col min-h-0 px-4"
+          className="w-full max-w-2xl flex-1 flex flex-col min-h-0"
           style={{ y: motionY, rotateX, transformStyle: 'preserve-3d' }}
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
@@ -392,7 +392,7 @@ export default function FlashcardApp() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="w-full max-w-2xl mt-4 px-4 pb-4">
+      <div className="w-full max-w-2xl shrink-0">
         <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
             <div 
             className="h-full bg-blue-600 transition-all duration-300" 
