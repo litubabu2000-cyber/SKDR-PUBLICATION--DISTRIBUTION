@@ -1,27 +1,14 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Play, 
-  RotateCcw, 
-  CheckCircle, 
-  XCircle, 
-  Loader2, 
-  AlertCircle, 
-  BookOpen, 
-  Trophy, 
-  Calendar, 
-  Filter, 
-  Clock, 
-  Tag,
-  ChevronLeft,
-  ChevronRight
-} from 'lucide-react';
+import { motion, useAnimation } from 'framer-motion';
+import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
-
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxRx6jx4bmKcybd_uFaVWZP9Oh3bwXP-4GmAqBMSr7LmUnarozWsRjqYzbWa8J82fgrzQ/exec";
 
@@ -34,31 +21,29 @@ const shuffleArray = (array: any[]) => {
   return arr;
 };
 
-export default function DailyQuizPage() {
-  const [gameState, setGameState] = useState('start'); 
+export default function CurrentAffairsPage() {
+  const [gameState, setGameState] = useState<'start' | 'playing' | 'end' | 'loading' | 'error'>('loading');
   const [masterQuestions, setMasterQuestions] = useState<any[]>([]);
   const [questions, setQuestions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filter States
-  const [filterType, setFilterType] = useState('month'); // 'date', 'month', 'year', 'category'
+  const [filterType, setFilterType] = useState('month');
   const [filterOptions, setFilterOptions] = useState<{ dates: string[], months: string[], years: string[], categories: string[] }>({ dates: [], months: [], years: [], categories: [] });
   const [selectedValue, setSelectedValue] = useState('All');
 
-  // Quiz play state
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, { selection: string; isCorrect: boolean }>>({});
+  
+  const score = Object.values(answers).filter(a => a.isCorrect).length;
 
+  const cardControls = useAnimation();
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
+    setGameState('loading');
     setError(null);
     try {
       const response = await fetch(API_URL);
@@ -72,22 +57,22 @@ export default function DailyQuizPage() {
       
       setMasterQuestions(processed.questions);
       setFilterOptions(processed.filters);
-      setLoading(false);
+      setGameState('start');
     } catch (err: any) {
       setError(err.message);
-      setLoading(false);
+      setGameState('error');
     }
   };
 
   const processData = (rawData: any) => {
-    let data = Array.isArray(rawData) ? rawData : (Object.values(rawData).find(v => Array.isArray(v)) || []);
+    let data = Array.isArray(rawData) ? rawData : (Object.values(rawData).find((v: any) => Array.isArray(v)) || []);
     const allAnswers: string[] = [];
     const dates = new Set<string>();
     const months = new Set<string>();
     const years = new Set<string>();
     const categories = new Set<string>();
 
-    const questions = data.map((item: any) => {
+    const questions = data.map((item: any, index: number) => {
       const keys = Object.keys(item);
       const qKey = keys.find(k => /question|q\b|term|text/i.test(k)) || keys[0];
       const aKey = keys.find(k => /answer|ans|correct|back/i.test(k)) || keys[1];
@@ -100,14 +85,13 @@ export default function DailyQuizPage() {
 
       allAnswers.push(aText);
 
-      // Date Processing
-      let dObj = dKey ? new Date(item[dKey]) : null;
-      let dateStr = "Unknown";
-      let monthStr = "Unknown";
-      let yearStr = "Unknown";
+      let dObj = dKey && item[dKey] ? new Date(item[dKey]) : null;
+      let dateStr = "Unknown Date";
+      let monthStr = "Unknown Month";
+      let yearStr = "Unknown Year";
 
       if (dObj && !isNaN(dObj.getTime())) {
-        dateStr = dObj.toLocaleDateString('en-GB'); // DD/MM/YYYY
+        dateStr = dObj.toLocaleDateString('en-GB');
         monthStr = dObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
         yearStr = dObj.getFullYear().toString();
         
@@ -116,13 +100,13 @@ export default function DailyQuizPage() {
         years.add(yearStr);
       }
 
-      const categoryStr = cKey && item[cKey] ? String(item[cKey]) : "Uncategorized";
-      if(categoryStr) categories.add(categoryStr);
-
+      const categoryStr = cKey && item[cKey] ? String(item[cKey]) : "General";
+      categories.add(categoryStr);
 
       const optKeys = keys.filter(k => /option|choice|opt/i.test(k));
 
       return {
+        id: index,
         question: qText,
         correctAnswer: aText,
         explicitOptions: optKeys.map(k => String(item[k])).filter(v => v && v !== "undefined"),
@@ -133,10 +117,9 @@ export default function DailyQuizPage() {
       };
     }).filter(Boolean);
 
-    // Finalize MCQ options
     const finalQuestions = (questions as any[]).map(q => {
       if (!q) return null;
-      let options = q.explicitOptions.length > 0 ? [...new Set([...q.explicitOptions, q.correctAnswer])] : null;
+      let options = q.explicitOptions.length > 0 ? [...new Set([q.correctAnswer, ...q.explicitOptions])] : null;
       if (!options || options.length < 2) {
         const distractors = shuffleArray(allAnswers.filter(a => a !== q.correctAnswer)).slice(0, 3);
         options = [q.correctAnswer, ...distractors];
@@ -150,233 +133,214 @@ export default function DailyQuizPage() {
         dates: Array.from(dates).sort((a, b) => new Date(b.split('/').reverse().join('-')).getTime() - new Date(a.split('/').reverse().join('-')).getTime()),
         months: Array.from(months).sort((a, b) => new Date(b).getTime() - new Date(a).getTime()),
         years: Array.from(years).sort((a, b) => parseInt(b) - parseInt(a)),
-        categories: Array.from(categories).sort()
+        categories: ["General", ...Array.from(categories).filter(c => c !== "General").sort()]
       }
     };
   };
-  
+
   const handleStart = () => {
     let filtered = masterQuestions;
     if (selectedValue !== 'All') {
       filtered = masterQuestions.filter(q => q[filterType] === selectedValue);
     }
-    
-    if (filtered.length === 0) return;
+    if (filtered.length === 0) {
+        alert("No questions found for this filter. Please try another.");
+        return;
+    };
     
     setQuestions(shuffleArray(filtered));
     setGameState('playing');
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    resetQuestionState();
+    setCurrentIndex(0);
+    setAnswers({});
   };
-
-  const resetQuestionState = () => {
-    setSelectedOption(null);
-    setIsAnswerRevealed(false);
-  };
-
-  const handleRetry = () => {
-    setQuestions(shuffleArray(questions));
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    resetQuestionState();
-    setGameState('playing');
-  };
-
-  const handleOptionClick = (option: string) => {
-    if (isAnswerRevealed) return;
-    setSelectedOption(option);
-    setIsAnswerRevealed(true);
-    if (option === questions[currentQuestionIndex].correctAnswer) setScore(s => s + 1);
+  
+  const handleAnswerSelect = (option: string) => {
+    if (answers[currentIndex]) return;
+    
+    const isCorrect = questions[currentIndex].correctAnswer === option;
+    setAnswers(prev => ({
+        ...prev,
+        [currentIndex]: { selection: option, isCorrect }
+    }));
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-      resetQuestionState();
+    if (currentIndex < questions.length - 1) {
+        setCurrentIndex(prev => prev + 1);
     } else {
-      setGameState('end');
+        setGameState('end');
     }
   };
 
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-      resetQuestionState();
+  const handleDragEnd = (event: any, info: any) => {
+    if (answers[currentIndex] && info.offset.y < -50) {
+      cardControls.start({ y: "-120%", transition: { duration: 0.5 } }).then(() => {
+          handleNext();
+          cardControls.start({ y: "120%", transition: { duration: 0 } }).then(() => {
+              cardControls.start({ y: 0, transition: { duration: 0.5 } });
+          });
+      });
+    } else {
+        cardControls.start({ y: 0 });
     }
   };
+  
+  const resetQuiz = () => {
+      setGameState('start');
+      setCurrentIndex(0);
+      setAnswers({});
+  }
 
-
-  if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-      <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-      <p className="text-slate-600 font-medium">Syncing with Database...</p>
+  if (gameState === 'loading') return (
+    <div className="h-screen w-screen flex flex-col items-center justify-center bg-neutral-900 text-white">
+      <Loader2 className="w-12 h-12 animate-spin mb-4" />
+      <p className="text-neutral-400">Loading Current Affairs...</p>
     </div>
   );
 
-  if (error) return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
+  if (gameState === 'error') return (
+    <div className="h-screen w-screen flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
       <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
-      <h2 className="text-xl font-bold mb-2">Error</h2>
-      <p className="text-slate-600 text-center mb-6">{error}</p>
-      <button onClick={fetchData} className="px-6 py-2 bg-blue-600 text-white rounded-lg">Retry</button>
+      <h2 className="text-xl font-bold mb-2">Something went wrong</h2>
+      <p className="text-neutral-400 text-center mb-6">{error}</p>
+      <Button onClick={fetchData} variant="secondary">Try Again</Button>
     </div>
   );
 
   if (gameState === 'start') {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full">
-          <div className="flex justify-center mb-6">
-            <div className="p-4 bg-blue-100 rounded-2xl text-blue-600">
-              <BookOpen size={40} />
+      <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-slate-800 flex items-center justify-center p-4">
+        <Card className="bg-neutral-800/50 border-neutral-700 text-white shadow-xl max-w-md w-full backdrop-blur-sm">
+          <CardContent className="p-8">
+            <h1 className="text-3xl font-bold text-center mb-2">Current Affairs Shorts</h1>
+            <p className="text-neutral-400 text-center mb-8">Test your knowledge with quick, swipeable questions.</p>
+            
+            <div className="flex bg-neutral-900/70 p-1 rounded-xl mb-6">
+              <button onClick={() => { setFilterType('date'); setSelectedValue('All'); }} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'date' ? 'bg-white text-black shadow-sm' : 'text-neutral-400'}`}><Calendar size={14}/>DATE</button>
+              <button onClick={() => { setFilterType('month'); setSelectedValue('All'); }} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'month' ? 'bg-white text-black shadow-sm' : 'text-neutral-400'}`}><Clock size={14}/>MONTH</button>
+              <button onClick={() => { setFilterType('year'); setSelectedValue('All'); }} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'year' ? 'bg-white text-black shadow-sm' : 'text-neutral-400'}`}><Filter size={14}/>YEAR</button>
+              <button onClick={() => { setFilterType('category'); setSelectedValue('All'); }} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'category' ? 'bg-white text-black shadow-sm' : 'text-neutral-400'}`}><Tag size={14}/>CATEGORY</button>
             </div>
-          </div>
-          <h1 className="text-3xl font-bold text-center text-slate-800 mb-2">Daily Quiz</h1>
-          <p className="text-slate-500 text-center mb-8">Choose how you want to filter the current affairs</p>
 
-          <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
-            <button 
-              onClick={() => { setFilterType('date'); setSelectedValue('All'); }}
-              className={`flex-1 flex flex-col items-center py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'date' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}
-            >
-              <Calendar size={16} className="mb-1" /> DATE
-            </button>
-            <button 
-              onClick={() => { setFilterType('month'); setSelectedValue('All'); }}
-              className={`flex-1 flex flex-col items-center py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'month' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}
-            >
-              <Clock size={16} className="mb-1" /> MONTH
-            </button>
-            <button 
-              onClick={() => { setFilterType('year'); setSelectedValue('All'); }}
-              className={`flex-1 flex flex-col items-center py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'year' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}
-            >
-              <Filter size={16} className="mb-1" /> YEAR
-            </button>
-            <button 
-              onClick={() => { setFilterType('category'); setSelectedValue('All'); }}
-              className={`flex-1 flex flex-col items-center py-2 rounded-lg text-xs font-bold transition-all ${filterType === 'category' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}
-            >
-              <Tag size={16} className="mb-1" /> CATEGORY
-            </button>
-          </div>
-
-          <div className="mb-8">
-            <label className="block text-sm font-semibold text-slate-600 mb-2">Select {filterType.toUpperCase()}</label>
-            <select 
-              value={selectedValue}
-              onChange={(e) => setSelectedValue(e.target.value)}
-              className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:border-blue-500 outline-none appearance-none text-slate-800"
-            >
-              <option value="All">All {filterType}s ({masterQuestions.length})</option>
-              {filterType === 'date' && filterOptions.dates.map(d => <option key={d} value={d}>{d}</option>)}
-              {filterType === 'month' && filterOptions.months.map(m => <option key={m} value={m}>{m}</option>)}
-              {filterType === 'year' && filterOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
-              {filterType === 'category' && filterOptions.categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-
-          <button 
-            onClick={handleStart}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
-          >
-            <Play fill="white" size={20} /> Start Practice
-          </button>
-        </div>
+            <div className="mb-8">
+              <label className="block text-sm font-semibold text-neutral-300 mb-2">Select {filterType}</label>
+              <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} className="w-full p-4 bg-neutral-700 border-2 border-neutral-600 rounded-xl outline-none appearance-none text-white focus:border-blue-500">
+                <option value="All">All {filterType}s ({masterQuestions.length})</option>
+                {filterType === 'date' && filterOptions.dates.map(d => <option key={d} value={d}>{d}</option>)}
+                {filterType === 'month' && filterOptions.months.map(m => <option key={m} value={m}>{m}</option>)}
+                {filterType === 'year' && filterOptions.years.map(y => <option key={y} value={y}>{y}</option>)}
+                {filterType === 'category' && filterOptions.categories.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            
+            <Button onClick={handleStart} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+              <Play fill="white" size={16} /> Start Quiz
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   if (gameState === 'end') {
-    const pct = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
+    const accuracy = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <div className="bg-white p-10 rounded-3xl shadow-xl max-w-md w-full text-center">
-          <Trophy size={80} className="mx-auto text-yellow-500 mb-6" />
-          <h2 className="text-3xl font-bold mb-2">Quiz Finished!</h2>
-          <div className="text-5xl font-black text-blue-600 mb-4">{score} / {questions.length}</div>
-          <p className="text-slate-500 mb-8 font-medium">Accuracy: {pct}%</p>
-          <div className="flex gap-4">
-            <button onClick={() => setGameState('start')} className="flex-1 py-4 border-2 border-slate-100 font-bold rounded-2xl hover:bg-slate-50">Home</button>
-            <button onClick={handleRetry} className="flex-1 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-md">Retry Set</button>
-          </div>
+      <div className="h-screen w-screen flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
+        <Trophy className="w-20 h-20 text-yellow-400 mb-6 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]" />
+        <h2 className="text-3xl font-bold mb-2">Quiz Finished!</h2>
+        <p className="text-neutral-400 mb-8">You've completed the quiz.</p>
+        <div className="text-6xl font-black text-white mb-2">{score} / {questions.length}</div>
+        <p className="text-lg text-neutral-300 font-medium mb-8">Your Accuracy: {accuracy}%</p>
+        <div className="flex gap-4">
+          <Button onClick={resetQuiz} variant="secondary" className="bg-neutral-700 hover:bg-neutral-600">Play Again</Button>
+          <Button onClick={() => window.location.href = '/'}>Go Home</Button>
         </div>
       </div>
     );
   }
 
-  const q = questions[currentQuestionIndex];
-  
-  if (!q) {
-      return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-            <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-            <p className="text-slate-600 font-medium">Loading question...</p>
-          </div>
-      )
-  }
-
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        <div className="flex justify-between items-center mb-2 text-sm text-slate-500">
-          <span>Question {currentQuestionIndex + 1} of {questions.length}</span>
-          <span>Score: {score}</span>
+    <div className="h-screen w-screen overflow-hidden bg-neutral-900 flex items-center justify-center">
+        <div className="absolute top-0 left-0 right-0 p-4 z-20">
+            <Progress value={(currentIndex / questions.length) * 100} className="bg-neutral-700 h-2" />
         </div>
-        <Progress value={((currentQuestionIndex + 1) / questions.length) * 100} className="mb-4" />
-        
-        <Card>
-          <CardHeader>
-            <CardDescription className="text-xs">{q.date} • {q.category}</CardDescription>
-            <CardTitle className="text-xl leading-relaxed">{q.question}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {q.options.map((opt: string, i: number) => {
-                const isCorrect = opt === q.correctAnswer;
-                const isSelected = selectedOption === opt;
-                let stateStyles = "";
-                
-                if (isAnswerRevealed) {
-                  if (isCorrect) stateStyles = "bg-green-100 border-green-400 text-green-800 dark:bg-green-900/30 dark:border-green-700 dark:text-white";
-                  else if (isSelected) stateStyles = "bg-red-100 border-red-400 text-red-800 dark:bg-red-900/30 dark:border-red-700 dark:text-white";
-                  else stateStyles = "opacity-60";
-                }
 
-                return (
-                  <Button 
-                    key={i} 
-                    variant="outline"
-                    onClick={() => handleOptionClick(opt)}
-                    disabled={isAnswerRevealed}
-                    className={cn(
-                        "w-full justify-start h-auto py-3 px-4 text-left font-normal whitespace-normal transition-all duration-300",
-                        stateStyles
-                    )}
-                  >
-                    <span className="flex-1 text-base">{opt}</span>
-                    {isAnswerRevealed && isCorrect && <CheckCircle size={20} className="text-green-500" />}
-                    {isAnswerRevealed && isSelected && !isCorrect && <XCircle size={20} className="text-red-500" />}
-                  </Button>
-                );
-              })}
+        <div className="relative w-full h-full max-w-md my-auto">
+          {questions.slice(currentIndex, currentIndex + 2).reverse().map((q, i) => {
+            const indexInStack = 1 - i;
+            const isCurrent = indexInStack === 0;
+
+            return (
+              <motion.div
+                key={q.id}
+                className="absolute inset-0 p-4"
+                style={{
+                  transformOrigin: 'bottom center',
+                  zIndex: 10 - indexInStack,
+                }}
+                animate={cardControls}
+                drag={isCurrent ? "y" : false}
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+                initial={{
+                  y: isCurrent ? 0 : '120%',
+                  scale: 1 - indexInStack * 0.1,
+                  opacity: 1 - indexInStack * 0.3
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <div className="bg-card text-foreground rounded-2xl h-full w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
+                  <div className='relative w-full h-48'>
+                    <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority={isCurrent} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                  </div>
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
+                      <h3 className="font-bold text-lg mb-4">{q.question}</h3>
+                    </div>
+                    <div className="space-y-2 mt-auto">
+                      {q.options.map((opt: string) => {
+                        const isSelected = answers[currentIndex]?.selection === opt;
+                        const isCorrect = q.correctAnswer === opt;
+                        const isRevealed = !!answers[currentIndex];
+                        
+                        return (
+                          <button
+                            key={opt}
+                            onClick={() => handleAnswerSelect(opt)}
+                            disabled={isRevealed}
+                            className={cn(
+                              "w-full text-left p-3 rounded-lg border text-sm font-medium transition-all duration-300",
+                              "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
+                              isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
+                              isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
+                              isRevealed && !isSelected && !isCorrect && "opacity-50"
+                            )}
+                          >
+                            <span className="flex items-center justify-between">
+                              {opt}
+                              {isRevealed && isCorrect && <Check size={16} />}
+                              {isRevealed && isSelected && !isCorrect && <X size={16} />}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {answers[currentIndex] && (
+             <div className="absolute bottom-6 left-0 right-0 z-30 text-center text-white/50 animate-pulse pointer-events-none">
+                <ArrowUp className="inline-block" />
+                <p className="text-xs font-semibold">Swipe up for next</p>
             </div>
-          </CardContent>
-          <CardFooter className="flex justify-between mt-4">
-            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} variant="outline">
-              <ChevronLeft className="mr-2 h-4 w-4" /> Previous
-            </Button>
-            <Button onClick={() => setGameState('start')} variant="destructive">
-              End Quiz
-            </Button>
-            <Button onClick={handleNext} disabled={!isAnswerRevealed}>
-               {currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next'}
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+        )}
     </div>
   );
 }
