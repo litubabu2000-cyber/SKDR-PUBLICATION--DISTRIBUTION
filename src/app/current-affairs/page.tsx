@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
@@ -25,22 +26,22 @@ const shuffleArray = (array: any[]) => {
 };
 
 export default function FlashcardApp() {
-  const [gameState, setGameState] = useState('start'); 
-  const [masterQuestions, setMasterQuestions] = useState<any[]>([]);
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [gameState, setGameState('start'); 
+  const [masterQuestions, setMasterQuestions<any[]>([]);
+  const [questions, setQuestions<any[]>([]);
+  const [loading, setLoading(false);
+  const [error, setError<string | null>(null);
 
   // Filter States
-  const [filterType, setFilterType] = useState('month'); // 'date', 'month', 'year'
-  const [filterOptions, setFilterOptions] = useState<{ dates: string[], months: string[], years: string[] }>({ dates: [], months: [], years: [] });
-  const [selectedValue, setSelectedValue] = useState('All');
+  const [filterType, setFilterType('month'); // 'date', 'month', 'year'
+  const [filterOptions, setFilterOptions<{ dates: string[], months: string[], years: string[] }>({ dates: [], months: [], years: [] });
+  const [selectedValue, setSelectedValue('All');
 
   // Quiz play state
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex(0);
+  const [score, setScore(0);
+  const [selectedOption, setSelectedOption<string | null>(null);
+  const [isAnswerRevealed, setIsAnswerRevealed(false);
 
   // 3D card effect
   const motionY = useMotionValue(0);
@@ -313,8 +314,8 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col items-center p-4 gap-4 overflow-hidden" style={{ perspective: '1000px' }}>
-      <div className="w-full max-w-2xl flex justify-between items-center shrink-0">
+    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden px-4" style={{ perspective: '1000px' }}>
+      <div className="w-full max-w-2xl flex justify-between items-center shrink-0 pt-4">
         <div className="flex items-center gap-4">
            <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
            <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
@@ -330,7 +331,7 @@ export default function FlashcardApp() {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentQuestionIndex}
-          className="w-full max-w-2xl flex-1 flex flex-col min-h-0"
+          className="w-full max-w-2xl flex-1 flex flex-col min-h-0 py-4"
           style={{ y: motionY, rotateX, transformStyle: 'preserve-3d' }}
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
@@ -376,21 +377,11 @@ export default function FlashcardApp() {
               })}
             </div>
 
-            {isAnswerRevealed && !questions[currentQuestionIndex + 1] && (
-              <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end items-center gap-4">
-                 <button 
-                  onClick={handleNext}
-                  className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl hover:bg-black transition-all flex items-center gap-2"
-                >
-                  Show Results
-                </button>
-              </div>
-            )}
           </div>
         </motion.div>
       </AnimatePresence>
 
-      <div className="w-full max-w-2xl shrink-0">
+      <div className="w-full max-w-2xl shrink-0 pb-4">
         <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
             <div 
             className="h-full bg-blue-600 transition-all duration-300" 
@@ -401,3 +392,4 @@ export default function FlashcardApp() {
     </div>
   );
 }
+
