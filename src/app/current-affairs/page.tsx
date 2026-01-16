@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -334,7 +333,7 @@ export default function FlashcardApp() {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentQuestionIndex}
-          className="w-full max-w-2xl"
+          className="w-full max-w-2xl flex-1 flex flex-col min-h-0"
           style={{ y: motionY, rotateX, transformStyle: 'preserve-3d' }}
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
@@ -345,13 +344,13 @@ export default function FlashcardApp() {
           exit={{ y: -150, opacity: 0, transition: { duration: 0.2 } }}
           transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col min-h-[500px]" style={{ transform: 'translateZ(0)' }}>
-            <div className="p-8 md:p-12 bg-blue-600 text-white text-center min-h-[200px] flex flex-col justify-center items-center">
+          <div className="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col flex-1" style={{ transform: 'translateZ(0)' }}>
+            <div className="p-8 md:p-12 bg-blue-600 text-white text-center flex flex-col justify-center items-center">
               <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-4">{q.date} • {q.month}</span>
               <h2 className="text-2xl md:text-3xl font-bold leading-snug">{q.question}</h2>
             </div>
 
-            <div className="p-6 md:p-10 space-y-4 flex-grow">
+            <div className="p-6 md:p-10 space-y-4 flex-grow overflow-y-auto">
               {q.options.map((opt: string, i: number) => {
                 const isCorrect = opt === q.correctAnswer;
                 const isSelected = selectedOption === opt;
