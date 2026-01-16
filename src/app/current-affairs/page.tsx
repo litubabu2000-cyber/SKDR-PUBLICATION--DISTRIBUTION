@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
@@ -200,12 +200,12 @@ export default function FlashcardApp() {
   };
   
   const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
-    if (offset.y < -50 && velocity.y < -500) {
+    if (offset.y < -50 && velocity.y < -200) {
         if (isAnswerRevealed) {
             swipeSoundRef.current?.play();
             handleNext();
         }
-    } else if (offset.y > 50 && velocity.y > 500) {
+    } else if (offset.y > 50 && velocity.y > 200) {
         swipeSoundRef.current?.play();
         handlePrevious();
     }
