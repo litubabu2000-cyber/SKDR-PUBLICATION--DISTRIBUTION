@@ -279,7 +279,7 @@ export default function FlashcardApp() {
             <select 
               value={selectedValue}
               onChange={(e) => setSelectedValue(e.target.value)}
-              className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:border-blue-500 outline-none appearance-none"
+              className="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:border-blue-500 outline-none appearance-none text-slate-800"
             >
               <option value="All">All {filterType}s ({masterQuestions.length})</option>
               {filterType === 'date' && filterOptions.dates.map(d => <option key={d} value={d}>{d}</option>)}
