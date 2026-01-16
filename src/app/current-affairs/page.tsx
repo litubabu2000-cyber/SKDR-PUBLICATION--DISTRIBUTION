@@ -209,7 +209,7 @@ export default function CurrentAffairsPage() {
 
             <div className="mb-8">
               <label className="block text-sm font-semibold text-neutral-300 mb-2">Select {filterType}</label>
-              <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} className="w-full p-4 bg-neutral-700 border-2 border-neutral-600 rounded-xl outline-none appearance-none text-black focus:border-blue-500">
+              <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} className="w-full p-4 bg-neutral-700 border-2 border-neutral-600 rounded-xl outline-none appearance-none text-white focus:border-blue-500">
                 <option value="All">All {filterType}s ({masterQuestions.length})</option>
                 {filterType === 'date' && filterOptions.dates.map(d => <option key={d} value={d}>{d}</option>)}
                 {filterType === 'month' && filterOptions.months.map(m => <option key={m} value={m}>{m}</option>)}
@@ -274,7 +274,7 @@ export default function CurrentAffairsPage() {
                   <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 </div>
-                <div className="p-5 flex-1 flex flex-col overflow-y-auto">
+                <div className="p-5 flex flex-col">
                   <div>
                     <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
                     <h3 className="font-bold text-lg mb-4">{q.question}</h3>
