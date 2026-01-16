@@ -1,18 +1,27 @@
-
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, RotateCcw, CheckCircle, XCircle, Loader2, AlertCircle, BookOpen, Trophy, Calendar, Filter, Clock, LogOut, Tag } from 'lucide-react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from 'react';
+import { 
+  Play, 
+  RotateCcw, 
+  CheckCircle, 
+  XCircle, 
+  Loader2, 
+  AlertCircle, 
+  BookOpen, 
+  Trophy, 
+  Calendar, 
+  Filter, 
+  Clock, 
+  Tag,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
-/**
- * Flashcard MCQ App - Current Affairs Edition
- * Features:
- * 1. Multi-tier filtering: Specific Date, Month, Year, or Category.
- * 2. Smart column detection for Questions, Answers, Dates, and Categories.
- * 3. Automatic distractor generation for MCQs.
- * 4. Swipe up for next question, swipe down for previous.
- */
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxRx6jx4bmKcybd_uFaVWZP9Oh3bwXP-4GmAqBMSr7LmUnarozWsRjqYzbWa8J82fgrzQ/exec";
 
@@ -25,11 +34,11 @@ const shuffleArray = (array: any[]) => {
   return arr;
 };
 
-export default function FlashcardApp() {
+export default function DailyQuizPage() {
   const [gameState, setGameState] = useState('start'); 
   const [masterQuestions, setMasterQuestions] = useState<any[]>([]);
   const [questions, setQuestions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Filter States
@@ -43,20 +52,9 @@ export default function FlashcardApp() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
-  // 3D card effect
-  const motionY = useMotionValue(0);
-  const rotateX = useTransform(motionY, [-150, 150], [10, -10]);
-
-  // Sound effect ref
-  const swipeSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     fetchData();
-    // Initialize audio on the client side
-    if (typeof window !== 'undefined') {
-        swipeSoundRef.current = new Audio('https://cdn.jsdelivr.net/gh/k-next/sounds@main/sounds/swipe.mp3');
-        swipeSoundRef.current.volume = 0.5; // Adjust volume
-    }
   }, []);
 
   const fetchData = async () => {
@@ -64,12 +62,12 @@ export default function FlashcardApp() {
     setError(null);
     try {
       const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Failed to fetch data");
+      if (!response.ok) throw new Error("Failed to fetch data from the server.");
       const rawData = await response.json();
       const processed = processData(rawData);
       
       if (processed.questions.length === 0) {
-        throw new Error("No valid data found in spreadsheet.");
+        throw new Error("No valid questions found in the data source.");
       }
       
       setMasterQuestions(processed.questions);
@@ -156,7 +154,7 @@ export default function FlashcardApp() {
       }
     };
   };
-
+  
   const handleStart = () => {
     let filtered = masterQuestions;
     if (selectedValue !== 'All') {
@@ -169,10 +167,10 @@ export default function FlashcardApp() {
     setGameState('playing');
     setCurrentQuestionIndex(0);
     setScore(0);
-    resetCard();
+    resetQuestionState();
   };
 
-  const resetCard = () => {
+  const resetQuestionState = () => {
     setSelectedOption(null);
     setIsAnswerRevealed(false);
   };
@@ -181,7 +179,7 @@ export default function FlashcardApp() {
     setQuestions(shuffleArray(questions));
     setCurrentQuestionIndex(0);
     setScore(0);
-    resetCard();
+    resetQuestionState();
     setGameState('playing');
   };
 
@@ -195,7 +193,7 @@ export default function FlashcardApp() {
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
-      resetCard();
+      resetQuestionState();
     } else {
       setGameState('end');
     }
@@ -204,32 +202,20 @@ export default function FlashcardApp() {
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(prev => prev - 1);
-      resetCard();
-    }
-  };
-  
-  const handleSwipe = (offset: { y: number }, velocity: { y: number }) => {
-    if (isAnswerRevealed) {
-      if (offset.y < -10 && velocity.y < -50) { 
-          swipeSoundRef.current?.play();
-          handleNext();
-      } else if (offset.y > 10 && velocity.y > 50) {
-          swipeSoundRef.current?.play();
-          handlePrevious();
-      }
+      resetQuestionState();
     }
   };
 
 
   if (loading) return (
-    <div className="h-screen flex flex-col items-center justify-center bg-slate-50">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
       <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
       <p className="text-slate-600 font-medium">Syncing with Database...</p>
     </div>
   );
 
   if (error) return (
-    <div className="h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
       <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
       <h2 className="text-xl font-bold mb-2">Error</h2>
       <p className="text-slate-600 text-center mb-6">{error}</p>
@@ -239,7 +225,7 @@ export default function FlashcardApp() {
 
   if (gameState === 'start') {
     return (
-      <div className="h-screen bg-slate-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full">
           <div className="flex justify-center mb-6">
             <div className="p-4 bg-blue-100 rounded-2xl text-blue-600">
@@ -305,7 +291,7 @@ export default function FlashcardApp() {
   if (gameState === 'end') {
     const pct = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
     return (
-      <div className="h-screen bg-slate-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="bg-white p-10 rounded-3xl shadow-xl max-w-md w-full text-center">
           <Trophy size={80} className="mx-auto text-yellow-500 mb-6" />
           <h2 className="text-3xl font-bold mb-2">Quiz Finished!</h2>
@@ -324,7 +310,7 @@ export default function FlashcardApp() {
   
   if (!q) {
       return (
-          <div className="h-screen flex flex-col items-center justify-center bg-slate-50">
+          <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
             <p className="text-slate-600 font-medium">Loading question...</p>
           </div>
@@ -332,80 +318,64 @@ export default function FlashcardApp() {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col items-center overflow-hidden" style={{ perspective: '1000px' }}>
-       <div className="w-full max-w-2xl flex justify-between items-center shrink-0 pt-4 px-4">
-        <div className="flex items-center gap-4">
-           <button onClick={() => setGameState('start')} className="p-2 hover:bg-white rounded-lg"><RotateCcw size={20}/></button>
-           <span className="font-bold text-slate-400">Question {currentQuestionIndex + 1} of {questions.length}</span>
+    <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        <div className="flex justify-between items-center mb-2 text-sm text-slate-500">
+          <span>Question {currentQuestionIndex + 1} of {questions.length}</span>
+          <span>Score: {score}</span>
         </div>
-        <div className="flex items-center gap-4">
-           <button onClick={() => setGameState('end')} className="p-2 hover:bg-white rounded-lg text-red-500 flex items-center gap-1 text-sm font-bold">
-               <LogOut size={16}/> End Quiz
-            </button>
-           <div className="font-bold text-blue-600 px-4 py-1 bg-blue-100 rounded-full">Score: {score}</div>
-        </div>
-      </div>
+        <Progress value={((currentQuestionIndex + 1) / questions.length) * 100} className="mb-4" />
         
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentQuestionIndex}
-          className="w-full max-w-2xl flex-1 flex flex-col min-h-0 py-4"
-          style={{ y: motionY, rotateX, transformStyle: 'preserve-3d' }}
-          drag="y"
-          dragConstraints={{ top: 0, bottom: 0 }}
-          dragElastic={0.2}
-          onDragEnd={(e, { offset, velocity }) => handleSwipe(offset, velocity)}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -150, opacity: 0, transition: { duration: 0.2 } }}
-          transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        >
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col flex-1" style={{ transform: 'translateZ(0)' }}>
-            <div className="p-8 md:p-12 bg-blue-600 text-white text-center flex flex-col justify-center items-center">
-              <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-4">{q.date} • {q.month}</span>
-              <h2 className="text-2xl md:text-3xl font-bold leading-snug">{q.question}</h2>
-            </div>
-
-            <div className="p-6 md:p-10 space-y-4 flex-grow overflow-y-auto">
+        <Card>
+          <CardHeader>
+            <CardDescription className="text-xs">{q.date} • {q.category}</CardDescription>
+            <CardTitle className="text-xl leading-relaxed">{q.question}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
               {q.options.map((opt: string, i: number) => {
                 const isCorrect = opt === q.correctAnswer;
                 const isSelected = selectedOption === opt;
-                let styles = "border-2 border-slate-100 hover:border-blue-200 hover:bg-blue-50 text-slate-700";
+                let stateStyles = "";
                 
                 if (isAnswerRevealed) {
-                  if (isCorrect) styles = "bg-green-100 border-green-500 text-green-800";
-                  else if (isSelected) styles = "bg-red-100 border-red-500 text-red-800";
-                  else styles = "opacity-40 border-slate-50";
-                } else if (isSelected) {
-                  styles = "border-blue-500 bg-blue-50 text-blue-700";
+                  if (isCorrect) stateStyles = "bg-green-100 border-green-400 text-green-800 dark:bg-green-900/30 dark:border-green-700 dark:text-white";
+                  else if (isSelected) stateStyles = "bg-red-100 border-red-400 text-red-800 dark:bg-red-900/30 dark:border-red-700 dark:text-white";
+                  else stateStyles = "opacity-60";
                 }
 
                 return (
-                  <button 
+                  <Button 
                     key={i} 
+                    variant="outline"
                     onClick={() => handleOptionClick(opt)}
                     disabled={isAnswerRevealed}
-                    className={`w-full p-4 rounded-xl text-left font-semibold transition-all flex justify-between items-center ${styles}`}
+                    className={cn(
+                        "w-full justify-start h-auto py-3 px-4 text-left font-normal whitespace-normal transition-all duration-300",
+                        stateStyles
+                    )}
                   >
-                    <span>{opt}</span>
-                    {isAnswerRevealed && isCorrect && <CheckCircle size={20} className="text-green-600 flex-shrink-0" />}
-                    {isAnswerRevealed && isSelected && !isCorrect && <XCircle size={20} className="text-red-600 flex-shrink-0" />}
-                  </button>
+                    <span className="flex-1 text-base">{opt}</span>
+                    {isAnswerRevealed && isCorrect && <CheckCircle size={20} className="text-green-500" />}
+                    {isAnswerRevealed && isSelected && !isCorrect && <XCircle size={20} className="text-red-500" />}
+                  </Button>
                 );
               })}
             </div>
-
-          </div>
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="w-full max-w-2xl shrink-0 pb-4 px-4">
-        <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
-            <div 
-            className="h-full bg-blue-600 transition-all duration-300" 
-            style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-            />
-        </div>
+          </CardContent>
+          <CardFooter className="flex justify-between mt-4">
+            <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0} variant="outline">
+              <ChevronLeft className="mr-2 h-4 w-4" /> Previous
+            </Button>
+            <Button onClick={() => setGameState('start')} variant="destructive">
+              End Quiz
+            </Button>
+            <Button onClick={handleNext} disabled={!isAnswerRevealed}>
+               {currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next'}
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );
