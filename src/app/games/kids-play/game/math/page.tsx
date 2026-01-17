@@ -6,7 +6,7 @@ import Link from 'next/link';
 const mathGames = [
     {
         title: "Addition Challenge",
-        href: "/games/kids-play/game/math/addition",
+        href: "/games/kids-play/game/math/addition-game",
         description: "Practice adding numbers."
     }
 ]
