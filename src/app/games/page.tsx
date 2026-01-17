@@ -1,15 +1,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gamepad2, Puzzle, Atom, Beaker, Heart, Activity, Droplet, Filter, Utensils, Lightbulb, ToyBrick, FlaskConical } from "lucide-react";
+import { Gamepad2, Atom, Heart, Activity, Droplet, Filter, Utensils, Lightbulb } from "lucide-react";
 import Link from "next/link";
 
 const games = [
-  {
-    title: "Kids Play",
-    description: "Fun and educational games for children.",
-    href: "/games/kids-play",
-    icon: ToyBrick
-  },
   {
     title: "Digestive System Puzzle",
     description: "Learn the parts of the digestive system.",
