@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, ToyBrick, ListChecks, Newspaper, Speech } from 'lucide-react';
+import { ArrowRight, BookCopy, BookOpen, ChevronDown, ChevronRight, FileQuestion, GraduationCap, Laptop, PlayCircle, ShieldCheck, Star, Target, LucideIcon, Train, Building, Banknote, User, PenTool, School, Users, BarChart, LayoutGrid, Globe, Landmark, Languages, Eraser, Bell, Gamepad2, ToyBrick, ListChecks, Newspaper, Speech, FlaskConical } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -27,7 +27,7 @@ const quickLinks = [
   { href: '/translator', label: 'TRANSLATOR', icon: Languages },
   { href: '/for-teachers', label: 'FOR TEACHER', icon: Users },
   { href: '/exam-notification', label: 'EXAM NOTIFICATION', icon: Bell },
-  { href: '/games', label: 'GAMES', icon: Gamepad2 },
+  { href: '/games', label: 'SCIENCE ZONE', icon: FlaskConical },
 ];
 
 

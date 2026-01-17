@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gamepad2, Puzzle, Atom, Beaker, Heart, Activity, Droplet, Filter, Utensils, Lightbulb, ToyBrick } from "lucide-react";
+import { Gamepad2, Puzzle, Atom, Beaker, Heart, Activity, Droplet, Filter, Utensils, Lightbulb, ToyBrick, FlaskConical } from "lucide-react";
 import Link from "next/link";
 
 const games = [
@@ -58,8 +58,8 @@ export default function GamesPage() {
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
       <div className="space-y-4 text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold font-headline">Educational Games</h1>
-        <p className="text-muted-foreground md:text-xl">Play and learn with our interactive games.</p>
+        <h1 className="text-3xl md:text-4xl font-bold font-headline">Science Zone</h1>
+        <p className="text-muted-foreground md:text-xl">Play and learn with our interactive science games.</p>
       </div>
       
       <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
