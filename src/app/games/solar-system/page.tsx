@@ -229,41 +229,41 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
     }
 
     // --- Script Loading & Cleanup ---
-    useEffect(() => {
-        if (!window.THREE) {
-          const threeScript = document.createElement('script');
-          threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-          document.head.appendChild(threeScript);
-          threeScript.onload = init;
-        } else {
-          init();
-        }
-        
-        const currentRef = containerRef.current;
-        if (currentRef) {
-            window.addEventListener('resize', onWindowResize);
-            currentRef.addEventListener('mousedown', handleMouseDown);
-            currentRef.addEventListener('mousemove', handleMouseMove);
-            window.addEventListener('mouseup', handleMouseUp);
-            currentRef.addEventListener('wheel', handleZoom, { passive: false });
-        }
-        
-        return () => {
-          cancelAnimationFrame(animationId);
-          window.removeEventListener('resize', onWindowResize);
-          if (currentRef) {
-            currentRef.removeEventListener('mousedown', handleMouseDown);
-            currentRef.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
-            currentRef.removeEventListener('wheel', handleZoom);
-            if (stateRef.renderer) {
+    if (!window.THREE) {
+      const threeScript = document.createElement('script');
+      threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      document.head.appendChild(threeScript);
+      threeScript.onload = init;
+    } else {
+      init();
+    }
+    
+    const currentRef = containerRef.current;
+    if (currentRef) {
+        window.addEventListener('resize', onWindowResize);
+        currentRef.addEventListener('mousedown', handleMouseDown);
+        currentRef.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        currentRef.addEventListener('wheel', handleZoom, { passive: false });
+    }
+    
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', onWindowResize);
+      if (currentRef) {
+        currentRef.removeEventListener('mousedown', handleMouseDown);
+        currentRef.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+        currentRef.removeEventListener('wheel', handleZoom);
+        if (stateRef.renderer) {
+            if(currentRef.contains(stateRef.renderer.domElement)) {
                 currentRef.removeChild(stateRef.renderer.domElement);
-                stateRef.renderer.dispose();
             }
-          }
-        };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+            stateRef.renderer.dispose();
+        }
+      }
+    };
+  }, [onReady, stateRef]);
 
   return <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />;
 });
