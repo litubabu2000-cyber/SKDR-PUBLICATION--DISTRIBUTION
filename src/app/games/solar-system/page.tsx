@@ -28,15 +28,25 @@ declare global {
 
 const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onReady: () => void }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  
   const stateRef = useRef({
       renderer: null as any,
       camera: null as any,
       scene: null as any,
-      rootGroup: null as any, // Group for rotation
-      timeScale: timeScale,
+      rootGroup: null as any,
   }).current;
 
-  // Make methods available to parent component
+  const timeScaleRef = useRef(timeScale);
+  useEffect(() => {
+    timeScaleRef.current = timeScale;
+  }, [timeScale]);
+  
+  const onReadyRef = useRef(onReady);
+   useEffect(() => {
+    onReadyRef.current = onReady;
+  }, [onReady]);
+
+
   useImperativeHandle(ref, () => ({
     zoomIn: () => {
       if(stateRef.camera) stateRef.camera.position.z = Math.max(20, stateRef.camera.position.z - 10);
@@ -47,45 +57,101 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
     resetView: () => {
         if(stateRef.camera && stateRef.rootGroup) {
             stateRef.camera.position.set(0, 60, 150);
-            stateRef.rootGroup.rotation.set(0.3, 0, 0); // Slight initial tilt
+            stateRef.rootGroup.rotation.set(0.3, 0, 0); 
         }
     }
   }));
 
-  // Update timeScale ref when prop changes
-  useEffect(() => {
-    stateRef.timeScale = timeScale;
-  }, [timeScale, stateRef]);
-
-  // One-time setup effect
   useEffect(() => {
     let animationId: number;
     let isDragging = false;
     let previousMousePosition = { x: 0, y: 0 };
+    const currentRef = containerRef.current;
+
+    function generateGlowTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const context = canvas.getContext('2d')!;
+        const gradient = context.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
+        gradient.addColorStop(0, 'rgba(255,255,255,1)');
+        gradient.addColorStop(0.2, 'rgba(255,255,0,1)');
+        gradient.addColorStop(0.4, 'rgba(255,150,0,1)');
+        gradient.addColorStop(1, 'rgba(255,150,0,0)');
+        context.fillStyle = gradient;
+        context.fillRect(0,0,canvas.width, canvas.height);
+        return canvas;
+    }
+
+    const onWindowResize = () => {
+        if (!containerRef.current || !stateRef.camera || !stateRef.renderer) return;
+        stateRef.camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
+        stateRef.camera.updateProjectionMatrix();
+        stateRef.renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    }
+    const handleMouseDown = (e: MouseEvent) => {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    };
+    const handleMouseMove = (e: MouseEvent) => {
+        if (!isDragging || !stateRef.rootGroup) return;
+        const deltaMove = {
+            x: e.clientX - previousMousePosition.x,
+            y: e.clientY - previousMousePosition.y
+        };
+        stateRef.rootGroup.rotation.y += deltaMove.x * 0.005;
+        stateRef.rootGroup.rotation.x += deltaMove.y * 0.005;
+        stateRef.rootGroup.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, stateRef.rootGroup.rotation.x));
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    };
+    const handleMouseUp = () => { isDragging = false; };
+    const handleZoom = (e: WheelEvent) => {
+        if (!stateRef.camera) return;
+        e.preventDefault();
+        stateRef.camera.position.z += e.deltaY * 0.1;
+        stateRef.camera.position.z = Math.max(20, Math.min(400, stateRef.camera.position.z));
+    }
+    
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      if (!stateRef.scene) return;
+      const now = Date.now() * 0.0001 * timeScaleRef.current;
+      
+      stateRef.rootGroup.children.forEach((obj: any) => {
+        if (obj.isMesh && obj.userData.distance) { // Planet
+          obj.position.x = Math.cos(now * obj.userData.speed) * obj.userData.distance;
+          obj.position.z = Math.sin(now * obj.userData.speed) * obj.userData.distance;
+          obj.rotation.y += 0.005;
+
+          obj.children.forEach((child: any) => {
+              if (child.isMesh && child.userData.distance) { // Moon
+                child.position.x = Math.cos(now * 10 * child.userData.speed) * child.userData.distance;
+                child.position.z = Math.sin(now * 10 * child.userData.speed) * child.userData.distance;
+              }
+          })
+        }
+      });
+      
+      stateRef.renderer.render(stateRef.scene, stateRef.camera);
+    }
     
     const init = () => {
       if (!containerRef.current || !window.THREE) return;
       const THREE = window.THREE;
       
-      // Scene & Camera
       stateRef.scene = new THREE.Scene();
       stateRef.camera = new THREE.PerspectiveCamera(75, containerRef.current.clientWidth / containerRef.current.clientHeight, 0.1, 1000);
       stateRef.camera.position.set(0, 60, 150);
       
-      // Renderer
       stateRef.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       stateRef.renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
       stateRef.renderer.setPixelRatio(window.devicePixelRatio);
       containerRef.current.appendChild(stateRef.renderer.domElement);
       
-      // A group to apply rotation to, so camera can stay independent
       stateRef.rootGroup = new THREE.Group();
-      stateRef.rootGroup.rotation.x = 0.3; // Initial tilt
+      stateRef.rootGroup.rotation.x = 0.3;
       stateRef.scene.add(stateRef.rootGroup);
 
-      // --- Scene Objects ---
-
-      // Starfield
       const starsGeometry = new THREE.BufferGeometry();
       const starsCount = 10000;
       const posArray = new Float32Array(starsCount * 3);
@@ -97,11 +163,9 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
       const starField = new THREE.Points(starsGeometry, starsMaterial);
       stateRef.scene.add(starField);
 
-      // Lights
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
       stateRef.rootGroup.add(ambientLight);
       
-      // The Sun
       const sunData = solarSystemData[0];
       const pointLight = new THREE.PointLight(sunData.color, 4, 800);
       stateRef.rootGroup.add(pointLight);
@@ -110,7 +174,6 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
       const sunMaterial = new THREE.MeshBasicMaterial({ color: sunData.color });
       const sun = new THREE.Mesh(sunGeometry, sunMaterial);
       
-      // Sun glow
       const spriteMaterial = new THREE.SpriteMaterial({
         map: new THREE.CanvasTexture(generateGlowTexture()),
         color: 0xffd700, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.7
@@ -120,7 +183,6 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
       sun.add(sprite);
       stateRef.rootGroup.add(sun);
       
-      // Planets
       solarSystemData.slice(1).forEach(data => {
         const planet = new THREE.Mesh(
           new THREE.SphereGeometry(data.size, 32, 32),
@@ -155,96 +217,24 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
         }
       });
       
-      if(onReady) onReady();
+      window.addEventListener('resize', onWindowResize);
+      currentRef?.addEventListener('mousedown', handleMouseDown);
+      currentRef?.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      currentRef?.addEventListener('wheel', handleZoom, { passive: false });
+      
+      onReadyRef.current();
       animate();
     }
     
-    function generateGlowTexture() {
-        const canvas = document.createElement('canvas');
-        canvas.width = 128;
-        canvas.height = 128;
-        const context = canvas.getContext('2d')!;
-        const gradient = context.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
-        gradient.addColorStop(0, 'rgba(255,255,255,1)');
-        gradient.addColorStop(0.2, 'rgba(255,255,0,1)');
-        gradient.addColorStop(0.4, 'rgba(255,150,0,1)');
-        gradient.addColorStop(1, 'rgba(255,150,0,0)');
-        context.fillStyle = gradient;
-        context.fillRect(0,0,canvas.width, canvas.height);
-        return canvas;
-    }
-
-    const animate = () => {
-      animationId = requestAnimationFrame(animate);
-      if (!stateRef.scene) return;
-      const now = Date.now() * 0.0001 * stateRef.timeScale;
-      
-      stateRef.rootGroup.children.forEach((obj: any) => {
-        if (obj.isMesh && obj.userData.distance) { // Planet
-          obj.position.x = Math.cos(now * obj.userData.speed) * obj.userData.distance;
-          obj.position.z = Math.sin(now * obj.userData.speed) * obj.userData.distance;
-          obj.rotation.y += 0.005;
-
-          obj.children.forEach((child: any) => {
-              if (child.isMesh && child.userData.distance) { // Moon
-                child.position.x = Math.cos(now * 10 * child.userData.speed) * child.userData.distance;
-                child.position.z = Math.sin(now * 10 * child.userData.speed) * child.userData.distance;
-              }
-          })
-        }
-      });
-      
-      stateRef.renderer.render(stateRef.scene, stateRef.camera);
-    }
-    
-    // --- Event Handlers ---
-    const onWindowResize = () => {
-        if (!containerRef.current || !stateRef.camera || !stateRef.renderer) return;
-        stateRef.camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
-        stateRef.camera.updateProjectionMatrix();
-        stateRef.renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
-    }
-    const handleMouseDown = (e: MouseEvent) => {
-        isDragging = true;
-        previousMousePosition = { x: e.clientX, y: e.clientY };
-    };
-    const handleMouseMove = (e: MouseEvent) => {
-        if (!isDragging || !stateRef.rootGroup) return;
-        const deltaMove = {
-            x: e.clientX - previousMousePosition.x,
-            y: e.clientY - previousMousePosition.y
-        };
-        stateRef.rootGroup.rotation.y += deltaMove.x * 0.005;
-        stateRef.rootGroup.rotation.x += deltaMove.y * 0.005;
-        // Clamp vertical rotation
-        stateRef.rootGroup.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, stateRef.rootGroup.rotation.x));
-        previousMousePosition = { x: e.clientX, y: e.clientY };
-    };
-    const handleMouseUp = () => { isDragging = false; };
-    const handleZoom = (e: WheelEvent) => {
-        if (!stateRef.camera) return;
-        e.preventDefault();
-        stateRef.camera.position.z += e.deltaY * 0.1;
-        stateRef.camera.position.z = Math.max(20, Math.min(400, stateRef.camera.position.z));
-    }
-
-    // --- Script Loading & Cleanup ---
     if (!window.THREE) {
       const threeScript = document.createElement('script');
       threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      threeScript.async = true;
       document.head.appendChild(threeScript);
       threeScript.onload = init;
     } else {
       init();
-    }
-    
-    const currentRef = containerRef.current;
-    if (currentRef) {
-        window.addEventListener('resize', onWindowResize);
-        currentRef.addEventListener('mousedown', handleMouseDown);
-        currentRef.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
-        currentRef.addEventListener('wheel', handleZoom, { passive: false });
     }
     
     return () => {
@@ -256,14 +246,12 @@ const ThreeScene = forwardRef(({ timeScale, onReady }: { timeScale: number, onRe
         window.removeEventListener('mouseup', handleMouseUp);
         currentRef.removeEventListener('wheel', handleZoom);
         if (stateRef.renderer) {
-            if(currentRef.contains(stateRef.renderer.domElement)) {
-                currentRef.removeChild(stateRef.renderer.domElement);
-            }
+            currentRef.removeChild(stateRef.renderer.domElement);
             stateRef.renderer.dispose();
         }
       }
     };
-  }, [onReady, stateRef]);
+  }, []);
 
   return <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />;
 });
@@ -273,7 +261,7 @@ export default function SolarSystemPage() {
     const [timeScale, setTimeScale] = useState(1);
     const [isReady, setIsReady] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true);
-    const sceneRef = useRef<any>(null); // To call methods on ThreeScene
+    const sceneRef = useRef<any>(null);
 
     const handleZoomIn = () => sceneRef.current?.zoomIn();
     const handleZoomOut = () => sceneRef.current?.zoomOut();
