@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -255,7 +254,7 @@ export default function CurrentAffairsPage() {
           {questions.slice(currentIndex, currentIndex + 1).map(q => (
             <motion.div
               key={q.id}
-              className="absolute w-full h-full max-w-md"
+              className="absolute w-full max-w-md"
               drag={answers[currentIndex] ? "y" : false}
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={0.1}
@@ -269,7 +268,7 @@ export default function CurrentAffairsPage() {
               exit={{ y: -300, opacity: 0 }}
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
             >
-              <div className="bg-card text-foreground rounded-2xl h-full w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
+              <div className="bg-card text-foreground rounded-2xl w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
                 <div className='relative w-full h-48'>
                   <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
