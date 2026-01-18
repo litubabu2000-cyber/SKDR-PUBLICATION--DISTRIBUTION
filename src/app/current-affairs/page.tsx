@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -189,14 +190,14 @@ export default function CurrentAffairsPage() {
   }
 
   if (gameState === 'loading') return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center bg-neutral-900 text-white">
+    <div className="fixed inset-x-0 top-16 bottom-16 md:bottom-0 flex flex-col items-center justify-center bg-neutral-900 text-white">
       <Loader2 className="w-12 h-12 animate-spin mb-4" />
       <p className="text-neutral-400">Loading Current Affairs...</p>
     </div>
   );
 
   if (gameState === 'error') return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
+    <div className="fixed inset-x-0 top-16 bottom-16 md:bottom-0 flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
       <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
       <h2 className="text-xl font-bold mb-2">Something went wrong</h2>
       <p className="text-neutral-400 text-center mb-6">{error}</p>
@@ -206,7 +207,7 @@ export default function CurrentAffairsPage() {
 
   if (gameState === 'start') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-slate-800 flex items-center justify-center p-4">
+      <div className="fixed inset-x-0 top-16 bottom-16 md:bottom-0 bg-gradient-to-br from-neutral-900 to-slate-800 flex items-center justify-center p-4">
         <Card className="bg-neutral-800/50 border-neutral-700 text-white shadow-xl max-w-md w-full backdrop-blur-sm">
           <CardContent className="p-8">
             <h1 className="text-3xl font-bold text-center mb-2">Current Affairs Shorts</h1>
@@ -242,7 +243,7 @@ export default function CurrentAffairsPage() {
   if (gameState === 'end') {
     const accuracy = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
+      <div className="fixed inset-x-0 top-16 bottom-16 md:bottom-0 flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
         <Trophy className="w-20 h-20 text-yellow-400 mb-6 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]" />
         <h2 className="text-3xl font-bold mb-2">Quiz Finished!</h2>
         <p className="text-neutral-400 mb-2">You've completed the quiz in {time} seconds.</p>
@@ -257,7 +258,7 @@ export default function CurrentAffairsPage() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-neutral-900 flex flex-col">
+    <div className="fixed inset-x-0 top-16 bottom-16 md:bottom-0 w-full overflow-hidden bg-neutral-900 flex flex-col">
       <div className="p-4 z-20">
         <Progress value={((currentIndex + 1) / questions.length) * 100} className="bg-neutral-700 h-2" />
       </div>
@@ -282,14 +283,14 @@ export default function CurrentAffairsPage() {
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
             >
               <div className="bg-card text-foreground rounded-2xl w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                <div className='relative w-full h-28'>
+                <div className='relative w-full h-24'>
                   <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 </div>
-                <div className="p-3 flex flex-col flex-1">
+                <div className="p-2 flex flex-col flex-1">
                   <div>
                     <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
-                    <h3 className="font-bold text-base mb-2">{q.question}</h3>
+                    <h3 className="font-bold text-sm mb-2">{q.question}</h3>
                   </div>
                   <div className="space-y-1 flex-1">
                     {q.options.map((opt: string) => {
@@ -319,9 +320,9 @@ export default function CurrentAffairsPage() {
                       );
                     })}
                   </div>
-                  <div className="mt-3 pt-3 border-t border-neutral-700 flex items-center justify-between text-sm">
+                  <div className="mt-2 pt-2 border-t border-neutral-700 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2 text-neutral-400">
-                        <Clock size={16} />
+                        <Clock size={14} />
                         <span>Time: {time}s</span>
                     </div>
                     <Button variant="destructive" size="sm" onClick={() => setGameState('end')}>
