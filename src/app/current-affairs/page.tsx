@@ -32,12 +32,23 @@ export default function CurrentAffairsPage() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, { selection: string; isCorrect: boolean }>>({});
+  const [time, setTime] = useState(0);
   
   const score = Object.values(answers).filter(a => a.isCorrect).length;
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    let timerId: NodeJS.Timeout;
+    if (gameState === 'playing') {
+      timerId = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timerId);
+  }, [gameState]);
 
   const fetchData = async () => {
     setGameState('loading');
@@ -149,6 +160,7 @@ export default function CurrentAffairsPage() {
     setGameState('playing');
     setCurrentIndex(0);
     setAnswers({});
+    setTime(0);
   };
   
   const handleAnswerSelect = (option: string) => {
@@ -173,6 +185,7 @@ export default function CurrentAffairsPage() {
       setGameState('start');
       setCurrentIndex(0);
       setAnswers({});
+      setTime(0);
   }
 
   if (gameState === 'loading') return (
@@ -232,7 +245,7 @@ export default function CurrentAffairsPage() {
       <div className="h-screen w-screen flex flex-col items-center justify-center p-6 bg-neutral-900 text-white">
         <Trophy className="w-20 h-20 text-yellow-400 mb-6 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]" />
         <h2 className="text-3xl font-bold mb-2">Quiz Finished!</h2>
-        <p className="text-neutral-400 mb-8">You've completed the quiz.</p>
+        <p className="text-neutral-400 mb-2">You've completed the quiz in {time} seconds.</p>
         <div className="text-6xl font-black text-white mb-2">{score} / {questions.length}</div>
         <p className="text-lg text-neutral-300 font-medium mb-8">Your Accuracy: {accuracy}%</p>
         <div className="flex gap-4">
@@ -269,16 +282,16 @@ export default function CurrentAffairsPage() {
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
             >
               <div className="bg-card text-foreground rounded-2xl w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                <div className='relative w-full h-32'>
+                <div className='relative w-full h-36'>
                   <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 </div>
-                <div className="p-3 flex flex-col">
+                <div className="p-4 flex flex-col flex-1">
                   <div>
                     <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
                     <h3 className="font-bold text-base mb-2">{q.question}</h3>
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5 flex-1">
                     {q.options.map((opt: string) => {
                       const isSelected = answers[currentIndex]?.selection === opt;
                       const isCorrect = q.correctAnswer === opt;
@@ -305,6 +318,15 @@ export default function CurrentAffairsPage() {
                         </button>
                       );
                     })}
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-neutral-700 flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2 text-neutral-400">
+                        <Clock size={16} />
+                        <span>Time: {time}s</span>
+                    </div>
+                    <Button variant="destructive" size="sm" onClick={() => setGameState('end')}>
+                        End Quiz
+                    </Button>
                   </div>
                 </div>
               </div>
