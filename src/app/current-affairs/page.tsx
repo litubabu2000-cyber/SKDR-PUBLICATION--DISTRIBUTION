@@ -262,7 +262,7 @@ export default function CurrentAffairsPage() {
         <Progress value={((currentIndex + 1) / questions.length) * 100} className="bg-neutral-700 h-2" />
       </div>
 
-      <div className="relative flex-1 w-full flex items-center justify-center p-4">
+      <div className="relative flex-1 w-full flex items-center justify-center p-2">
         <AnimatePresence initial={false} mode="wait">
           {questions.slice(currentIndex, currentIndex + 1).map(q => (
             <motion.div
@@ -282,16 +282,16 @@ export default function CurrentAffairsPage() {
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
             >
               <div className="bg-card text-foreground rounded-2xl w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                <div className='relative w-full h-36'>
+                <div className='relative w-full h-28'>
                   <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 </div>
-                <div className="p-4 flex flex-col flex-1">
+                <div className="p-3 flex flex-col flex-1">
                   <div>
                     <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
                     <h3 className="font-bold text-base mb-2">{q.question}</h3>
                   </div>
-                  <div className="space-y-1.5 flex-1">
+                  <div className="space-y-1 flex-1">
                     {q.options.map((opt: string) => {
                       const isSelected = answers[currentIndex]?.selection === opt;
                       const isCorrect = q.correctAnswer === opt;
@@ -319,7 +319,7 @@ export default function CurrentAffairsPage() {
                       );
                     })}
                   </div>
-                  <div className="mt-4 pt-4 border-t border-neutral-700 flex items-center justify-between text-sm">
+                  <div className="mt-3 pt-3 border-t border-neutral-700 flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2 text-neutral-400">
                         <Clock size={16} />
                         <span>Time: {time}s</span>
