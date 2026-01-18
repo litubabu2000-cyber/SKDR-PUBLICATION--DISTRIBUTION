@@ -246,11 +246,11 @@ export default function CurrentAffairsPage() {
   return (
     <div className="h-screen w-screen overflow-hidden bg-neutral-900 flex flex-col">
       <div className="p-4 z-20">
-        <Progress value={(currentIndex / questions.length) * 100} className="bg-neutral-700 h-2" />
+        <Progress value={((currentIndex + 1) / questions.length) * 100} className="bg-neutral-700 h-2" />
       </div>
 
       <div className="relative flex-1 w-full flex items-center justify-center p-4">
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="wait">
           {questions.slice(currentIndex, currentIndex + 1).map(q => (
             <motion.div
               key={q.id}
@@ -263,22 +263,22 @@ export default function CurrentAffairsPage() {
                   handleNext();
                 }
               }}
-              initial={{ y: 300, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -300, opacity: 0 }}
+              initial={{ y: 300, opacity: 0, scale: 0.9 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: -300, opacity: 0, scale: 0.9 }}
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
             >
               <div className="bg-card text-foreground rounded-2xl w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                <div className='relative w-full h-40'>
+                <div className='relative w-full h-32'>
                   <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 </div>
-                <div className="p-4 flex flex-col">
+                <div className="p-3 flex flex-col">
                   <div>
                     <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
-                    <h3 className="font-bold text-lg mb-3">{q.question}</h3>
+                    <h3 className="font-bold text-base mb-2">{q.question}</h3>
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     {q.options.map((opt: string) => {
                       const isSelected = answers[currentIndex]?.selection === opt;
                       const isCorrect = q.correctAnswer === opt;
@@ -290,7 +290,7 @@ export default function CurrentAffairsPage() {
                           onClick={() => handleAnswerSelect(opt)}
                           disabled={isRevealed}
                           className={cn(
-                            "w-full text-left p-2.5 rounded-lg border text-sm font-medium transition-all duration-300",
+                            "w-full text-left p-2 rounded-lg border text-sm font-medium transition-all duration-300",
                             "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
                             isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
                             isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
