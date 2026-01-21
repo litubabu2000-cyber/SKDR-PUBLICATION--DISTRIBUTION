@@ -1,6 +1,6 @@
 
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function SolarSystemPage() {
     const canvasContainerRef = useRef<HTMLDivElement>(null);
@@ -447,6 +447,56 @@ export default function SolarSystemPage() {
                 #loader { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; z-index: 999; transition: opacity 1s ease-out; }
                 .spinner { width: 50px; height: 50px; border: 4px solid #333; border-top: 4px solid #4facfe; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
                 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+                @media (max-width: 768px) {
+                    #ui-layer {
+                        top: 15px;
+                        left: 15px;
+                    }
+                    h1 {
+                        font-size: 1.1rem;
+                        letter-spacing: 2px;
+                        padding-bottom: 2px;
+                    }
+                    p.subtitle {
+                        font-size: 0.7rem;
+                    }
+                    .planet-label {
+                        font-size: 10px;
+                        padding: 2px 4px;
+                    }
+                    #info-panel {
+                        width: calc(100% - 30px);
+                        bottom: 75px;
+                        left: 15px;
+                        right: 15px;
+                        padding: 15px;
+                        transform: translateY(150%);
+                    }
+                    #info-panel.visible {
+                        transform: translateY(0);
+                    }
+                    #info-panel h2 {
+                        font-size: 1rem;
+                        margin-bottom: 5px;
+                    }
+                    #info-panel p {
+                        font-size: 0.8rem;
+                        line-height: 1.5;
+                    }
+                    #info-panel button {
+                        margin-top: 10px;
+                        padding: 8px 15px;
+                        font-size: 0.8rem;
+                    }
+                    #controls-bar {
+                        width: calc(100% - 30px);
+                        bottom: 15px;
+                        left: 15px;
+                        right: 15px;
+                        justify-content: center;
+                    }
+                }
             `}</style>
             
             <div id="loader" ref={loaderRef}>
