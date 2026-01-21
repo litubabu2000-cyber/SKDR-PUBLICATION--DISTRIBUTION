@@ -229,7 +229,7 @@ export default function SolarSystemPage() {
                     if (loader) {
                         loader.style.opacity = '0';
                         setTimeout(() => {
-                            if (isMounted) loader.style.display = 'none';
+                            if (isMounted && loader.parentElement) loader.style.display = 'none';
                         }, 1000);
                     }
                 }, 800);
@@ -276,7 +276,9 @@ export default function SolarSystemPage() {
                 const labelDiv = document.createElement('div');
                 labelDiv.className = 'planet-label';
                 labelDiv.textContent = data.name;
-                labelsContainerRef.current?.appendChild(labelDiv);
+                if (labelsContainerRef.current) {
+                    labelsContainerRef.current.appendChild(labelDiv);
+                }
 
                 planetMeshes.push({
                     mesh: planet,
@@ -365,11 +367,11 @@ export default function SolarSystemPage() {
                     const xPos = (tempV.x * .5 + .5) * window.innerWidth;
                     const yPos = (tempV.y * -.5 + .5) * window.innerHeight;
 
-                    if (tempV.z < 1) {
+                    if (obj.label && tempV.z < 1) {
                         obj.label.style.display = 'block';
                         obj.label.style.left = `${xPos}px`;
                         obj.label.style.top = `${yPos}px`;
-                    } else {
+                    } else if (obj.label) {
                         obj.label.style.display = 'none';
                     }
                 });
@@ -382,9 +384,13 @@ export default function SolarSystemPage() {
             }
 
             function onWindowResize() {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
+                if (camera) {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                }
+                if (renderer) {
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                }
             }
             
             init();
@@ -396,15 +402,18 @@ export default function SolarSystemPage() {
                 if (renderer) {
                     renderer.dispose();
                 }
-                 if (canvasContainerRef.current && renderer?.domElement) {
-                     try {
+                if (canvasContainerRef.current && renderer?.domElement) {
+                    try {
                         canvasContainerRef.current.removeChild(renderer.domElement);
-                     } catch (e) {
-                         // Ignore error if element is already removed
-                     }
+                    } catch (e) {
+                        // Ignore error if element is already removed
+                    }
+                }
+                if (labelsContainerRef.current) {
+                    labelsContainerRef.current.innerHTML = '';
                 }
             };
-        });
+        };
 
         Promise.all([
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'),
@@ -420,6 +429,7 @@ export default function SolarSystemPage() {
     return (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#050505', color: 'white', fontFamily: 'Segoe UI, sans-serif' }}>
             <style jsx global>{`
+                body { margin: 0; overflow: hidden; background-color: #050505; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
                 #canvas-container { width: 100vw; height: 100vh; display: block; }
                 #ui-layer { position: absolute; top: 20px; left: 20px; color: rgba(255, 255, 255, 1.0); pointer-events: none; z-index: 10; }
                 #ui-layer h1 { margin: 0; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; font-size: 1.8rem; border-bottom: 1px solid rgba(255,255,255,0.5); display: inline-block; padding-bottom: 5px; text-shadow: 0 0 10px rgba(79, 172, 254, 0.8); }
@@ -464,5 +474,4 @@ export default function SolarSystemPage() {
             <div id="canvas-container" ref={canvasContainerRef}></div>
         </div>
     );
-
-    
+}
