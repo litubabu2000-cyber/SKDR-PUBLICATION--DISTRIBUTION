@@ -37,14 +37,12 @@ export default function SolarSystemPage() {
             const THREE = window.THREE;
             const OrbitControls = (window as any).THREE.OrbitControls;
 
-            // --- Configuration & Constants ---
             const SCENE_CONFIG = {
                 sunSize: 15,
                 baseOrbitSpeed: 0.2, 
                 scaleMultiplier: 1.0       
             };
             
-            // Dynamic State
             let orbitSpeedMultiplier = 0.2;
             let focusedPlanet: any = null;
 
@@ -185,8 +183,8 @@ export default function SolarSystemPage() {
                 sunLight.position.set(0, 0, 0);
                 sunLight.castShadow = true;
                 sunLight.shadow.bias = -0.0001;
-                sunLight.shadow.mapSize.width = 2048;
-                sunLight.shadow.mapSize.height = 2048;
+                sunLight.shadow.mapSize.width = 1024; // Performance improvement for mobile
+                sunLight.shadow.mapSize.height = 1024; // Performance improvement for mobile
                 scene.add(sunLight);
 
                 const sunGeometry = new THREE.SphereGeometry(SCENE_CONFIG.sunSize, 64, 64);
@@ -215,7 +213,7 @@ export default function SolarSystemPage() {
                 raycaster = new THREE.Raycaster();
                 mouse = new THREE.Vector2();
                 window.addEventListener('resize', onWindowResize, false);
-                window.addEventListener('mousedown', onMouseClick, false);
+                renderer.domElement.addEventListener('pointerdown', onPointerDown, false);
                 
                 const speedSlider = speedSliderRef.current;
                 if (speedSlider) {
@@ -224,15 +222,12 @@ export default function SolarSystemPage() {
                   });
                 }
 
-                setTimeout(() => {
-                    const loader = loaderRef.current;
-                    if (loader) {
-                        loader.style.opacity = '0';
-                        setTimeout(() => {
-                            if (isMounted && loader.parentElement) loader.style.display = 'none';
-                        }, 1000);
-                    }
-                }, 800);
+                if (loaderRef.current) {
+                    loaderRef.current.style.opacity = '0';
+                    setTimeout(() => {
+                        if (isMounted && loaderRef.current) loaderRef.current.style.display = 'none';
+                    }, 1000);
+                }
 
                 animate();
             }
@@ -292,7 +287,7 @@ export default function SolarSystemPage() {
 
             function createStars() {
                 const geometry = new THREE.BufferGeometry();
-                const count = 4000;
+                const count = 2000; // Performance improvement for mobile
                 const positions = new Float32Array(count * 3);
                 const colors = new Float32Array(count * 3);
 
@@ -316,7 +311,7 @@ export default function SolarSystemPage() {
                 scene.add(starField);
             }
 
-            function onMouseClick(event: MouseEvent) {
+            function onPointerDown(event: PointerEvent) {
                 mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
                 mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -342,12 +337,18 @@ export default function SolarSystemPage() {
                     panel.classList.add('visible');
                 }
             }
-
-            (window as any).resetFocus = function() {
+            
+            const resetFocus = () => {
                 focusedPlanet = null;
                 if(infoPanelRef.current) infoPanelRef.current.classList.remove('visible');
                 if(controls) controls.target.set(0,0,0);
             }
+            
+            if (infoPanelRef.current) {
+                const button = infoPanelRef.current.querySelector('button');
+                if (button) button.onclick = resetFocus;
+            }
+
 
             function animate() {
                 if(!isMounted) return;
@@ -398,8 +399,8 @@ export default function SolarSystemPage() {
             cleanupRef.current = () => {
                 cancelAnimationFrame(animationFrameId);
                 window.removeEventListener('resize', onWindowResize);
-                window.removeEventListener('mousedown', onMouseClick);
-                if (renderer) {
+                if (renderer && renderer.domElement) {
+                    renderer.domElement.removeEventListener('pointerdown', onPointerDown);
                     renderer.dispose();
                 }
                 if (canvasContainerRef.current && renderer?.domElement) {
@@ -453,12 +454,12 @@ export default function SolarSystemPage() {
                         top: 15px;
                         left: 15px;
                     }
-                    h1 {
+                    #ui-layer h1 {
                         font-size: 1.1rem;
                         letter-spacing: 2px;
                         padding-bottom: 2px;
                     }
-                    p.subtitle {
+                    #ui-layer p.subtitle {
                         font-size: 0.7rem;
                     }
                     .planet-label {
@@ -512,7 +513,7 @@ export default function SolarSystemPage() {
             <div id="info-panel" ref={infoPanelRef}>
                 <h2 id="planet-name" ref={planetNameRef}>Grah Ka Naam</h2>
                 <p id="planet-details" ref={planetDetailsRef}>Jankari...</p>
-                <button onClick={() => (window as any).resetFocus()}>Wapas Solar View Par Jayein</button>
+                <button>Wapas Solar View Par Jayein</button>
             </div>
 
             <div id="controls-bar">
@@ -524,4 +525,5 @@ export default function SolarSystemPage() {
             <div id="canvas-container" ref={canvasContainerRef}></div>
         </div>
     );
-}
+
+    
