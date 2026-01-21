@@ -525,5 +525,4 @@ export default function SolarSystemPage() {
             <div id="canvas-container" ref={canvasContainerRef}></div>
         </div>
     );
-
-    
+}
