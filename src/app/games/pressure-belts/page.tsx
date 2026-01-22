@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -14,8 +15,8 @@ export default function PressureBeltsPage() {
     useEffect(() => {
         let isMounted = true;
         let animationFrameId: number;
+        let eventListeners: {type: string, listener: EventListenerOrEventListenerObject}[] = [];
 
-        // Load Three.js script
         const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
             if (document.querySelector(`script[src="${src}"]`)) {
                 resolve();
@@ -26,7 +27,7 @@ export default function PressureBeltsPage() {
             script.async = true;
             script.onload = () => resolve();
             script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-            document.body.appendChild(script);
+            document.head.appendChild(script);
         });
 
         async function init() {
@@ -44,6 +45,7 @@ export default function PressureBeltsPage() {
             }
             
             const THREE = window.THREE;
+            const container = canvasContainerRef.current;
             
             const config = {
                 earthRadius: 5,
@@ -63,7 +65,7 @@ export default function PressureBeltsPage() {
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.outputEncoding = THREE.sRGBEncoding;
-            canvasContainerRef.current!.appendChild(renderer.domElement);
+            container.appendChild(renderer.domElement);
 
             function createTexture(isNight: boolean) {
                 const canvas = document.createElement('canvas');
@@ -130,7 +132,6 @@ export default function PressureBeltsPage() {
             );
             scene.add(atmo);
             
-            // --- Pressure Belts and Labels ---
             const beltData = [
                 { lat: 0, color: 0xff3366, label: "ITCZ (Low)" },
                 { lat: 30, color: 0x00d4ff, label: "Subtropical High (N)" },
@@ -170,13 +171,12 @@ export default function PressureBeltsPage() {
                     earthGroup.add(ring);
                 }
                 const lbl = createLabel(b.label);
-                if (lbl) {
+                if(lbl) {
                     lbl.position.set(0, y, config.earthRadius + 1.2);
                     earthGroup.add(lbl);
                 }
             });
 
-            // --- Flow Arrows ---
             function createArrow(color: number) {
                 const group = new THREE.Group();
                 const head = new THREE.Mesh( new THREE.ConeGeometry(0.12, 0.3, 8), new THREE.MeshBasicMaterial({ color: color }) );
@@ -189,14 +189,13 @@ export default function PressureBeltsPage() {
             }
             const arrowGroup = new THREE.Group();
             earthGroup.add(arrowGroup);
+
             const flowZones = [
-                { lat: 15, dLat: -1, dLong: -1 },
-                { lat: -15, dLat: 1, dLong: -1 },
-                { lat: 45, dLat: 1, dLong: 1 },
-                { lat: -45, dLat: -1, dLong: 1 },
-                { lat: 75, dLat: -1, dLong: -1 },
-                { lat: -75, dLat: 1, dLong: -1 }
+                { lat: 15, dLat: -1, dLong: -1 }, { lat: -15, dLat: 1, dLong: -1 },
+                { lat: 45, dLat: 1, dLong: 1 }, { lat: -45, dLat: -1, dLong: 1 },
+                { lat: 75, dLat: -1, dLong: -1 }, { lat: -75, dLat: 1, dLong: -1 }
             ];
+
             flowZones.forEach(zone => {
                 for(let a = 0; a < 360; a += 45) {
                     const arrow = createArrow(0xffffff);
@@ -212,7 +211,6 @@ export default function PressureBeltsPage() {
                 }
             });
 
-            // --- Wind Particles ---
             const windCount = 1500;
             const windParticles: {lat: number, long: number, vLat: number, vLong: number, life: number, alt: number, zone: any}[] = [];
             const windGeo = new THREE.BufferGeometry();
@@ -231,28 +229,38 @@ export default function PressureBeltsPage() {
             }
             for(let i=0; i<windCount; i++) resetWind(i);
 
-            // --- Interaction ---
             let drag = false, lastM = {x:0, y:0};
-            const onMouseDown = (e: MouseEvent) => { drag = true; lastM = {x:e.clientX, y:e.clientY}; };
-            const onMouseMove = (e: MouseEvent) => {
+            const onMouseDown = (e: Event) => { drag = true; lastM = {x:(e as MouseEvent).clientX, y:(e as MouseEvent).clientY}; };
+            const onMouseMove = (e: Event) => {
                 if(drag) {
-                    earthGroup.rotation.y += (e.clientX - lastM.x) * 0.005;
-                    earthGroup.rotation.x += (e.clientY - lastM.y) * 0.005;
-                    lastM = {x:e.clientX, y:e.clientY};
+                    earthGroup.rotation.y += ((e as MouseEvent).clientX - lastM.x) * 0.005;
+                    earthGroup.rotation.x += ((e as MouseEvent).clientY - lastM.y) * 0.005;
+                    lastM = {x:(e as MouseEvent).clientX, y:(e as MouseEvent).clientY};
                 }
             };
             const onMouseUp = () => { drag = false; };
-            const onWheel = (e: WheelEvent) => {
-                e.preventDefault();
-                camera.position.z += e.deltaY * 0.01;
+            const handleZoom = (delta: number) => {
+                const zoomAmount = delta * 0.01;
+                camera.position.z += zoomAmount;
                 camera.position.z = Math.max(config.minZoom, Math.min(config.maxZoom, camera.position.z));
             };
-            document.addEventListener('mousedown', onMouseDown);
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
+            const onWheel = (e: Event) => {
+                e.preventDefault();
+                handleZoom((e as WheelEvent).deltaY);
+            };
+            
+            const addListener = (type: string, listener: EventListenerOrEventListenerObject) => {
+                document.addEventListener(type, listener, { passive: type !== 'wheel' });
+                eventListeners.push({ type, listener });
+            };
+            
+            addListener('mousedown', onMouseDown);
+            addListener('mousemove', onMouseMove);
+            addListener('mouseup', onMouseUp);
             window.addEventListener('wheel', onWheel, { passive: false });
+            eventListeners.push({ type: 'wheel', listener: onWheel });
 
-            // --- Animation Loop ---
+
             function animate() {
                 if (!isMounted) return;
                 animationFrameId = requestAnimationFrame(animate);
@@ -280,7 +288,8 @@ export default function PressureBeltsPage() {
                 renderer.setSize(window.innerWidth, window.innerHeight);
             };
             window.addEventListener('resize', onWindowResize);
-
+            eventListeners.push({ type: 'resize', listener: onWindowResize });
+            
             if (isMounted) {
                 setIsLoading(false);
                 animate();
@@ -289,18 +298,20 @@ export default function PressureBeltsPage() {
             return () => {
                 isMounted = false;
                 cancelAnimationFrame(animationFrameId);
-                window.removeEventListener('resize', onWindowResize);
-                document.removeEventListener('mousedown', onMouseDown);
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-                window.removeEventListener('wheel', onWheel);
-                if (canvasContainerRef.current && renderer.domElement.parentElement === canvasContainerRef.current) {
-                    canvasContainerRef.current.removeChild(renderer.domElement);
+                eventListeners.forEach(({ type, listener }) => {
+                    if (type === 'wheel') {
+                        window.removeEventListener(type, listener);
+                    } else {
+                        document.removeEventListener(type, listener);
+                    }
+                });
+                if (container && renderer.domElement.parentElement === container) {
+                    container.removeChild(renderer.domElement);
                 }
             };
         }
 
-        const cleanupPromise = init();
+        let cleanupPromise = init();
 
         return () => {
             cleanupPromise.then(cleanup => cleanup && cleanup());
@@ -362,3 +373,4 @@ export default function PressureBeltsPage() {
         </div>
     );
 }
+
