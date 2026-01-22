@@ -1,6 +1,7 @@
+'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gamepad2, Atom, Heart, Activity, Droplet, Filter, Utensils, Lightbulb, Sparkles } from "lucide-react";
+import { Gamepad2, Atom, Heart, Activity, Droplet, Filter, Utensils, Lightbulb, Sparkles, Wind } from "lucide-react";
 import Link from "next/link";
 
 const games = [
@@ -39,6 +40,12 @@ const games = [
     description: "An interactive 3D model of an atom.",
     href: "/games/atom-visualizer",
     icon: Atom
+  },
+  {
+    title: "Pressure Belts Simulation",
+    description: "Visualize Earth's pressure systems and wind patterns.",
+    href: "/games/pressure-belts",
+    icon: Wind
   },
   {
     title: "3D Solar System",
