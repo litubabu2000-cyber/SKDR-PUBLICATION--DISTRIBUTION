@@ -2,12 +2,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
-declare global {
-    interface Window {
-        THREE: any;
-    }
-}
-
+// This component now uses a self-contained, robust implementation
 export default function PressureBeltsPage() {
     const canvasContainerRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +10,9 @@ export default function PressureBeltsPage() {
     useEffect(() => {
         let isMounted = true;
         let animationFrameId: number;
-        let eventListeners: {type: string, listener: EventListenerOrEventListenerObject}[] = [];
+
+        // Define a cleanup function to be populated by init
+        let cleanup = () => {};
 
         const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
             if (document.querySelector(`script[src="${src}"]`)) {
@@ -32,19 +29,22 @@ export default function PressureBeltsPage() {
 
         async function init() {
             try {
+                // Load scripts sequentially to prevent errors
                 await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
+                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js');
             } catch (error) {
                 console.error(error);
                 if (isMounted) setIsLoading(false);
                 return;
             }
 
-            if (!isMounted || !canvasContainerRef.current || typeof window.THREE === 'undefined') {
+            if (!isMounted || !canvasContainerRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
                 if (isMounted) setIsLoading(false);
                 return;
             }
             
             const THREE = window.THREE;
+            const OrbitControls = (window as any).THREE.OrbitControls;
             const container = canvasContainerRef.current;
             
             const config = {
@@ -57,17 +57,23 @@ export default function PressureBeltsPage() {
             };
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
             camera.position.z = config.cameraZ;
 
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.outputEncoding = THREE.sRGBEncoding;
             container.appendChild(renderer.domElement);
 
-            function createTexture(isNight: boolean) {
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.minDistance = config.minZoom;
+            controls.maxDistance = config.maxZoom;
+            controls.enablePan = false;
+
+            const createTexture = (isNight: boolean) => {
                 const canvas = document.createElement('canvas');
                 canvas.width = 2048; canvas.height = 1024;
                 const ctx = canvas.getContext('2d');
@@ -142,7 +148,7 @@ export default function PressureBeltsPage() {
                 { lat: -90, color: 0x00d4ff, label: "Polar High (S)" }
             ];
 
-            function createLabel(text: string) {
+            const createLabel = (text: string) => {
                 const canvas = document.createElement('canvas');
                 const size = 256;
                 canvas.width = size * 2; canvas.height = size;
@@ -177,7 +183,7 @@ export default function PressureBeltsPage() {
                 }
             });
 
-            function createArrow(color: number) {
+            const createArrow = (color: number) => {
                 const group = new THREE.Group();
                 const head = new THREE.Mesh( new THREE.ConeGeometry(0.12, 0.3, 8), new THREE.MeshBasicMaterial({ color: color }) );
                 head.position.y = 0.15;
@@ -228,43 +234,21 @@ export default function PressureBeltsPage() {
                 };
             }
             for(let i=0; i<windCount; i++) resetWind(i);
-
-            let drag = false, lastM = {x:0, y:0};
-            const onMouseDown = (e: Event) => { drag = true; lastM = {x:(e as MouseEvent).clientX, y:(e as MouseEvent).clientY}; };
-            const onMouseMove = (e: Event) => {
-                if(drag) {
-                    earthGroup.rotation.y += ((e as MouseEvent).clientX - lastM.x) * 0.005;
-                    earthGroup.rotation.x += ((e as MouseEvent).clientY - lastM.y) * 0.005;
-                    lastM = {x:(e as MouseEvent).clientX, y:(e as MouseEvent).clientY};
-                }
-            };
-            const onMouseUp = () => { drag = false; };
-            const handleZoom = (delta: number) => {
-                const zoomAmount = delta * 0.01;
-                camera.position.z += zoomAmount;
-                camera.position.z = Math.max(config.minZoom, Math.min(config.maxZoom, camera.position.z));
-            };
-            const onWheel = (e: Event) => {
-                e.preventDefault();
-                handleZoom((e as WheelEvent).deltaY);
-            };
             
-            const addListener = (type: string, listener: EventListenerOrEventListenerObject) => {
-                document.addEventListener(type, listener, { passive: type !== 'wheel' });
-                eventListeners.push({ type, listener });
+            const onWindowResize = () => {
+                if (!isMounted || !container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
             };
+            window.addEventListener('resize', onWindowResize);
             
-            addListener('mousedown', onMouseDown);
-            addListener('mousemove', onMouseMove);
-            addListener('mouseup', onMouseUp);
-            window.addEventListener('wheel', onWheel, { passive: false });
-            eventListeners.push({ type: 'wheel', listener: onWheel });
-
-
-            function animate() {
+            const animate = () => {
                 if (!isMounted) return;
                 animationFrameId = requestAnimationFrame(animate);
-                if(!drag) earthGroup.rotation.y += config.rotationSpeed;
+                
+                earthGroup.rotation.y += config.rotationSpeed;
+                
                 const pos = windSystem.geometry.attributes.position.array as Float32Array;
                 for(let i=0; i<windCount; i++) {
                     const w = windParticles[i];
@@ -279,42 +263,31 @@ export default function PressureBeltsPage() {
                 windSystem.geometry.attributes.position.needsUpdate = true;
                 
                 atmo.quaternion.copy(camera.quaternion);
+                controls.update();
                 renderer.render(scene, camera);
             }
-
-            const onWindowResize = () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            };
-            window.addEventListener('resize', onWindowResize);
-            eventListeners.push({ type: 'resize', listener: onWindowResize });
             
             if (isMounted) {
                 setIsLoading(false);
                 animate();
             }
 
-            return () => {
+            cleanup = () => {
                 isMounted = false;
                 cancelAnimationFrame(animationFrameId);
-                eventListeners.forEach(({ type, listener }) => {
-                    if (type === 'wheel') {
-                        window.removeEventListener(type, listener);
-                    } else {
-                        document.removeEventListener(type, listener);
-                    }
-                });
-                if (container && renderer.domElement.parentElement === container) {
+                window.removeEventListener('resize', onWindowResize);
+                controls.dispose();
+                if (container && renderer.domElement.parentElement) {
                     container.removeChild(renderer.domElement);
                 }
+                renderer.dispose();
             };
         }
 
-        let cleanupPromise = init();
+        init();
 
         return () => {
-            cleanupPromise.then(cleanup => cleanup && cleanup());
+            cleanup();
         };
     }, []);
 
