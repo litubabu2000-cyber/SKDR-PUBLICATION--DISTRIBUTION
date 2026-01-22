@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -183,8 +182,8 @@ export default function SolarSystemPage() {
                 sunLight.position.set(0, 0, 0);
                 sunLight.castShadow = true;
                 sunLight.shadow.bias = -0.0001;
-                sunLight.shadow.mapSize.width = 1024; // Performance improvement for mobile
-                sunLight.shadow.mapSize.height = 1024; // Performance improvement for mobile
+                sunLight.shadow.mapSize.width = 1024; 
+                sunLight.shadow.mapSize.height = 1024;
                 scene.add(sunLight);
 
                 const sunGeometry = new THREE.SphereGeometry(SCENE_CONFIG.sunSize, 64, 64);
@@ -287,7 +286,7 @@ export default function SolarSystemPage() {
 
             function createStars() {
                 const geometry = new THREE.BufferGeometry();
-                const count = 2000; // Performance improvement for mobile
+                const count = 2000;
                 const positions = new Float32Array(count * 3);
                 const colors = new Float32Array(count * 3);
 
@@ -317,7 +316,7 @@ export default function SolarSystemPage() {
 
                 raycaster.setFromCamera(mouse, camera);
                 const meshes = planetMeshes.map(p => p.mesh);
-                const intersects = raycaster.intersectObjects(meshes);
+                const intersects = raycaster.intersectObjects(meshes, true);
 
                 if (intersects.length > 0) {
                     const selectedMesh = intersects[0].object;
@@ -413,13 +412,17 @@ export default function SolarSystemPage() {
                 if (labelsContainerRef.current) {
                     labelsContainerRef.current.innerHTML = '';
                 }
-            };
+            }
         };
 
         Promise.all([
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'),
             loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js')
-        ]).then(initSimulation).catch(console.error);
+        ]).then(() => {
+            if (isMounted) {
+                initSimulation();
+            }
+        }).catch(console.error);
 
         return () => {
             isMounted = false;
