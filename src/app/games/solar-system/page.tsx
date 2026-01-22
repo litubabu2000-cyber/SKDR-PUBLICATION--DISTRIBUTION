@@ -32,7 +32,6 @@ const createRingTexture = (THREE: any) => {
     const size = 256; const canvas = document.createElement('canvas'); canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d')!; const centerX = size/2; const centerY = size/2; const gradient = ctx.createRadialGradient(centerX, centerY, 30, centerX, centerY, size/2); gradient.addColorStop(0, 'rgba(0,0,0,0)'); gradient.addColorStop(0.4, 'rgba(255,235,205,0.2)'); gradient.addColorStop(0.6, 'rgba(255,235,205,0.9)'); gradient.addColorStop(0.7, 'rgba(0,0,0,0)'); gradient.addColorStop(0.8, 'rgba(230,210,180,0.7)'); gradient.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,size,size); return new THREE.CanvasTexture(canvas);
 };
 
-
 export default function SolarSystemPage() {
     const mountRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -60,17 +59,18 @@ export default function SolarSystemPage() {
 
         const init = async () => {
             try {
-                await Promise.all([
-                    loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'),
-                    loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js')
-                ]);
+                await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
+                await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js');
             } catch (error) {
                 console.error(error);
                 if (isMounted) setIsLoading(false);
                 return;
             }
 
-            if (!isMounted || !mountRef.current || typeof window.THREE === 'undefined') return;
+            if (!isMounted || !mountRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
+                 if (isMounted) setIsLoading(false);
+                return;
+            }
 
             if (isMounted) setIsLoading(false);
 
@@ -85,13 +85,18 @@ export default function SolarSystemPage() {
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
             renderer.setSize(mount.clientWidth, mount.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
             mount.appendChild(renderer.domElement);
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true; controls.minDistance = 20; controls.maxDistance = 600;
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
             const sunLight = new THREE.PointLight(0xffffff, 2.5, 1200);
+            sunLight.castShadow = true;
             scene.add(sunLight);
+
             const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(15, 64, 64), new THREE.MeshBasicMaterial({ color: 0xFFF5E0 }));
             scene.add(sunMesh);
             
@@ -102,22 +107,24 @@ export default function SolarSystemPage() {
                 const orbitLine = new THREE.LineLoop(orbitGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 }));
                 orbitLine.rotation.x = Math.PI / 2;
                 scene.add(orbitLine);
-                const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 32, 32), new THREE.MeshStandardMaterial({ map: createTexture(THREE, data.type, data.color), roughness: 0.7 }));
+                const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 32, 32), new THREE.MeshStandardMaterial({ map: createTexture(THREE, data.type, data.color), roughness: 0.7, metalness: data.type === 'earth' ? 0.2 : 0, emissive: 0x222222, emissiveIntensity: 0.1 }));
                 if (data.name.includes("Saturn")) {
                     const ring = new THREE.Mesh(new THREE.RingGeometry(data.size * 1.4, data.size * 2.2, 64), new THREE.MeshStandardMaterial({ map: createRingTexture(THREE), side: THREE.DoubleSide, transparent: true, opacity: 0.95 }));
                     ring.rotation.x = Math.PI / 1.8;
                     planet.add(ring);
                 }
+                planet.castShadow = true;
+                planet.receiveShadow = true;
                 planet.userData = { ...data, angle: Math.random() * Math.PI * 2 };
                 planetMeshes.push(planet);
                 scene.add(planet);
             });
 
-            const onWindowResize = () => { if (!isMounted) return; camera.aspect = mount.clientWidth / mount.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(mount.clientWidth, mount.clientHeight); };
+            const onWindowResize = () => { if (!isMounted || !mount) return; camera.aspect = mount.clientWidth / mount.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(mount.clientWidth, mount.clientHeight); };
             window.addEventListener('resize', onWindowResize);
             const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
             const onPointerDown = (event: PointerEvent) => {
-                if (!isMounted) return;
+                if (!isMounted || !mount) return;
                 const rect = mount.getBoundingClientRect();
                 mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
                 mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -158,17 +165,28 @@ export default function SolarSystemPage() {
                 isMounted = false;
                 cancelAnimationFrame(animationFrameId);
                 window.removeEventListener('resize', onWindowResize);
-                mount.removeEventListener('pointerdown', onPointerDown);
+                if(mount) {
+                    mount.removeEventListener('pointerdown', onPointerDown);
+                    if(renderer.domElement.parentElement === mount) {
+                        mount.removeChild(renderer.domElement);
+                    }
+                }
                 controls.dispose();
                 renderer.dispose();
-                if (mount.contains(renderer.domElement)) {
-                    mount.removeChild(renderer.domElement);
-                }
             };
         };
 
-        const cleanupPromise = init();
-        return () => { cleanupPromise.then(cleanup => cleanup && cleanup()); };
+        let cleanup: (() => void) | undefined;
+        init().then(cleanupFunc => {
+            if(cleanupFunc) cleanup = cleanupFunc;
+        });
+
+        return () => {
+            isMounted = false;
+            if (cleanup) {
+                cleanup();
+            }
+        };
     }, []);
 
     return (
@@ -194,7 +212,7 @@ export default function SolarSystemPage() {
                 )}
             </div>
             
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:left-8 md:translate-x-0 z-20 bg-black/70 p-3 px-6 rounded-full flex items-center gap-4 border border-white/30 shadow-lg">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:left-auto md:bottom-8 md:left-8 md:translate-x-0 z-20 bg-black/70 p-3 px-6 rounded-full flex items-center gap-4 border border-white/30 shadow-lg">
                 <label className="text-white text-sm font-mono font-bold">Gati</label>
                 <input type="range" min="0" max="1" step="0.05" value={speedMultiplier} onChange={(e) => setSpeedMultiplier(parseFloat(e.target.value))} className="cursor-pointer" />
             </div>
