@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,7 @@ interface McqQuestion {
 }
 
 export default function AptitudeQuizPage({ params }: { params: { topic: string, exam: string } }) {
-    const [mcqData, setMcqData] = useState<McqQuestion[]>([]);
+    const [mcqData, setMcqData] = useState<McqQuestion[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -43,10 +44,11 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
         const fetchData = async () => {
             setLoading(true);
             setError(null);
+            setMcqData(null);
             try {
                 const response = await fetch(`https://script.google.com/macros/s/AKfycbyVN4EWtJcfw9YFhcHv4C9z1uC4uQ_5pqrkvOKNK1iHFCVZyvX9f5NyJoqpNs4BGkCopg/exec`);
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Network response was not ok. Please try again later.');
                 }
                 const data = await response.json();
                 
@@ -62,13 +64,12 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
                            (targetExam === 'mix' || questionExam.includes(targetExam));
                 });
 
-
-                if (!Array.isArray(filteredQuestions) || filteredQuestions.length === 0) {
-                    throw new Error(`No questions found for topic "${topicName}" and exam "${examName}".`);
+                if (filteredQuestions.length === 0) {
+                    throw new Error(`No questions found for topic "${topicName}" and exam "${examName}". Check if data exists in the source.`);
                 }
                 setMcqData(filteredQuestions);
             } catch (e: any) {
-                setError(e.message || 'Failed to fetch quiz data.');
+                setError(e.message || 'Failed to fetch or process quiz data.');
                 console.error(e);
             } finally {
                 setLoading(false);
@@ -78,7 +79,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
         fetchData();
     }, [params.topic, params.exam, topicName, examName]);
     
-    const questionTypes = useMemo(() => mcqData.length > 0 ? [...new Set(mcqData.map(q => q.type))] : [], [mcqData]);
+    const questionTypes = useMemo(() => mcqData ? [...new Set(mcqData.map(q => q.type))] : [], [mcqData]);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -109,7 +110,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
     };
 
     const handleNext = () => {
-        if (currentQuestionIndex < mcqData.length - 1) {
+        if (mcqData && currentQuestionIndex < mcqData.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             resetQuestionState();
         } else {
@@ -146,7 +147,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
     };
     
     const handleNextType = () => {
-        if (!mcqData.length) return;
+        if (!mcqData) return;
         const currentType = mcqData[currentQuestionIndex].type;
         const currentTypeIndex = questionTypes.indexOf(currentType);
         if (currentTypeIndex < questionTypes.length - 1) {
@@ -175,24 +176,28 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
             <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
-                        <CardTitle className="text-destructive">Error</CardTitle>
-                        <CardDescription>Could not load quiz data.</CardDescription>
+                        <CardTitle className="text-destructive">Error Loading Quiz</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p>{error}</p>
+                        <p className="text-muted-foreground">{error}</p>
                     </CardContent>
+                     <CardFooter>
+                        <Button onClick={() => window.location.reload()} className="w-full">
+                            Try Again
+                        </Button>
+                    </CardFooter>
                 </Card>
             </div>
         );
     }
 
-    if (mcqData.length === 0) {
+    if (!mcqData || mcqData.length === 0) {
         return (
              <div className="container mx-auto py-12 px-4 md:px-6 flex justify-center items-center h-full">
                 <Card className="w-full max-w-xl text-center">
                     <CardHeader>
-                        <CardTitle>No Questions</CardTitle>
-                        <CardDescription>No questions found for this topic and exam combination.</CardDescription>
+                        <CardTitle>No Questions Found</CardTitle>
+                        <CardDescription>We couldn't find any questions for this topic and exam combination.</CardDescription>
                     </CardHeader>
                 </Card>
             </div>
@@ -200,11 +205,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
     }
     
     const currentQuestion = mcqData[currentQuestionIndex];
-    const isCorrect = selectedAnswer === currentQuestion.answer;
-    
-    const currentType = mcqData.length > 0 ? mcqData[currentQuestionIndex].type : '';
-    const currentTypeIndex = questionTypes.indexOf(currentType);
-    const hasNextType = currentTypeIndex < questionTypes.length - 1;
+    const hasNextType = questionTypes.indexOf(currentQuestion.type) < questionTypes.length - 1;
 
 
     if (quizEnded) {
@@ -249,7 +250,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
                         </div>
                         <CardDescription>{currentQuestion.source}</CardDescription>
                         <CardTitle className="font-body text-xl leading-relaxed">
-                            {mcqData.length > 0 && `Q${currentQuestion.questionNumber}. ${currentQuestion.question}`}
+                            {`Q${currentQuestion.questionNumber}. ${currentQuestion.question}`}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -258,7 +259,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
                             onValueChange={setSelectedAnswer}
                             disabled={showAnswer}
                         >
-                            {mcqData.length > 0 && currentQuestion.options.map((option, index) => (
+                            {currentQuestion.options.map((option, index) => (
                                 <div key={index} className={cn(
                                     "flex items-center space-x-2 p-3 rounded-md border",
                                     showAnswer && option === currentQuestion.answer && "bg-green-100 border-green-400 dark:bg-green-900/30 dark:border-green-700",
