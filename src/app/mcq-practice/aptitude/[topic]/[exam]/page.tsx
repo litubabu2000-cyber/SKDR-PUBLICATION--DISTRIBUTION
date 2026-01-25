@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -46,7 +45,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
             setError(null);
             setMcqData(null);
             try {
-                const response = await fetch(`https://script.google.com/macros/s/AKfycbyVN4EWtJcfw9YFhcHv4C9z1uC4uQ_5pqrkvOKNK1iHFCVZyvX9f5NyJoqpNs4BGkCopg/exec`);
+                const response = await fetch(`https://script.google.com/macros/s/AKfycbygM6qrMNuIVMFI_FPV6nAIwi36lTy_LMt3cmV6tMhAZ3XnVulUSxPcr0s819cs1qMB1A/exec`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok. Please try again later.');
                 }
