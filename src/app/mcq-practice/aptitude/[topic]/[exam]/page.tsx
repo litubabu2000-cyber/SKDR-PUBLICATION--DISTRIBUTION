@@ -11,11 +11,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { DrawingCanvas } from "@/components/drawing-canvas";
 
-const unslugify = (slug: string) => {
-    if (!slug) return '';
-    return slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-}
-
 interface McqQuestion {
     type: string;
     questionNumber: number | string;
@@ -42,8 +37,8 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
     const activeQuestionRef = useRef<HTMLButtonElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     
-    const topicName = useMemo(() => unslugify(params.topic), [params.topic]);
-    const examName = useMemo(() => unslugify(params.exam), [params.exam]);
+    const topicName = useMemo(() => decodeURIComponent(params.topic), [params.topic]);
+    const examName = useMemo(() => params.exam.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), [params.exam]);
 
     useEffect(() => {
         const fetchData = async () => {

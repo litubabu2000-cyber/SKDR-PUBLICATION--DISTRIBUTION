@@ -16,16 +16,11 @@ const examCategories = [
   { name: "Mix", icon: Mix, href: "mix" },
 ];
 
-const unslugify = (slug: string) => {
-    if (!slug) return '';
-    return slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-}
-
 export default function AptitudeTopicPage({ params }: { params: { topic: string } }) {
   if (!params.topic) {
     notFound();
   }
-  const topicName = unslugify(params.topic);
+  const topicName = decodeURIComponent(params.topic);
 
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">

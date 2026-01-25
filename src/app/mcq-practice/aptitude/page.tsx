@@ -33,7 +33,6 @@ const aptitudeTopics = [
     { name: "Miscellaneous" },
 ];
 
-const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export default function AptitudePage() {
     return (
@@ -53,7 +52,7 @@ export default function AptitudePage() {
                     <CardContent>
                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                          {aptitudeTopics.map((topic) => (
-                           <Link key={topic.name} href={`/mcq-practice/aptitude/${slugify(topic.name)}`}>
+                           <Link key={topic.name} href={`/mcq-practice/aptitude/${encodeURIComponent(topic.name)}`}>
                             <div className="p-4 bg-card border rounded-lg text-center text-muted-foreground transition-all duration-300 ease-in-out hover:shadow-md hover:border-primary h-full flex items-center justify-center">
                                 {topic.name}
                             </div>
