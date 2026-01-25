@@ -57,10 +57,16 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
                 
                 const questions = (data.data || data) as McqQuestion[];
 
-                const filteredQuestions = questions.filter(q => 
-                    unslugify(q.topic?.toLowerCase() || '').toLowerCase() === topicName.toLowerCase() &&
-                    (params.exam === 'mix' || (q.exam?.toLowerCase() || '').includes(params.exam.toLowerCase()))
-                );
+                const filteredQuestions = questions.filter(q => {
+                    const questionTopic = (q.topic || '').toLowerCase();
+                    const targetTopic = topicName.toLowerCase();
+                    const questionExam = (q.exam || '').toLowerCase();
+                    const targetExam = params.exam.toLowerCase();
+
+                    return questionTopic === targetTopic &&
+                           (targetExam === 'mix' || questionExam.includes(targetExam));
+                });
+
 
                 if (!Array.isArray(filteredQuestions) || filteredQuestions.length === 0) {
                     throw new Error(`No questions found for topic "${topicName}" and exam "${examName}".`);
@@ -331,3 +337,4 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
         </div>
     );
 }
+    
