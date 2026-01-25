@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
@@ -58,9 +59,9 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
                 const questions = (data.data || data) as McqQuestion[];
 
                 const filteredQuestions = questions.filter(q => {
-                    const questionTopic = (q.topic || '').toLowerCase();
-                    const targetTopic = topicName.toLowerCase();
-                    const questionExam = (q.exam || '').toLowerCase();
+                    const questionTopic = (q.topic || '').trim().toLowerCase();
+                    const targetTopic = topicName.trim().toLowerCase();
+                    const questionExam = (q.exam || '').trim().toLowerCase();
                     const targetExam = params.exam.toLowerCase();
 
                     return questionTopic === targetTopic &&
@@ -337,4 +338,3 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
         </div>
     );
 }
-    
