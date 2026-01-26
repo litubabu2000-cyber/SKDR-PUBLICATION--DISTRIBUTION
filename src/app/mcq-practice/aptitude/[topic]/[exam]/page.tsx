@@ -332,3 +332,4 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
         </div>
     );
 }
+    
