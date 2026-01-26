@@ -45,7 +45,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
             setError(null);
             setMcqData(null);
             try {
-                const response = await fetch(`https://script.google.com/macros/s/AKfycbygM6qrMNuIVMFI_FPV6nAIwi36lTy_LMt3cmV6tMhAZ3XnVulUSxPcr0s819cs1qMB1A/exec`);
+                const response = await fetch(`https://script.google.com/macros/s/AKfycbz2bIAbB4P0yChDiNkMfJlf_cAtgLbUB2at26-7S2pqXSCRNv_jFoYHWJp_VtrRaOhVWw/exec`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok. Please try again later.');
                 }
@@ -294,7 +294,7 @@ export default function AptitudeQuizPage({ params }: { params: { topic: string, 
                             <Button
                                 onClick={handleNext}
                             >
-                                {currentQuestionIndex === mcqData.length - 1 ? 'Finish' : 'Next'}
+                                {mcqData.length > 0 && currentQuestionIndex === mcqData.length - 1 ? 'Finish' : 'Next'}
                                 <ChevronRight className="ml-2 h-4 w-4" />
                             </Button>
                         </div>
