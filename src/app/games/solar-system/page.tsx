@@ -41,10 +41,10 @@ const createRingTexture = (THREE: any) => {
 
 export default function SolarSystemPage() {
     const mountRef = useRef<HTMLDivElement>(null);
+    const labelContainerRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [focusedPlanet, setFocusedPlanet] = useState<(typeof PLANET_DATA)[0] | null>(null);
     const [speedMultiplier, setSpeedMultiplier] = useState(0.2);
-    const [planetLabels, setPlanetLabels] = useState<any[]>([]);
     
     const speedMultiplierRef = useRef(speedMultiplier);
     const focusedPlanetRef = useRef(focusedPlanet);
@@ -79,7 +79,7 @@ export default function SolarSystemPage() {
                 return;
             }
 
-            if (!isMounted || !mountRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
+            if (!isMounted || !mountRef.current || !labelContainerRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
                 if (isMounted) setIsLoading(false);
                 return;
             }
@@ -87,6 +87,7 @@ export default function SolarSystemPage() {
             const THREE = window.THREE;
             const OrbitControls = (window as any).THREE.OrbitControls;
             const mount = mountRef.current;
+            const labelContainer = labelContainerRef.current;
             
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x050505, 0.0006);
@@ -116,6 +117,8 @@ export default function SolarSystemPage() {
             scene.add(sunMesh);
             
             const planetMeshes: any[] = [];
+            const labelElements: { [key: string]: HTMLDivElement } = {};
+
             PLANET_DATA.forEach(data => {
                 const orbitCurve = new THREE.EllipseCurve(0, 0, data.distance, data.distance, 0, 2 * Math.PI, false, 0);
                 const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitCurve.getPoints(128));
@@ -134,6 +137,12 @@ export default function SolarSystemPage() {
                 planet.userData = { ...data, angle: Math.random() * Math.PI * 2 };
                 planetMeshes.push(planet);
                 scene.add(planet);
+
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'planet-label';
+                labelDiv.textContent = data.name;
+                labelContainer.appendChild(labelDiv);
+                labelElements[data.name] = labelDiv;
             });
 
             const onWindowResize = () => { 
@@ -165,26 +174,27 @@ export default function SolarSystemPage() {
             const animate = () => {
                 if (!isMounted) return;
                 animationFrameId = requestAnimationFrame(animate);
-                const labels: any[] = [];
                 
                 planetMeshes.forEach(mesh => {
                     mesh.userData.angle += mesh.userData.speed * speedMultiplierRef.current;
                     mesh.position.x = Math.cos(mesh.userData.angle) * mesh.userData.distance;
                     mesh.position.z = Math.sin(mesh.userData.angle) * mesh.userData.distance;
                     mesh.rotation.y += 0.005;
+
                     const tempV = new THREE.Vector3(); 
                     mesh.getWorldPosition(tempV); 
                     tempV.project(camera);
+                    
+                    const labelDiv = labelElements[mesh.userData.name];
                     if (tempV.z < 1) { 
-                        labels.push({ 
-                            name: mesh.userData.name, 
-                            x: (tempV.x * 0.5 + 0.5) * mount.clientWidth, 
-                            y: (tempV.y * -0.5 + 0.5) * mount.clientHeight 
-                        }); 
+                        const x = (tempV.x * 0.5 + 0.5) * mount.clientWidth;
+                        const y = (tempV.y * -0.5 + 0.5) * mount.clientHeight;
+                        labelDiv.style.transform = `translate(-50%, -150%) translate(${x}px, ${y}px)`;
+                        labelDiv.style.display = 'block';
+                    } else {
+                        labelDiv.style.display = 'none';
                     }
                 });
-                
-                if(isMounted) setPlanetLabels(labels);
                 
                 const currentFocus = focusedPlanetRef.current;
                 if (currentFocus) {
@@ -204,6 +214,7 @@ export default function SolarSystemPage() {
             }
 
             cleanup = () => {
+                isMounted = false;
                 cancelAnimationFrame(animationFrameId);
                 window.removeEventListener('resize', onWindowResize);
                 if(mount) {
@@ -211,6 +222,11 @@ export default function SolarSystemPage() {
                     if(renderer.domElement.parentElement === mount) {
                         mount.removeChild(renderer.domElement);
                     }
+                }
+                if(labelContainer){
+                   while(labelContainer.firstChild){
+                       labelContainer.removeChild(labelContainer.firstChild);
+                   }
                 }
                 controls.dispose();
                 renderer.dispose();
@@ -220,7 +236,6 @@ export default function SolarSystemPage() {
         init();
 
         return () => {
-            isMounted = false;
             cleanup();
         };
     }, []);
@@ -255,16 +270,11 @@ export default function SolarSystemPage() {
             
             <div ref={mountRef} className="w-full h-full block"></div>
             
-            <div className="absolute top-0 left-0 pointer-events-none w-full h-full">
-                {planetLabels.map(label => (
-                    <div key={label.name} className="planet-label" style={{ left: `${label.x}px`, top: `${label.y}px` }}>
-                        {label.name}
-                    </div>
-                ))}
+            <div ref={labelContainerRef} className="absolute top-0 left-0 pointer-events-none w-full h-full">
             </div>
             
              <style jsx global>{`
-                .planet-label { position: absolute; color: #ffffff; font-weight: bold; font-size: 12px; background: rgba(0, 0, 0, 0.6); padding: 2px 6px; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; transform: translate(-50%, -150%); white-space: nowrap; transition: opacity 0.2s; text-shadow: 0 0 4px black; }
+                .planet-label { position: absolute; color: #ffffff; font-weight: bold; font-size: 12px; background: rgba(0, 0, 0, 0.6); padding: 2px 6px; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; transform: translate(-50%, -150%); white-space: nowrap; transition: opacity 0.2s; text-shadow: 0 0 4px black; display: none; }
                 @media (max-width: 768px) { .planet-label { font-size: 10px; } }
             `}</style>
         </div>
