@@ -20,32 +20,13 @@ declare global {
   }
 }
 
-const createTexture = (THREE: any, type: string, baseColorStr: string) => {
-    const size = 512;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = baseColorStr;
-    ctx.fillRect(0, 0, size, size);
-    if (type === 'gas' || type === 'ringed') { ctx.globalAlpha = 0.3; for (let i = 0; i < 20; i++) { const y = Math.random() * size; const h = Math.random() * 50 + 10; ctx.fillStyle = Math.random() > 0.5 ? '#222' : '#fff'; ctx.fillRect(0, y, size, h); } ctx.globalAlpha = 0.1; ctx.fillStyle = baseColorStr; ctx.fillRect(0,0,size,size); }
-    else if (type === 'rocky') { ctx.globalAlpha = 0.15; for (let i = 0; i < 100; i++) { const x = Math.random() * size; const y = Math.random() * size; const r = Math.random() * 20; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = Math.random() > 0.5 ? '#222' : '#666'; ctx.fill(); } }
-    else if (type === 'atmosphere') { ctx.globalAlpha = 0.3; for(let i=0; i<300; i++){ ctx.beginPath(); ctx.arc(Math.random()*size, Math.random()*size, Math.random()*80, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill(); } }
-    else if (type === 'earth') { ctx.fillStyle = "#2a5dbf"; ctx.fillRect(0,0,size,size); ctx.fillStyle = "#4a8d4a"; ctx.globalAlpha = 1.0; for(let i=0; i<30; i++) { ctx.beginPath(); let x = Math.random() * size; let y = Math.random() * size; if(y < 50 || y > size - 50) continue; let r = Math.random() * 80 + 20; ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill(); } ctx.globalAlpha = 0.5; ctx.fillStyle = "#fff"; for(let i=0; i<100; i++) { ctx.beginPath(); ctx.arc(Math.random()*size, Math.random()*size, Math.random()*40, 0, Math.PI*2); ctx.fill(); } }
-    return new THREE.CanvasTexture(canvas);
-};
-
-const createRingTexture = (THREE: any) => {
-    const size = 256; const canvas = document.createElement('canvas'); canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d')!; const centerX = size/2; const centerY = size/2; const gradient = ctx.createRadialGradient(centerX, centerY, 30, centerX, centerY, size/2); gradient.addColorStop(0, 'rgba(0,0,0,0)'); gradient.addColorStop(0.4, 'rgba(255,235,205,0.2)'); gradient.addColorStop(0.6, 'rgba(255,235,205,0.9)'); gradient.addColorStop(0.7, 'rgba(0,0,0,0)'); gradient.addColorStop(0.8, 'rgba(230,210,180,0.7)'); gradient.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,size,size); return new THREE.CanvasTexture(canvas);
-};
-
 export default function SolarSystemPage() {
     const mountRef = useRef<HTMLDivElement>(null);
+    const labelsContainerRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [focusedPlanet, setFocusedPlanet] = useState<(typeof PLANET_DATA)[0] | null>(null);
     const [speedMultiplier, setSpeedMultiplier] = useState(0.2);
     
-    // Use refs to pass state to the animation loop without triggering useEffect re-runs
     const speedMultiplierRef = useRef(speedMultiplier);
     const focusedPlanetRef = useRef(focusedPlanet);
     useEffect(() => { speedMultiplierRef.current = speedMultiplier; }, [speedMultiplier]);
@@ -79,7 +60,7 @@ export default function SolarSystemPage() {
                 return;
             }
 
-            if (!isMounted || !mountRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
+            if (!isMounted || !mountRef.current || !labelsContainerRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
                 if (isMounted) setIsLoading(false);
                 return;
             }
@@ -87,6 +68,7 @@ export default function SolarSystemPage() {
             const THREE = window.THREE;
             const OrbitControls = (window as any).THREE.OrbitControls;
             const mount = mountRef.current;
+            const labelsContainer = labelsContainerRef.current;
             
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x050505, 0.0006);
@@ -95,7 +77,7 @@ export default function SolarSystemPage() {
             
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
             renderer.setSize(mount.clientWidth, mount.clientHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performance Optimization
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             mount.appendChild(renderer.domElement);
@@ -104,6 +86,7 @@ export default function SolarSystemPage() {
             controls.enableDamping = true; 
             controls.minDistance = 20; 
             controls.maxDistance = 600;
+            controls.enablePan = false;
             
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
@@ -112,21 +95,41 @@ export default function SolarSystemPage() {
             sunLight.castShadow = true;
             scene.add(sunLight);
 
-            const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(15, 64, 64), new THREE.MeshBasicMaterial({ color: 0xFFF5E0 }));
+            const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(15, 32, 32), new THREE.MeshBasicMaterial({ color: 0xFFF5E0 })); // Performance Optimization
             scene.add(sunMesh);
             
             const planetMeshes: any[] = [];
-            
-            PLANET_DATA.forEach(data => {
+            const labelElements: (HTMLDivElement | null)[] = []; // Performance Optimization
+
+            const createTexture = (THREE: any, type: string, baseColorStr: string) => {
+                const size = 512;
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d')!;
+                ctx.fillStyle = baseColorStr;
+                ctx.fillRect(0, 0, size, size);
+                if (type === 'gas' || type === 'ringed') { ctx.globalAlpha = 0.3; for (let i = 0; i < 20; i++) { const y = Math.random() * size; const h = Math.random() * 50 + 10; ctx.fillStyle = Math.random() > 0.5 ? '#222' : '#fff'; ctx.fillRect(0, y, size, h); } ctx.globalAlpha = 0.1; ctx.fillStyle = baseColorStr; ctx.fillRect(0,0,size,size); }
+                else if (type === 'rocky') { ctx.globalAlpha = 0.15; for (let i = 0; i < 100; i++) { const x = Math.random() * size; const y = Math.random() * size; const r = Math.random() * 20; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = Math.random() > 0.5 ? '#222' : '#666'; ctx.fill(); } }
+                else if (type === 'atmosphere') { ctx.globalAlpha = 0.3; for(let i=0; i<300; i++){ ctx.beginPath(); ctx.arc(Math.random()*size, Math.random()*size, Math.random()*80, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill(); } }
+                else if (type === 'earth') { ctx.fillStyle = "#2a5dbf"; ctx.fillRect(0,0,size,size); ctx.fillStyle = "#4a8d4a"; ctx.globalAlpha = 1.0; for(let i=0; i<30; i++) { ctx.beginPath(); let x = Math.random() * size; let y = Math.random() * size; if(y < 50 || y > size - 50) continue; let r = Math.random() * 80 + 20; ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill(); } ctx.globalAlpha = 0.5; ctx.fillStyle = "#fff"; for(let i=0; i<100; i++) { ctx.beginPath(); ctx.arc(Math.random()*size, Math.random()*size, Math.random()*40, 0, Math.PI*2); ctx.fill(); } }
+                return new THREE.CanvasTexture(canvas);
+            };
+
+            const createRingTexture = (THREE: any) => {
+                const size = 256; const canvas = document.createElement('canvas'); canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d')!; const centerX = size/2; const centerY = size/2; const gradient = ctx.createRadialGradient(centerX, centerY, 30, centerX, centerY, size/2); gradient.addColorStop(0, 'rgba(0,0,0,0)'); gradient.addColorStop(0.4, 'rgba(255,235,205,0.2)'); gradient.addColorStop(0.6, 'rgba(255,235,205,0.9)'); gradient.addColorStop(0.7, 'rgba(0,0,0,0)'); gradient.addColorStop(0.8, 'rgba(230,210,180,0.7)'); gradient.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,size,size); return new THREE.CanvasTexture(canvas);
+            };
+
+            PLANET_DATA.forEach((data, index) => {
                 const orbitCurve = new THREE.EllipseCurve(0, 0, data.distance, data.distance, 0, 2 * Math.PI, false, 0);
                 const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitCurve.getPoints(128));
                 const orbitLine = new THREE.LineLoop(orbitGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 }));
                 orbitLine.rotation.x = Math.PI / 2;
                 scene.add(orbitLine);
                 
-                const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 32, 32), new THREE.MeshStandardMaterial({ map: createTexture(THREE, data.type, data.color), roughness: 0.7, metalness: data.type === 'earth' ? 0.2 : 0, emissive: 0x222222, emissiveIntensity: 0.1 }));
+                const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 24, 24), new THREE.MeshStandardMaterial({ map: createTexture(THREE, data.type, data.color), roughness: 0.7, metalness: data.type === 'earth' ? 0.2 : 0, emissive: 0x222222, emissiveIntensity: 0.1 })); // Performance Optimization
                 if (data.name.includes("Saturn")) {
-                    const ring = new THREE.Mesh(new THREE.RingGeometry(data.size * 1.4, data.size * 2.2, 64), new THREE.MeshStandardMaterial({ map: createRingTexture(THREE), side: THREE.DoubleSide, transparent: true, opacity: 0.95 }));
+                    const ring = new THREE.Mesh(new THREE.RingGeometry(data.size * 1.4, data.size * 2.2, 32), new THREE.MeshStandardMaterial({ map: createRingTexture(THREE), side: THREE.DoubleSide, transparent: true, opacity: 0.95 })); // Performance Optimization
                     ring.rotation.x = Math.PI / 1.8;
                     planet.add(ring);
                 }
@@ -135,6 +138,8 @@ export default function SolarSystemPage() {
                 planet.userData = { ...data, angle: Math.random() * Math.PI * 2 };
                 planetMeshes.push(planet);
                 scene.add(planet);
+
+                labelElements[index] = labelsContainer.querySelector(`.label-${index}`);
             });
 
             const onWindowResize = () => { 
@@ -156,9 +161,7 @@ export default function SolarSystemPage() {
                 raycaster.setFromCamera(mouse, camera);
                 const intersects = raycaster.intersectObjects(planetMeshes, true);
                 if (intersects.length > 0) {
-                    const selectedObject = intersects[0].object;
-                    // Traverse up to find the parent planet mesh if a child (like Saturn's ring) is clicked
-                    let planetObject = selectedObject;
+                    let planetObject = intersects[0].object;
                     while (planetObject.parent && planetObject.parent !== scene) {
                         planetObject = planetObject.parent;
                     }
@@ -173,9 +176,6 @@ export default function SolarSystemPage() {
                 if (!isMounted) return;
                 animationFrameId = requestAnimationFrame(animate);
                 
-                // Get all label DOM elements once per frame
-                const labelElements = (mount.parentNode as HTMLElement)?.querySelectorAll('.planet-label');
-
                 const tempV = new THREE.Vector3();
                 planetMeshes.forEach((mesh, index) => {
                     mesh.userData.angle += mesh.userData.speed * speedMultiplierRef.current;
@@ -183,9 +183,8 @@ export default function SolarSystemPage() {
                     mesh.position.z = Math.sin(mesh.userData.angle) * mesh.userData.distance;
                     mesh.rotation.y += 0.005;
 
-                    // Update label position
-                    if (labelElements && labelElements[index]) {
-                        const labelDiv = labelElements[index] as HTMLDivElement;
+                    const labelDiv = labelElements[index];
+                    if (labelDiv) {
                         mesh.getWorldPosition(tempV);
                         tempV.project(camera);
                         
@@ -230,7 +229,6 @@ export default function SolarSystemPage() {
                 }
                 controls.dispose();
                 renderer.dispose();
-                // Clean up scene objects
                 while(scene.children.length > 0){ 
                     scene.remove(scene.children[0]); 
                 }
@@ -272,15 +270,16 @@ export default function SolarSystemPage() {
                 <input type="range" min="0" max="1" step="0.05" value={speedMultiplier} onChange={(e) => setSpeedMultiplier(parseFloat(e.target.value))} className="cursor-pointer" />
             </div>
             
-            <div ref={mountRef} className="w-full h-full block"></div>
-            
-            {/* The label container is now part of the React DOM, making it more stable */}
-            <div className="absolute top-0 left-0 pointer-events-none w-full h-full">
-              {PLANET_DATA.map(data => (
-                  <div key={data.name} className="planet-label" style={{display: 'none'}}>
-                      {data.name}
-                  </div>
-              ))}
+            <div className="w-full h-full relative">
+                <div ref={mountRef} className="w-full h-full block"></div>
+                
+                <div ref={labelsContainerRef} className="absolute top-0 left-0 pointer-events-none w-full h-full">
+                  {PLANET_DATA.map((data, index) => (
+                      <div key={data.name} className={`planet-label label-${index}`} style={{display: 'none'}}>
+                          {data.name}
+                      </div>
+                  ))}
+                </div>
             </div>
             
              <style jsx global>{`
