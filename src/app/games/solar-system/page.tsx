@@ -13,6 +13,13 @@ const PLANET_DATA = [
     { name: "Neptune (Varun)", size: 4.8, distance: 230, speed: 0.001, type: 'gas', color: '#66B2FF', fact: "Varun bohot andhera, thanda aur tez hawaon wala grah hai. Yeh pehla grah tha jise telescope se pehle ganit (maths) ke zariye dhoonda gaya tha." }
 ];
 
+declare global {
+  interface Window {
+    THREE: any;
+    OrbitControls: any;
+  }
+}
+
 const createTexture = (THREE: any, type: string, baseColorStr: string) => {
     const size = 512;
     const canvas = document.createElement('canvas');
@@ -47,17 +54,22 @@ export default function SolarSystemPage() {
     useEffect(() => {
         let isMounted = true;
         let animationFrameId: number;
+        let cleanup = () => {};
 
         const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
-            if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+            if (document.querySelector(`script[src="${src}"]`)) {
+                resolve();
+                return;
+            }
             const script = document.createElement('script');
-            script.src = src; script.async = true;
+            script.src = src;
+            script.async = true;
             script.onload = () => resolve();
             script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-            document.body.appendChild(script);
+            document.head.appendChild(script);
         });
 
-        const init = async () => {
+        async function init() {
             try {
                 await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
                 await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js');
@@ -68,11 +80,9 @@ export default function SolarSystemPage() {
             }
 
             if (!isMounted || !mountRef.current || typeof window.THREE === 'undefined' || typeof (window as any).THREE.OrbitControls === 'undefined') {
-                 if (isMounted) setIsLoading(false);
+                if (isMounted) setIsLoading(false);
                 return;
             }
-
-            if (isMounted) setIsLoading(false);
 
             const THREE = window.THREE;
             const OrbitControls = (window as any).THREE.OrbitControls;
@@ -82,17 +92,22 @@ export default function SolarSystemPage() {
             scene.fog = new THREE.FogExp2(0x050505, 0.0006);
             const camera = new THREE.PerspectiveCamera(45, mount.clientWidth / mount.clientHeight, 0.1, 2000);
             camera.position.set(-80, 60, 180);
+            
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
             renderer.setSize(mount.clientWidth, mount.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
             mount.appendChild(renderer.domElement);
+
             const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true; controls.minDistance = 20; controls.maxDistance = 600;
+            controls.enableDamping = true; 
+            controls.minDistance = 20; 
+            controls.maxDistance = 600;
+            
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
+            
             const sunLight = new THREE.PointLight(0xffffff, 2.5, 1200);
             sunLight.castShadow = true;
             scene.add(sunLight);
@@ -107,6 +122,7 @@ export default function SolarSystemPage() {
                 const orbitLine = new THREE.LineLoop(orbitGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 }));
                 orbitLine.rotation.x = Math.PI / 2;
                 scene.add(orbitLine);
+                
                 const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 32, 32), new THREE.MeshStandardMaterial({ map: createTexture(THREE, data.type, data.color), roughness: 0.7, metalness: data.type === 'earth' ? 0.2 : 0, emissive: 0x222222, emissiveIntensity: 0.1 }));
                 if (data.name.includes("Saturn")) {
                     const ring = new THREE.Mesh(new THREE.RingGeometry(data.size * 1.4, data.size * 2.2, 64), new THREE.MeshStandardMaterial({ map: createRingTexture(THREE), side: THREE.DoubleSide, transparent: true, opacity: 0.95 }));
@@ -120,9 +136,17 @@ export default function SolarSystemPage() {
                 scene.add(planet);
             });
 
-            const onWindowResize = () => { if (!isMounted || !mount) return; camera.aspect = mount.clientWidth / mount.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(mount.clientWidth, mount.clientHeight); };
+            const onWindowResize = () => { 
+                if (!isMounted || !mount) return; 
+                camera.aspect = mount.clientWidth / mount.clientHeight; 
+                camera.updateProjectionMatrix(); 
+                renderer.setSize(mount.clientWidth, mount.clientHeight); 
+            };
             window.addEventListener('resize', onWindowResize);
-            const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
+            
+            const raycaster = new THREE.Raycaster(); 
+            const mouse = new THREE.Vector2();
+            
             const onPointerDown = (event: PointerEvent) => {
                 if (!isMounted || !mount) return;
                 const rect = mount.getBoundingClientRect();
@@ -142,27 +166,44 @@ export default function SolarSystemPage() {
                 if (!isMounted) return;
                 animationFrameId = requestAnimationFrame(animate);
                 const labels: any[] = [];
+                
                 planetMeshes.forEach(mesh => {
                     mesh.userData.angle += mesh.userData.speed * speedMultiplierRef.current;
                     mesh.position.x = Math.cos(mesh.userData.angle) * mesh.userData.distance;
                     mesh.position.z = Math.sin(mesh.userData.angle) * mesh.userData.distance;
                     mesh.rotation.y += 0.005;
-                    const tempV = new THREE.Vector3(); mesh.getWorldPosition(tempV); tempV.project(camera);
-                    if (tempV.z < 1) { labels.push({ name: mesh.userData.name, x: (tempV.x * 0.5 + 0.5) * mount.clientWidth, y: (tempV.y * -0.5 + 0.5) * mount.clientHeight }); }
+                    const tempV = new THREE.Vector3(); 
+                    mesh.getWorldPosition(tempV); 
+                    tempV.project(camera);
+                    if (tempV.z < 1) { 
+                        labels.push({ 
+                            name: mesh.userData.name, 
+                            x: (tempV.x * 0.5 + 0.5) * mount.clientWidth, 
+                            y: (tempV.y * -0.5 + 0.5) * mount.clientHeight 
+                        }); 
+                    }
                 });
+                
                 if(isMounted) setPlanetLabels(labels);
+                
                 const currentFocus = focusedPlanetRef.current;
                 if (currentFocus) {
                     const targetMesh = planetMeshes.find(p => p.userData.name === currentFocus.name);
                     if (targetMesh) controls.target.copy(targetMesh.position);
-                } else { controls.target.set(0, 0, 0); }
+                } else { 
+                    controls.target.set(0, 0, 0); 
+                }
+                
                 controls.update();
                 renderer.render(scene, camera);
             };
-            animate();
 
-            return () => {
-                isMounted = false;
+            if(isMounted) {
+                setIsLoading(false);
+                animate();
+            }
+
+            cleanup = () => {
                 cancelAnimationFrame(animationFrameId);
                 window.removeEventListener('resize', onWindowResize);
                 if(mount) {
@@ -174,18 +215,13 @@ export default function SolarSystemPage() {
                 controls.dispose();
                 renderer.dispose();
             };
-        };
+        }
 
-        let cleanup: (() => void) | undefined;
-        init().then(cleanupFunc => {
-            if(cleanupFunc) cleanup = cleanupFunc;
-        });
+        init();
 
         return () => {
             isMounted = false;
-            if (cleanup) {
-                cleanup();
-            }
+            cleanup();
         };
     }, []);
 
