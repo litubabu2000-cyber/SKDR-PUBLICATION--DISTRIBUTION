@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -56,8 +55,8 @@ export function AppHeader() {
     return pathname.startsWith(href) && href !== '/';
   }
 
-  // Hide header on admin pages, as admin layout has its own
-  if (pathname.startsWith('/admin')) {
+  // Only show header on the homepage
+  if (pathname !== '/') {
     return null;
   }
 
