@@ -174,10 +174,6 @@ export default function CurrentAffairsPage() {
         ...prev,
         [currentIndex]: { selection: option, isCorrect }
     }));
-
-    setTimeout(() => {
-        setIsFlipped(true);
-    }, 800);
   };
 
   const handleNext = () => {
@@ -342,9 +338,17 @@ export default function CurrentAffairsPage() {
                               <Clock size={14} />
                               <span>Time: {time}s</span>
                           </div>
-                          <Button variant="destructive" size="sm" onClick={() => setGameState('end')}>
-                              End Quiz
-                          </Button>
+                          <div className="flex items-center gap-2">
+                             {!!answers[currentIndex] && !isFlipped && (
+                                <Button variant="secondary" size="sm" onClick={() => setIsFlipped(true)}>
+                                    <RotateCcw className="h-3 w-3 mr-1.5" />
+                                    Flip
+                                </Button>
+                             )}
+                            <Button variant="destructive" size="sm" onClick={() => setGameState('end')}>
+                                End Quiz
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
