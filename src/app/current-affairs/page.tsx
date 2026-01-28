@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp } from 'lucide-react';
+import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp, CheckCircle, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -34,6 +34,7 @@ export default function CurrentAffairsPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, { selection: string; isCorrect: boolean }>>({});
   const [time, setTime] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
   
   const score = Object.values(answers).filter(a => a.isCorrect).length;
 
@@ -162,6 +163,7 @@ export default function CurrentAffairsPage() {
     setCurrentIndex(0);
     setAnswers({});
     setTime(0);
+    setIsFlipped(false);
   };
   
   const handleAnswerSelect = (option: string) => {
@@ -172,10 +174,15 @@ export default function CurrentAffairsPage() {
         ...prev,
         [currentIndex]: { selection: option, isCorrect }
     }));
+
+    setTimeout(() => {
+        setIsFlipped(true);
+    }, 800);
   };
 
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
+        setIsFlipped(false);
         setCurrentIndex(prev => prev + 1);
     } else {
         setGameState('end');
@@ -187,6 +194,7 @@ export default function CurrentAffairsPage() {
       setCurrentIndex(0);
       setAnswers({});
       setTime(0);
+      setIsFlipped(false);
   }
 
   if (gameState === 'loading') return (
@@ -264,16 +272,16 @@ export default function CurrentAffairsPage() {
       </div>
 
       <div className="relative flex-1 w-full flex items-center justify-center p-2">
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence initial={false}>
           {questions.slice(currentIndex, currentIndex + 1).map(q => (
             <motion.div
               key={q.id}
-              className="absolute w-full max-w-md"
-              drag={answers[currentIndex] ? "y" : false}
+              className="absolute w-full max-w-md h-[580px]"
+              drag={isFlipped ? "y" : false}
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={0.1}
               onDragEnd={(event, info) => {
-                if (answers[currentIndex] && info.offset.y < -50) {
+                if (isFlipped && info.offset.y < -50) {
                   handleNext();
                 }
               }}
@@ -282,66 +290,97 @@ export default function CurrentAffairsPage() {
               exit={{ y: -300, opacity: 0, scale: 0.9 }}
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
             >
-              <div className="bg-card text-foreground rounded-2xl w-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
-                <div className='relative w-full h-24'>
-                  <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-                </div>
-                <div className="p-2 flex flex-col flex-1">
-                  <div>
-                    <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
-                    <h3 className="font-bold text-sm mb-2">{q.question}</h3>
-                  </div>
-                  <div className="space-y-1 flex-1">
-                    {q.options.map((opt: string) => {
-                      const isSelected = answers[currentIndex]?.selection === opt;
-                      const isCorrect = q.correctAnswer === opt;
-                      const isRevealed = !!answers[currentIndex];
-                      
-                      return (
-                        <button
-                          key={opt}
-                          onClick={() => handleAnswerSelect(opt)}
-                          disabled={isRevealed}
-                          className={cn(
-                            "w-full text-left p-2 rounded-lg border text-sm font-medium transition-all duration-300",
-                            "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
-                            isRevealed && isCorrect && "bg-green-500/20 border-green-500 text-white",
-                            isRevealed && isSelected && !isCorrect && "bg-red-500/20 border-red-500 text-white",
-                            isRevealed && !isSelected && !isCorrect && "opacity-50"
-                          )}
-                        >
-                          <span className="flex items-center justify-between">
-                            {opt}
-                            {isRevealed && isCorrect && <Check size={16} />}
-                            {isRevealed && isSelected && !isCorrect && <X size={16} />}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-2 pt-2 border-t border-neutral-700 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2 text-neutral-400">
-                        <Clock size={14} />
-                        <span>Time: {time}s</span>
+              <div className="w-full h-full" style={{ perspective: 1000 }}>
+                <motion.div
+                    className="relative w-full h-full"
+                    style={{ transformStyle: 'preserve-3d' }}
+                    animate={{ rotateY: isFlipped ? 180 : 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    {/* --- FRONT OF CARD --- */}
+                    <div className="absolute w-full h-full" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
+                      <div className="bg-card text-foreground rounded-2xl w-full h-full shadow-2xl flex flex-col overflow-hidden border border-neutral-700">
+                        <div className='relative w-full h-24'>
+                          <Image src={`https://picsum.photos/seed/${q.id}/800/400`} layout="fill" objectFit="cover" alt="Question visual" priority />
+                          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                        </div>
+                        <div className="p-2 flex flex-col flex-1">
+                          <div>
+                            <p className="text-xs text-neutral-400 mb-1">{q.category} • {q.date}</p>
+                            <h3 className="font-bold text-sm mb-2">{q.question}</h3>
+                          </div>
+                          <div className="space-y-1 flex-1">
+                            {q.options.map((opt: string) => {
+                              const isSelected = answers[currentIndex]?.selection === opt;
+                              const isTheCorrectAnswer = q.correctAnswer === opt;
+                              const isRevealed = !!answers[currentIndex];
+                              
+                              return (
+                                <button
+                                  key={opt}
+                                  onClick={() => handleAnswerSelect(opt)}
+                                  disabled={isRevealed}
+                                  className={cn(
+                                    "w-full text-left p-2 rounded-lg border text-sm font-medium transition-all duration-300",
+                                    "border-neutral-600 bg-neutral-800 hover:bg-neutral-700",
+                                    isRevealed && isTheCorrectAnswer && "bg-green-500/20 border-green-500 text-white",
+                                    isRevealed && isSelected && !isTheCorrectAnswer && "bg-red-500/20 border-red-500 text-white",
+                                    isRevealed && !isSelected && !isTheCorrectAnswer && "opacity-50"
+                                  )}
+                                >
+                                  <span className="flex items-center justify-between">
+                                    {opt}
+                                    {isRevealed && isTheCorrectAnswer && <Check size={16} />}
+                                    {isRevealed && isSelected && !isTheCorrectAnswer && <X size={16} />}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                           <div className="mt-2 pt-2 border-t border-neutral-700 flex items-center justify-between text-xs">
+                            <div className="flex items-center gap-2 text-neutral-400">
+                                <Clock size={14} />
+                                <span>Time: {time}s</span>
+                            </div>
+                            <Button variant="destructive" size="sm" onClick={() => setGameState('end')}>
+                                End Quiz
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <Button variant="destructive" size="sm" onClick={() => setGameState('end')}>
-                        End Quiz
-                    </Button>
-                  </div>
-                </div>
+                    
+                    {/* --- BACK OF CARD --- */}
+                    <div
+                        className="absolute w-full h-full bg-card text-foreground rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6 border border-neutral-700"
+                        style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    >
+                        {answers[currentIndex]?.isCorrect ? (
+                            <>
+                                <CheckCircle className="w-20 h-20 text-green-500 mb-4" />
+                                <h3 className="text-3xl font-bold text-white">Correct!</h3>
+                            </>
+                        ) : (
+                            <>
+                                <XCircle className="w-20 h-20 text-red-500 mb-4" />
+                                <h3 className="text-3xl font-bold text-white">Incorrect</h3>
+                            </>
+                        )}
+                        <div className="text-center mt-6">
+                            <p className="text-neutral-400">The correct answer is:</p>
+                            <p className="text-xl font-semibold text-white mt-2 p-3 bg-neutral-900/50 rounded-lg">{q.correctAnswer}</p>
+                        </div>
+                        <div className="absolute bottom-6 left-0 right-0 z-30 text-center text-white/50 animate-pulse pointer-events-none">
+                            <ArrowUp className="inline-block" />
+                            <p className="text-xs font-semibold">Swipe up for next</p>
+                        </div>
+                    </div>
+                </motion.div>
               </div>
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
-
-      {answers[currentIndex] && (
-        <div className="absolute bottom-6 left-0 right-0 z-30 text-center text-white/50 animate-pulse pointer-events-none">
-          <ArrowUp className="inline-block" />
-          <p className="text-xs font-semibold">Swipe up for next</p>
-        </div>
-      )}
     </div>
   );
 }
