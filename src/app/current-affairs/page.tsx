@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp, CheckCircle, XCircle, Sparkles } from 'lucide-react';
+import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp, CheckCircle, XCircle, BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,7 +35,6 @@ export default function CurrentAffairsPage() {
   const [answers, setAnswers] = useState<Record<number, { selection: string; isCorrect: boolean }>>({});
   const [time, setTime] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isDescriptionLoading, setIsDescriptionLoading] = useState(false);
   
   const score = Object.values(answers).filter(a => a.isCorrect).length;
 
@@ -89,6 +88,7 @@ export default function CurrentAffairsPage() {
       const aKey = keys.find(k => /answer|ans|correct|back/i.test(k)) || keys[1];
       const dKey = keys.find(k => /date|timestamp|time|created/i.test(k));
       const cKey = keys.find(k => /category|topic/i.test(k));
+      const descKey = keys.find(k => /description|explanation|desc/i.test(k));
 
       const qText = String(item[qKey] || "");
       const aText = String(item[aKey] || "");
@@ -125,7 +125,7 @@ export default function CurrentAffairsPage() {
         month: monthStr,
         year: yearStr,
         category: categoryStr,
-        description: null, // Add description field for caching
+        description: descKey ? String(item[descKey] || "") : "",
       };
     }).filter(Boolean);
 
@@ -180,62 +180,11 @@ export default function CurrentAffairsPage() {
 
   const handleFlip = () => {
     setIsFlipped(true);
-    // Generate description if it's not already there
-    if (!questions[currentIndex]?.description) {
-        handleGenerateDescription();
-    }
   };
-
-  const handleGenerateDescription = async () => {
-    if (isDescriptionLoading || questions[currentIndex]?.description) {
-        return;
-    }
-    
-    setIsDescriptionLoading(true);
-    try {
-        const q = questions[currentIndex];
-        const prompt = `For the current affairs question: "${q.question}" where the correct answer is "${q.correctAnswer}", provide a brief, one or two-sentence explanation or some interesting background context. Keep it concise, engaging, and easy for a student to understand.`;
-        
-        const response = await fetch('/api/gemini', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt, isJson: false }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch from Gemini API');
-        }
-        
-        const data = await response.json();
-        const descriptionText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Could not generate an explanation at this time.";
-        
-        setQuestions(prevQuestions => {
-            const newQuestions = [...prevQuestions];
-            if (newQuestions[currentIndex]) {
-              newQuestions[currentIndex].description = descriptionText;
-            }
-            return newQuestions;
-        });
-
-    } catch (error) {
-        console.error("Failed to generate description:", error);
-        setQuestions(prevQuestions => {
-            const newQuestions = [...prevQuestions];
-            if (newQuestions[currentIndex]) {
-                newQuestions[currentIndex].description = "An error occurred while fetching the explanation. Please ensure your API key is set up correctly in the .env file.";
-            }
-            return newQuestions;
-        });
-    } finally {
-        setIsDescriptionLoading(false);
-    }
-  };
-
 
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
         setIsFlipped(false);
-        setIsDescriptionLoading(false);
         setCurrentIndex(prev => prev + 1);
     } else {
         setGameState('end');
@@ -248,7 +197,6 @@ export default function CurrentAffairsPage() {
       setAnswers({});
       setTime(0);
       setIsFlipped(false);
-      setIsDescriptionLoading(false);
   }
 
   if (gameState === 'loading') return (
@@ -434,20 +382,12 @@ export default function CurrentAffairsPage() {
 
                       <div className="flex-1 bg-neutral-900/50 rounded-xl p-4 flex flex-col overflow-hidden">
                           <h4 className="font-bold text-white mb-2 flex items-center gap-2 flex-shrink-0">
-                            <Sparkles size={16} className="text-yellow-400"/> AI Explanation
+                            <BookOpen size={16} className="text-blue-400"/> Explanation
                           </h4>
                           <div className="overflow-y-auto">
-                              {isDescriptionLoading ? (
-                                  <div className="space-y-2">
-                                      <div className="h-4 bg-neutral-700 rounded w-full animate-pulse"></div>
-                                      <div className="h-4 bg-neutral-700 rounded w-5/6 animate-pulse"></div>
-                                      <div className="h-4 bg-neutral-700 rounded w-3/4 animate-pulse"></div>
-                                  </div>
-                              ) : (
-                                  <p className="text-neutral-300 text-sm leading-relaxed">
-                                      {q.description || "Click 'Flip' to generate an explanation."}
-                                  </p>
-                              )}
+                              <p className="text-neutral-300 text-sm leading-relaxed">
+                                  {q.description || "No explanation available for this question."}
+                              </p>
                           </div>
                       </div>
                       
