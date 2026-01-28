@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp, CheckCircle, XCircle } from 'lucide-react';
+import { Play, RotateCcw, Trophy, Loader2, AlertCircle, Calendar, Clock, Filter, Tag, Check, X, ArrowUp, CheckCircle, XCircle, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,6 +35,7 @@ export default function CurrentAffairsPage() {
   const [answers, setAnswers] = useState<Record<number, { selection: string; isCorrect: boolean }>>({});
   const [time, setTime] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isDescriptionLoading, setIsDescriptionLoading] = useState(false);
   
   const score = Object.values(answers).filter(a => a.isCorrect).length;
 
@@ -123,7 +124,8 @@ export default function CurrentAffairsPage() {
         date: dateStr,
         month: monthStr,
         year: yearStr,
-        category: categoryStr
+        category: categoryStr,
+        description: null, // Add description field for caching
       };
     }).filter(Boolean);
 
@@ -176,9 +178,64 @@ export default function CurrentAffairsPage() {
     }));
   };
 
+  const handleFlip = () => {
+    setIsFlipped(true);
+    // Generate description if it's not already there
+    if (!questions[currentIndex]?.description) {
+        handleGenerateDescription();
+    }
+  };
+
+  const handleGenerateDescription = async () => {
+    if (isDescriptionLoading || questions[currentIndex]?.description) {
+        return;
+    }
+    
+    setIsDescriptionLoading(true);
+    try {
+        const q = questions[currentIndex];
+        const prompt = `For the current affairs question: "${q.question}" where the correct answer is "${q.correctAnswer}", provide a brief, one or two-sentence explanation or some interesting background context. Keep it concise, engaging, and easy for a student to understand.`;
+        
+        const response = await fetch('/api/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, isJson: false }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch from Gemini API');
+        }
+        
+        const data = await response.json();
+        const descriptionText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Could not generate an explanation at this time.";
+        
+        setQuestions(prevQuestions => {
+            const newQuestions = [...prevQuestions];
+            if (newQuestions[currentIndex]) {
+              newQuestions[currentIndex].description = descriptionText;
+            }
+            return newQuestions;
+        });
+
+    } catch (error) {
+        console.error("Failed to generate description:", error);
+        setQuestions(prevQuestions => {
+            const newQuestions = [...prevQuestions];
+            if (newQuestions[currentIndex]) {
+                newQuestions[currentIndex].description = "An error occurred while fetching the explanation. Please ensure your API key is set up correctly in the .env file.";
+            }
+            return newQuestions;
+        });
+    } finally {
+        setIsDescriptionLoading(false);
+    }
+  };
+
+
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
         setIsFlipped(false);
+        setIsDescriptionLoading(false);
         setCurrentIndex(prev => prev + 1);
     } else {
         setGameState('end');
@@ -191,6 +248,7 @@ export default function CurrentAffairsPage() {
       setAnswers({});
       setTime(0);
       setIsFlipped(false);
+      setIsDescriptionLoading(false);
   }
 
   if (gameState === 'loading') return (
@@ -340,7 +398,7 @@ export default function CurrentAffairsPage() {
                           </div>
                           <div className="flex items-center gap-2">
                              {!!answers[currentIndex] && !isFlipped && (
-                                <Button variant="secondary" size="sm" onClick={() => setIsFlipped(true)}>
+                                <Button variant="secondary" size="sm" onClick={handleFlip}>
                                     <RotateCcw className="h-3 w-3 mr-1.5" />
                                     Flip
                                 </Button>
@@ -356,25 +414,44 @@ export default function CurrentAffairsPage() {
                   
                   {/* --- BACK OF CARD --- */}
                   <div
-                      className="absolute w-full h-full bg-card text-foreground rounded-2xl shadow-2xl flex flex-col items-center justify-center p-6 border border-neutral-700"
+                      className="absolute w-full h-full bg-card text-foreground rounded-2xl shadow-2xl flex flex-col p-6 border border-neutral-700"
                       style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                   >
-                      {answers[currentIndex]?.isCorrect ? (
-                          <>
-                              <CheckCircle className="w-20 h-20 text-green-500 mb-4" />
-                              <h3 className="text-3xl font-bold text-white">Correct!</h3>
-                          </>
-                      ) : (
-                          <>
-                              <XCircle className="w-20 h-20 text-red-500 mb-4" />
-                              <h3 className="text-3xl font-bold text-white">Incorrect</h3>
-                          </>
-                      )}
-                      <div className="text-center mt-6">
-                          <p className="text-neutral-400">The correct answer is:</p>
-                          <p className="text-xl font-semibold text-white mt-2 p-3 bg-neutral-900/50 rounded-lg">{q.correctAnswer}</p>
+                      <div className="flex-shrink-0 flex flex-col items-center justify-center text-center mb-4">
+                          {answers[currentIndex]?.isCorrect ? (
+                              <>
+                                  <CheckCircle className="w-12 h-12 text-green-500 mb-2" />
+                                  <h3 className="text-xl font-bold text-white">Correct!</h3>
+                              </>
+                          ) : (
+                              <>
+                                  <XCircle className="w-12 h-12 text-red-500 mb-2" />
+                                  <h3 className="text-xl font-bold text-white">Incorrect</h3>
+                                  <p className="text-neutral-400 text-sm">The correct answer was: <span className="font-bold text-white">{q.correctAnswer}</span></p>
+                              </>
+                          )}
                       </div>
-                      <div className="absolute bottom-6 left-0 right-0 z-30 text-center text-white/50 animate-pulse pointer-events-none">
+
+                      <div className="flex-1 bg-neutral-900/50 rounded-xl p-4 flex flex-col overflow-hidden">
+                          <h4 className="font-bold text-white mb-2 flex items-center gap-2 flex-shrink-0">
+                            <Sparkles size={16} className="text-yellow-400"/> AI Explanation
+                          </h4>
+                          <div className="overflow-y-auto">
+                              {isDescriptionLoading ? (
+                                  <div className="space-y-2">
+                                      <div className="h-4 bg-neutral-700 rounded w-full animate-pulse"></div>
+                                      <div className="h-4 bg-neutral-700 rounded w-5/6 animate-pulse"></div>
+                                      <div className="h-4 bg-neutral-700 rounded w-3/4 animate-pulse"></div>
+                                  </div>
+                              ) : (
+                                  <p className="text-neutral-300 text-sm leading-relaxed">
+                                      {q.description || "Click 'Flip' to generate an explanation."}
+                                  </p>
+                              )}
+                          </div>
+                      </div>
+                      
+                      <div className="mt-4 z-30 text-center text-white/50 animate-pulse pointer-events-none">
                           <ArrowUp className="inline-block" />
                           <p className="text-xs font-semibold">Swipe up for next</p>
                       </div>
