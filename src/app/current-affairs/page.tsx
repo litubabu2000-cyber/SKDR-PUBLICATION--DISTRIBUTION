@@ -274,11 +274,11 @@ export default function CurrentAffairsPage() {
               key={q.id}
               className="absolute w-full max-w-md h-[580px]"
               style={{ perspective: 1000 }}
-              drag={isFlipped ? "y" : false}
+              drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={0.1}
               onDragEnd={(event, info) => {
-                if (isFlipped && info.offset.y < -50) {
+                if (info.offset.y < -50 && !!answers[currentIndex]) {
                   handleNext();
                 }
               }}
